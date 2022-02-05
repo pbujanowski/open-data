@@ -1,14 +1,25 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-
-import { Button } from "@mui/material";
+import { AppTheme } from "./theme";
+import { AppLayout } from "./layout";
+import { PageContainer } from "./components";
+import { routes } from "./routes";
 
 const App: React.FC = () => {
-  return <Button variant="contained">Hello world!</Button>;
+  return (
+    <AppTheme>
+      <Router>
+        <AppLayout>
+          <Routes>
+            {routes.map((route) => (
+              <Route key={route.key} path={route.path} element={<PageContainer page={route.component} />} />
+            ))}
+          </Routes>
+        </AppLayout>
+      </Router>
+    </AppTheme>
+  );
 };
 
 export default App;

@@ -1,0 +1,13 @@
+{
+  "brand": "Open Data",
+  "pages": {
+    "home": "Strona główna",
+    "nbp": "Narodowy Bank Polski"
+  },
+  "theme": {
+    "lightMode": "Tryb jasny",
+    "darkMode": "Tryb ciemny",
+    "switchToLightMode": "Zmień na tryb jasny",
+    "switchToDarkMode": "Zmień na tryb ciemny"
+  }
+}

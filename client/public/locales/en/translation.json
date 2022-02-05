@@ -1,0 +1,13 @@
+{
+  "brand": "Open Data",
+  "pages": {
+    "home": "Home",
+    "nbp": "National Bank of Poland"
+  },
+  "theme": {
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
+    "switchToLightMode": "Switch to light mode",
+    "switchToDarkMode": "Switch to dark mode"
+  }
+}
