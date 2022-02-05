@@ -1,22 +1,29 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { IconButton, Tooltip, useTheme } from "@mui/material";
+import { FormControlLabel, Tooltip, Switch, useTheme } from "@mui/material";
+import { Brightness4, Brightness7 } from "@mui/icons-material";
 
 import { ThemeContext } from "./theme-context";
-import { Brightness4, Brightness7 } from "@mui/icons-material";
+import { ThemeMode } from "./theme-mode";
+import { IconText } from "../components";
 
 const ThemeSwitcher: React.FC = () => {
   const [t] = useTranslation();
   const theme = useTheme();
   const themeMode = React.useContext(ThemeContext);
 
-  const isDarkMode = () => theme.palette.mode === "dark";
-
-  const getSwitchModeLabel = () => (isDarkMode() ? t("theme.switchToLightMode") : t("theme.switchToDarkMode"));
+  const isDarkMode = () => theme.palette.mode === ThemeMode.Dark;
+  const getLightModeLabel = () => <IconText icon={Brightness7} text={t("theme.lightMode")} />;
+  const getDarkModeLabel = () => <IconText icon={Brightness4} text={t("theme.darkMode")} />;
+  const getSwitchLabel = () => (isDarkMode() ? getDarkModeLabel() : getLightModeLabel());
+  const getSwitchModeTooltip = () => (isDarkMode() ? t("theme.switchToLightMode") : t("theme.switchToDarkMode"));
 
   return (
-    <Tooltip title={getSwitchModeLabel()}>
-      <IconButton onClick={themeMode.switchThemeMode}>{isDarkMode() ? <Brightness7 /> : <Brightness4 />}</IconButton>
+    <Tooltip title={getSwitchModeTooltip()}>
+      <FormControlLabel
+        control={<Switch defaultChecked={isDarkMode()} onClick={() => themeMode.switchThemeMode()} />}
+        label={getSwitchLabel()}
+      />
     </Tooltip>
   );
 };

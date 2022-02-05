@@ -68,7 +68,7 @@ const Header: React.FC = () => {
             >
               {menuRoutes.map((route) => {
                 return (
-                  <MenuItem LinkComponent={Button} onClick={() => handleNavItemClick(route.path)}>
+                  <MenuItem key={route.key} LinkComponent={Button} onClick={() => handleNavItemClick(route.path)}>
                     <Typography textAlign="center">{t(`pages.${route.key}`)}</Typography>
                   </MenuItem>
                 );
