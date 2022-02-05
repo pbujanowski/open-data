@@ -1,5 +1,5 @@
 {
-  "name": "open-data-api",
+  "name": "@open-data/api",
   "version": "1.0.0",
   "description": "An API for Open Data software.",
   "main": "index.js",

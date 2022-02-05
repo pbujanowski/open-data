@@ -1,7 +1,4 @@
-export type Language = {
-  code: string;
-  displayName: string;
-};
+import { Language } from "./language.type";
 
 export const english: Language = {
   code: "en",

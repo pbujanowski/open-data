@@ -1,5 +1,5 @@
 {
-  "name": "open-data-client",
+  "name": "@open-data/client",
   "version": "1.0.0",
   "description": "A client for Open Data software.",
   "repository": "https://github.com/pbujanowski/open-data",
