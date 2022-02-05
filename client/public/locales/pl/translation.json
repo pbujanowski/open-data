@@ -4,6 +4,10 @@
     "home": "Strona główna",
     "nbp": "Narodowy Bank Polski"
   },
+  "language": {
+    "name": "Język",
+    "changeLanguage": "Zmień język"
+  },
   "theme": {
     "lightMode": "Tryb jasny",
     "darkMode": "Tryb ciemny",

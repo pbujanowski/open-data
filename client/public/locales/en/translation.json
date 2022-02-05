@@ -4,6 +4,10 @@
     "home": "Home",
     "nbp": "National Bank of Poland"
   },
+  "language": {
+    "name": "Language",
+    "changeLanguage": "Change language"
+  },
   "theme": {
     "lightMode": "Light mode",
     "darkMode": "Dark mode",

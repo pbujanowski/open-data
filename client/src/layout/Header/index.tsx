@@ -6,6 +6,7 @@ import { AppBar, Box, Button, Container, IconButton, Menu, MenuItem, Toolbar, Ty
 
 import { Menu as MenuIcon } from "@mui/icons-material";
 
+import LanguageSwitcher from "./LanguageSwitcher";
 import { ThemeSwitcher } from "../../theme";
 import { menuRoutes } from "../../routes";
 
@@ -88,6 +89,9 @@ const Header: React.FC = () => {
                 {t(`pages.${route.key}`)}
               </Button>
             ))}
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <LanguageSwitcher />
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <ThemeSwitcher />
