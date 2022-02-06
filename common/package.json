@@ -1,10 +1,10 @@
 {
-  "name": "@open-data/common",
+  "name": "open-data-common",
   "version": "1.0.0",
   "description": "A common package for Open Data software.",
   "main": "index.js",
   "repository": "https://github.com/pbujanowski/open-data",
-  "author": "Patryk Bujanowski",
+  "author": "Patryk Bujanowski <bujanowski.patryk@outlook.com>",
   "license": "MIT",
   "private": true,
   "scripts": {

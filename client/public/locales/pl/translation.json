@@ -1,8 +1,19 @@
 {
   "brand": "Open Data",
+  "common": {
+    "refresh": "Odśwież",
+    "noData": "Brak danych"
+  },
   "pages": {
     "home": "Strona główna",
     "nbp": "Narodowy Bank Polski"
+  },
+  "nbp": {
+    "currentGoldPrice": "Aktualna cena złota"
+  },
+  "goldPrice": {
+    "date": "Date",
+    "price": "Price"
   },
   "language": {
     "name": "Język",

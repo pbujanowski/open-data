@@ -6,7 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 
 import { appConfig } from "./configs";
-import { homeRoutes } from "./routes";
+import { HomeRoutes, NbpRoutes } from "./routes";
 
 const app = express();
 const port = appConfig.PORT;
@@ -20,7 +20,8 @@ app.use(cors(corsOptions));
 app.use(helmet());
 app.use(morgan("common"));
 
-app.use("/", homeRoutes);
+app.use("/", HomeRoutes);
+app.use("/nbp", NbpRoutes);
 
 app.listen(port, () => {
   console.log("Application is running...");

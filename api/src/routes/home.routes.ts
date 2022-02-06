@@ -1,9 +1,15 @@
 import express from "express";
 
-import { homeController } from "../controllers";
+import { HomeController } from "../controllers";
 
-const router = express.Router();
+const homeRoutes = () => {
+  const router = express.Router();
 
-router.get("/", homeController.index);
+  router.get("/", HomeController.index);
 
-export default router;
+  return router;
+};
+
+const HomeRoutes = homeRoutes();
+
+export default HomeRoutes;

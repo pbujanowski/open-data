@@ -1,0 +1,19 @@
+{
+  "name": "open-data",
+  "version": "1.0.0",
+  "description": "A bootstrapper for Open Data software.",
+  "main": "index.js",
+  "repository": "https://github.com/pbujanowski/open-data",
+  "author": "Patryk Bujanowski <bujanowski.patryk@outlook.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev:start": "concurrently \"cd client && yarn start\" \"cd api && yarn dev\"",
+    "dev:install": "yarn install && cd common && yarn install && cd .. && concurrently \"cd client && yarn install\" \"cd api && yarn install\"",
+    "dev:common-update": "concurrently \"cd client && yarn upgrade open-data-common\" \"cd api && yarn upgrade open-data-common\"",
+    "build": "concurrently \"cd client && yarn build\" \"cd api && yarn build\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
