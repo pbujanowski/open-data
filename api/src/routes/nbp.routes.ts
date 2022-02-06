@@ -6,6 +6,7 @@ const nbpRoutes = () => {
   const router = express.Router();
 
   router.get("/currentGoldPrice", NbpController.getCurrentGoldPrice);
+  router.get("/goldPricesByDate", NbpController.getGoldPricesByDate);
 
   return router;
 };

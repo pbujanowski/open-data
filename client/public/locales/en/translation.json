@@ -1,6 +1,7 @@
 {
   "brand": "Open Data",
   "common": {
+    "download": "Download",
     "refresh": "Refresh",
     "noData": "No data"
   },
@@ -9,11 +10,18 @@
     "nbp": "National Bank of Poland"
   },
   "nbp": {
-    "currentGoldPrice": "Current gold price"
+    "currentGoldPrice": "Current gold price",
+    "goldPricesByDate": "Gold prices by date"
   },
   "goldPrice": {
     "date": "Date",
-    "price": "Price"
+    "price": "Price",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "validation": {
+      "startDateIsEmpty": "Start date is empty.",
+      "endDateIsEmpty": "End date is empty."
+    }
   },
   "language": {
     "name": "Language",

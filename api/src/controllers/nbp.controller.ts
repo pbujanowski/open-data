@@ -12,8 +12,22 @@ const nbpController = () => {
     }
   };
 
+  const getGoldPricesByDate = async (req: Request, res: Response) => {
+    try {
+      const dateNow = new Date(Date.now());
+      const formattedDate = `${dateNow.getFullYear()}-${dateNow.getMonth()}-${dateNow.getDay()}`;
+      const startDate = req.query.startDate?.toString() || formattedDate;
+      const endDate = req.query.endDate?.toString() || formattedDate;
+      const goldPrices = await NbpService.getGoldPricesByDate(startDate, endDate);
+      res.json(goldPrices);
+    } catch (e) {
+      res.status(500);
+    }
+  };
+
   return {
     getCurrentGoldPrice,
+    getGoldPricesByDate,
   };
 };
 
