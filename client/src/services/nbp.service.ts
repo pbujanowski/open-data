@@ -1,5 +1,5 @@
 import axios from "axios";
-import dayJs from "dayjs";
+import { format } from "date-fns";
 import { GoldPriceDto } from "open-data-common";
 
 import { appConfig } from "../configs";
@@ -18,8 +18,9 @@ const nbpService = () => {
   };
 
   const getGoldPricesByDate = async (startDate: string, endDate: string): Promise<GoldPriceDto[]> => {
-    const queryParams = `startDate=${dayJs(startDate).format(dateFormat)}&endDate=${dayJs(endDate).format(dateFormat)}`;
-    const response = await axios.get(`${url}/goldPricesByDate?${queryParams}`);
+    const startDateFormatted = format(new Date(startDate), dateFormat);
+    const endDateFormatted = format(new Date(endDate), dateFormat);
+    const response = await axios.get(`${url}/goldPricesByDate/${startDateFormatted}/${endDateFormatted}`);
     if (response.status !== 200) {
       throw new Error(response.statusText);
     }

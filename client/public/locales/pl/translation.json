@@ -2,6 +2,7 @@
   "brand": "Open Data",
   "common": {
     "download": "Pobierz",
+    "go": "Idź",
     "refresh": "Odśwież",
     "noData": "Brak danych"
   },
@@ -11,7 +12,11 @@
   },
   "nbp": {
     "currentGoldPrice": "Aktualna cena złota",
-    "goldPricesByDate": "Ceny złota w przedziale czasowym"
+    "goldPricesByDate": "Ceny złota w przedziale czasowym",
+    "errors": {
+      "cannotFetchCurrentGoldPrice": "Nie udało się pobrać aktualnej ceny złota",
+      "cannotFetchGoldPricesByDate": "Nie udało się pobrać cen złota w przedziale czasowym"
+    }
   },
   "goldPrice": {
     "date": "Data",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { v4 as uuid } from "uuid";
-import dayJs from "dayjs";
+import { addDays, format } from "date-fns";
 
 import {
   Button,
@@ -21,17 +21,31 @@ import {
 import { DatePicker } from "@mui/lab";
 import { GoldPriceDto } from "open-data-common";
 
-import { LoadingIndicator } from "../../components";
+import { ErrorSnackbar, LoadingIndicator } from "../../components";
 import NbpService from "../../services/nbp.service";
 
 const GoldPricesByDate: React.FC = () => {
   const [t] = useTranslation();
-  const dateToday = dayJs(Date.now()).format();
-  const dateYesterday = dayJs(dateToday).add(-1, "day").format();
+  const dateFormat = "yyyy-MM-dd";
+  const dateMask = "____-__-__";
+  const dateToday = format(Date.now(), dateFormat);
+  const dateYesterday = format(addDays(new Date(dateToday), -1), dateFormat);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [goldPrices, setGoldPrices] = useState<GoldPriceDto[] | null>(null);
   const [startDate, setStartDate] = useState<string>(dateYesterday);
   const [endDate, setEndDate] = useState<string>(dateToday);
+
+  const handleSnackbarOpen = (error: string | null) => {
+    setErrorMessage(error);
+    setIsSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = () => {
+    setErrorMessage(null);
+    setIsSnackbarOpen(false);
+  };
 
   const getGoldPricesByDate = async () => {
     try {
@@ -39,7 +53,7 @@ const GoldPricesByDate: React.FC = () => {
       const result = await NbpService.getGoldPricesByDate(startDate, endDate);
       setGoldPrices(result);
     } catch (e) {
-      console.error(e);
+      handleSnackbarOpen(t("nbp.errors.cannotFetchGoldPricesByDate"));
     } finally {
       setIsLoading(false);
     }
@@ -80,12 +94,16 @@ const GoldPricesByDate: React.FC = () => {
     <>
       <CardActions>
         <DatePicker
+          inputFormat={dateFormat}
+          mask={dateMask}
           renderInput={(props) => <TextField {...props} />}
           label={t("goldPrice.startDate")}
           value={startDate}
           onChange={(value) => handleStartDateChange(value || dateToday)}
         />
         <DatePicker
+          inputFormat={dateFormat}
+          mask={dateMask}
           renderInput={(props) => <TextField {...props} />}
           label={t("goldPrice.endDate")}
           value={endDate}
@@ -117,6 +135,7 @@ const GoldPricesByDate: React.FC = () => {
         {getDataBody()}
       </CardContent>
       {getDataActions()}
+      <ErrorSnackbar isOpen={isSnackbarOpen} errorMessage={errorMessage} onClose={handleSnackbarClose} />
     </Card>
   );
 };

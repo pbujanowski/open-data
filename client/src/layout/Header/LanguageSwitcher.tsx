@@ -1,23 +1,28 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Fade, Menu, MenuItem, Tooltip } from "@mui/material";
 
 import { getLanguageByCode, supportedLanguages } from "../../i18n";
+import { LocaleContext } from "../../providers/locale.provider";
 
 const LanguageSwitcher: React.FC = () => {
   const [t, i18n] = useTranslation();
+  const localeContext = useContext(LocaleContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleLanguageChange = (language: string) => {
     i18n.changeLanguage(language);
+    localeContext.setDateLocale(language);
+    localeContext.setThemeLocale(language);
     handleClose();
   };
 

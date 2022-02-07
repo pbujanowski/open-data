@@ -1,41 +1,71 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { createTheme, ThemeProvider, useMediaQuery } from "@mui/material";
+import { LocalizationProvider } from "@mui/lab";
+import DateAdapter from "@mui/lab/AdapterDateFns";
 
-import { ThemeContext } from "./theme.context";
+import AppThemeProvider from "../providers/app-theme.provider";
+import LocaleProvider, {
+  dateLocalesMap,
+  SupportedLocales,
+  themeLocales,
+  themeLocalesMap,
+} from "../providers/locale.provider";
 import { ThemeMode } from "./theme-mode.enum";
 
 const AppTheme: React.FC = ({ children }) => {
+  const { i18n } = useTranslation();
   const prefersDarkMode = useMediaQuery(`(prefers-color-scheme: ${ThemeMode.Dark})`);
   const defaultThemeMode = prefersDarkMode ? ThemeMode.Dark : ThemeMode.Light;
-  const [mode, setMode] = useState<ThemeMode>(ThemeMode.Light);
+  const defaultThemeLocale = themeLocalesMap[i18n.language] as SupportedLocales;
+  const [currentThemeMode, setCurrentThemeMode] = useState<ThemeMode>(ThemeMode.Light);
+  const [currentThemeLocale, setCurrentThemeLocale] = useState<SupportedLocales>(defaultThemeLocale);
+  const [currentDateLocale, setCurrentDateLocale] = useState<Locale>(dateLocalesMap[i18n.language]);
 
   useEffect(() => {
-    setMode(defaultThemeMode);
-  }, [defaultThemeMode]);
+    setCurrentThemeMode(defaultThemeMode);
+    setCurrentThemeLocale(defaultThemeLocale);
+  }, [defaultThemeMode, defaultThemeLocale]);
 
-  const themeMode = useMemo(
+  const appThemeValue = useMemo(
     () => ({
       switchThemeMode: () => {
-        setMode((prevMode) => (prevMode === ThemeMode.Light ? ThemeMode.Dark : ThemeMode.Light));
+        setCurrentThemeMode((prevMode) => (prevMode === ThemeMode.Light ? ThemeMode.Dark : ThemeMode.Light));
       },
     }),
     [],
   );
 
+  const localeValue = useMemo(
+    () => ({
+      getDateLocale: (): Locale => currentDateLocale,
+      setDateLocale: (localeCode: string) => setCurrentDateLocale(dateLocalesMap[localeCode]),
+      setThemeLocale: (localeCode: string) => setCurrentThemeLocale(themeLocalesMap[localeCode] as SupportedLocales),
+    }),
+    [currentDateLocale],
+  );
+
   const theme = useMemo(
     () =>
-      createTheme({
-        palette: {
-          mode,
+      createTheme(
+        {
+          palette: {
+            mode: currentThemeMode,
+          },
         },
-      }),
-    [mode],
+        themeLocales[currentThemeLocale],
+      ),
+    [currentThemeMode, currentThemeLocale],
   );
 
   return (
-    <ThemeContext.Provider value={themeMode}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </ThemeContext.Provider>
+    <LocaleProvider value={localeValue}>
+      <LocalizationProvider dateAdapter={DateAdapter} locale={currentDateLocale}>
+        <AppThemeProvider value={appThemeValue}>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </AppThemeProvider>
+      </LocalizationProvider>
+    </LocaleProvider>
   );
 };
 

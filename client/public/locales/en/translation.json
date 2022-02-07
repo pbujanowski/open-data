@@ -2,6 +2,7 @@
   "brand": "Open Data",
   "common": {
     "download": "Download",
+    "go": "Go",
     "refresh": "Refresh",
     "noData": "No data"
   },
@@ -11,7 +12,11 @@
   },
   "nbp": {
     "currentGoldPrice": "Current gold price",
-    "goldPricesByDate": "Gold prices by date"
+    "goldPricesByDate": "Gold prices by date",
+    "errors": {
+      "cannotFetchCurrentGoldPrice": "Cannot fetch current gold price",
+      "cannotFetchGoldPricesByDate": "Cannot fetch gold prices by date"
+    }
   },
   "goldPrice": {
     "date": "Date",

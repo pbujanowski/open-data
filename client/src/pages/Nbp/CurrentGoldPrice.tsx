@@ -1,32 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
 import { GoldPriceDto } from "open-data-common";
 
-import { LoadingIndicator } from "../../components";
+import { ErrorSnackbar, LoadingIndicator } from "../../components";
 import NbpService from "../../services/nbp.service";
 
 const CurrentGoldPrice: React.FC = () => {
   const [t] = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [goldPrice, setGoldPrice] = useState<GoldPriceDto | null>(null);
 
-  useEffect(() => {
-    getCurrentGoldPrice();
-  }, []);
+  const handleSnackbarOpen = (error: string | null) => {
+    setErrorMessage(error);
+    setIsSnackbarOpen(true);
+  };
 
-  const getCurrentGoldPrice = async () => {
+  const handleSnackbarClose = () => {
+    setErrorMessage(null);
+    setIsSnackbarOpen(false);
+  };
+
+  const getCurrentGoldPrice = useCallback(async () => {
     try {
       setIsLoading(true);
       const result = await NbpService.getCurrentGoldPrice();
       setGoldPrice(result);
     } catch (e) {
-      console.error(e);
+      handleSnackbarOpen(t("nbp.errors.cannotFetchCurrentGoldPrice"));
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [t]);
 
   const getGoldPriceDetails = () => (
     <>
@@ -53,6 +61,10 @@ const CurrentGoldPrice: React.FC = () => {
 
   const getDataBody = () => (isLoading ? getLoadingIndicator() : getGoldPriceBody());
 
+  useEffect(() => {
+    getCurrentGoldPrice();
+  }, [getCurrentGoldPrice]);
+
   return (
     <Card>
       <CardContent>
@@ -68,6 +80,7 @@ const CurrentGoldPrice: React.FC = () => {
           {t("common.refresh")}
         </Button>
       </CardActions>
+      <ErrorSnackbar isOpen={isSnackbarOpen} errorMessage={errorMessage} onClose={handleSnackbarClose} />
     </Card>
   );
 };
