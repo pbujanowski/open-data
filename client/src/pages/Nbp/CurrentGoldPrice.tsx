@@ -5,7 +5,7 @@ import { Button, Card, CardActions, CardContent, Typography } from "@mui/materia
 import { GoldPriceDto } from "open-data-common";
 
 import { ErrorSnackbar, LoadingIndicator } from "../../components";
-import NbpService from "../../services/nbp.service";
+import { nbpService } from "../../services/nbpService";
 
 const CurrentGoldPrice: React.FC = () => {
   const [t] = useTranslation();
@@ -27,7 +27,7 @@ const CurrentGoldPrice: React.FC = () => {
   const getCurrentGoldPrice = useCallback(async () => {
     try {
       setIsLoading(true);
-      const result = await NbpService.getCurrentGoldPrice();
+      const result = await nbpService().getCurrentGoldPrice();
       setGoldPrice(result);
     } catch (e) {
       handleSnackbarOpen(t("nbp.errors.cannotFetchCurrentGoldPrice"));
@@ -68,7 +68,7 @@ const CurrentGoldPrice: React.FC = () => {
   return (
     <Card>
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h5" component="div" color="primary">
           {t("nbp.currentGoldPrice")}
         </Typography>
         <Typography variant="body2" color="text.secondary" component="div">

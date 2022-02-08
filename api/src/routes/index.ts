@@ -1,2 +1,2 @@
-export { default as HomeRoutes } from "./home.routes";
-export { default as NbpRoutes } from "./nbp.routes";
+export { homeRoutes } from "./homeRoutes";
+export { nbpRoutes } from "./nbpRoutes";

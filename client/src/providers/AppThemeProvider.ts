@@ -6,6 +6,4 @@ const AppThemeContext = React.createContext({
 
 const AppThemeProvider = AppThemeContext.Provider;
 
-export { AppThemeContext };
-
-export default AppThemeProvider;
+export { AppThemeContext, AppThemeProvider };

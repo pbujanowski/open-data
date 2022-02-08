@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { FormControlLabel, Tooltip, Switch, useTheme } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 
-import { AppThemeContext } from "../providers/app-theme.provider";
-import { ThemeMode } from "./theme-mode.enum";
+import { AppThemeContext } from "../providers/AppThemeProvider";
+import { ThemeMode } from "./ThemeMode";
 import { IconText } from "../components";
 
 const ThemeSwitcher: React.FC = () => {
@@ -22,7 +22,9 @@ const ThemeSwitcher: React.FC = () => {
   return (
     <Tooltip title={getSwitchModeTooltip()}>
       <FormControlLabel
-        control={<Switch defaultChecked={isDarkMode} onClick={() => themeContext.switchThemeMode()} />}
+        control={
+          <Switch defaultChecked={isDarkMode} color="secondary" onClick={() => themeContext.switchThemeMode()} />
+        }
         label={getSwitchLabel()}
       />
     </Tooltip>

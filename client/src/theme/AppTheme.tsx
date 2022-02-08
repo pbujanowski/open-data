@@ -4,14 +4,16 @@ import { createTheme, ThemeProvider, useMediaQuery } from "@mui/material";
 import { LocalizationProvider } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 
-import AppThemeProvider from "../providers/app-theme.provider";
-import LocaleProvider, {
+import { AppThemeProvider } from "../providers/AppThemeProvider";
+import {
+  LocaleProvider,
   dateLocalesMap,
   SupportedLocales,
   themeLocales,
   themeLocalesMap,
-} from "../providers/locale.provider";
-import { ThemeMode } from "./theme-mode.enum";
+} from "../providers/LocaleProvider";
+
+import { ThemeMode } from "./ThemeMode";
 
 const AppTheme: React.FC = ({ children }) => {
   const { i18n } = useTranslation();

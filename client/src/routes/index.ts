@@ -6,18 +6,20 @@ export type RouteType = {
   component: React.ElementType;
 };
 
-export const homeRoute: RouteType = {
+const homeRoute: RouteType = {
   key: "home",
   path: "/",
   component: Home,
 };
 
-export const nbpRoute: RouteType = {
+const nbpRoute: RouteType = {
   key: "nbp",
   path: "/nbp",
   component: Nbp,
 };
 
-export const routes: RouteType[] = [homeRoute, nbpRoute];
+const routes: RouteType[] = [homeRoute, nbpRoute];
 
-export const menuRoutes: RouteType[] = [homeRoute, nbpRoute];
+const menuRoutes: RouteType[] = [homeRoute, nbpRoute];
+
+export { homeRoute, nbpRoute, routes, menuRoutes };

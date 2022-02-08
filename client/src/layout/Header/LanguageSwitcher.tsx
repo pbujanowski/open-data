@@ -2,8 +2,10 @@ import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Fade, Menu, MenuItem, Tooltip } from "@mui/material";
 
-import { getLanguageByCode, supportedLanguages } from "../../i18n";
-import { LocaleContext } from "../../providers/locale.provider";
+import { languages } from "../../i18n";
+import { LocaleContext } from "../../providers/LocaleProvider";
+
+const { getLanguageByCode, supportedLanguages } = languages();
 
 const LanguageSwitcher: React.FC = () => {
   const [t, i18n] = useTranslation();

@@ -3,7 +3,10 @@ import * as locales from "@mui/material/locale";
 import enLocale from "date-fns/locale/en-US";
 import plLocale from "date-fns/locale/pl";
 
-import i18n, { english, polish } from "../i18n";
+import { i18nextInstance, languages } from "../i18n";
+
+const i18n = i18nextInstance().i18next;
+const { english, polish } = languages();
 
 const dateLocalesMap = {
   [english.code]: enLocale,
@@ -25,6 +28,4 @@ const LocaleProvider = LocaleContext.Provider;
 
 export type SupportedLocales = keyof typeof locales;
 
-export { LocaleContext, locales as themeLocales, dateLocalesMap, themeLocalesMap };
-
-export default LocaleProvider;
+export { LocaleContext, LocaleProvider, locales as themeLocales, dateLocalesMap, themeLocalesMap };

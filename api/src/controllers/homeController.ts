@@ -8,6 +8,4 @@ const homeController = () => {
   return { index };
 };
 
-const HomeController = homeController();
-
-export default HomeController;
+export { homeController };

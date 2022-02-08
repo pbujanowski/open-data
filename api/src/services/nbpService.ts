@@ -40,6 +40,4 @@ const nbpService = () => {
   return { getCurrentGoldPrice, getGoldPricesByDate };
 };
 
-const NbpService = nbpService();
-
-export default NbpService;
+export { nbpService };

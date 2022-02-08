@@ -22,7 +22,7 @@ import { DatePicker } from "@mui/lab";
 import { GoldPriceDto } from "open-data-common";
 
 import { ErrorSnackbar, LoadingIndicator } from "../../components";
-import NbpService from "../../services/nbp.service";
+import { nbpService } from "../../services/nbpService";
 
 const GoldPricesByDate: React.FC = () => {
   const [t] = useTranslation();
@@ -50,7 +50,7 @@ const GoldPricesByDate: React.FC = () => {
   const getGoldPricesByDate = async () => {
     try {
       setIsLoading(true);
-      const result = await NbpService.getGoldPricesByDate(startDate, endDate);
+      const result = await nbpService().getGoldPricesByDate(startDate, endDate);
       setGoldPrices(result);
     } catch (e) {
       handleSnackbarOpen(t("nbp.errors.cannotFetchGoldPricesByDate"));
@@ -65,14 +65,14 @@ const GoldPricesByDate: React.FC = () => {
         <TableHead>
           <TableRow>
             <TableCell>{t("goldPrice.date")}</TableCell>
-            <TableCell>{t("goldPrice.price")} zł</TableCell>
+            <TableCell>{t("goldPrice.price")}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {goldPrices?.map((goldPrice) => (
             <TableRow key={uuid()}>
               <TableCell>{goldPrice.date}</TableCell>
-              <TableCell>{goldPrice.price.toFixed(2)}</TableCell>
+              <TableCell>{goldPrice.price.toFixed(2)} zł</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -129,10 +129,12 @@ const GoldPricesByDate: React.FC = () => {
   return (
     <Card>
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h5" component="div" color="primary">
           {t("nbp.goldPricesByDate")}
         </Typography>
-        {getDataBody()}
+        <Typography variant="body2" color="text.secondary" component="div">
+          {getDataBody()}
+        </Typography>
       </CardContent>
       {getDataActions()}
       <ErrorSnackbar isOpen={isSnackbarOpen} errorMessage={errorMessage} onClose={handleSnackbarClose} />

@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 
-import { NbpService } from "../services";
+import { nbpService } from "../services";
 
 const nbpController = () => {
   const getCurrentGoldPrice = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const goldPrice = await NbpService.getCurrentGoldPrice();
+      const goldPrice = await nbpService().getCurrentGoldPrice();
       res.json(goldPrice);
     } catch (e) {
       res.status(500);
@@ -17,7 +17,8 @@ const nbpController = () => {
     try {
       const startDate = req.params.startDate;
       const endDate = req.params.endDate;
-      const goldPrices = await NbpService.getGoldPricesByDate(startDate, endDate);
+      console.log(req.params);
+      const goldPrices = await nbpService().getGoldPricesByDate(startDate, endDate);
       res.json(goldPrices);
     } catch (e) {
       res.status(500);
@@ -31,6 +32,4 @@ const nbpController = () => {
   };
 };
 
-const NbpController = nbpController();
-
-export default NbpController;
+export { nbpController };

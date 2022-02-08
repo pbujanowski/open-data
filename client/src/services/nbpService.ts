@@ -5,8 +5,8 @@ import { GoldPriceDto } from "open-data-common";
 import { appConfig } from "../configs";
 
 const nbpService = () => {
-  const url = `${appConfig.API_URL}/nbp`;
-  const dateFormat = "YYYY-MM-DD";
+  const url = `${appConfig().apiUrl}/nbp`;
+  const dateFormat = "yyyy-MM-dd";
 
   const getCurrentGoldPrice = async (): Promise<GoldPriceDto> => {
     const response = await axios.get(`${url}/currentGoldPrice`);
@@ -31,6 +31,4 @@ const nbpService = () => {
   return { getCurrentGoldPrice, getGoldPricesByDate };
 };
 
-const NbpService = nbpService();
-
-export default NbpService;
+export { nbpService };

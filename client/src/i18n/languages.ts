@@ -1,16 +1,22 @@
-import { Language } from "./language.type";
+import { Language } from "./Language";
 
-export const english: Language = {
-  code: "en",
-  displayName: "English",
+const languages = () => {
+  const english: Language = {
+    code: "en",
+    displayName: "English",
+  };
+
+  const polish: Language = {
+    code: "pl",
+    displayName: "Polski",
+  };
+
+  const supportedLanguages: Language[] = [english, polish];
+
+  const getLanguageByCode = (code: string): Language | undefined =>
+    supportedLanguages.find((language) => language.code === code);
+
+  return { english, polish, supportedLanguages, getLanguageByCode };
 };
 
-export const polish: Language = {
-  code: "pl",
-  displayName: "Polski",
-};
-
-export const supportedLanguages: Language[] = [english, polish];
-
-export const getLanguageByCode = (code: string): Language | undefined =>
-  supportedLanguages.find((language) => language.code === code);
+export { languages };

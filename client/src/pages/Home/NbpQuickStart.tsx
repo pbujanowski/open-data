@@ -14,7 +14,7 @@ const NbpQuickStart: React.FC = () => {
   return (
     <Card variant="outlined">
       <CardContent>
-        <Typography align="center" gutterBottom variant="h5" component="div">
+        <Typography align="center" gutterBottom variant="h5" component="div" color="primary">
           {t("pages.nbp")}
         </Typography>
       </CardContent>
