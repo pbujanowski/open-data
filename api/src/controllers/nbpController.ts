@@ -17,7 +17,6 @@ const nbpController = () => {
     try {
       const startDate = req.params.startDate;
       const endDate = req.params.endDate;
-      console.log(req.params);
       const goldPrices = await nbpService().getGoldPricesByDate(startDate, endDate);
       res.json(goldPrices);
     } catch (e) {

@@ -1,41 +1,30 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { v4 as uuid } from "uuid";
-import { addDays, format } from "date-fns";
+import { addDays } from "date-fns";
 
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { DatePicker } from "@mui/lab";
 import { GoldPriceDto } from "open-data-common";
+
+import GoldPricesCard from "./components/GoldPricesCard";
+import GoldPricesTable from "./components/GoldPricesTable";
 
 import { ErrorSnackbar, LoadingIndicator } from "../../components";
 import { nbpService } from "../../services/nbpService";
+import GoldPricesDatesActions from "./components/GoldPricesDatesActions";
 
 const GoldPricesByDate: React.FC = () => {
   const [t] = useTranslation();
-  const dateFormat = "yyyy-MM-dd";
-  const dateMask = "____-__-__";
-  const dateToday = format(Date.now(), dateFormat);
-  const dateYesterday = format(addDays(new Date(dateToday), -1), dateFormat);
+  const dateYesterday = addDays(new Date(Date.now()), -1).toDateString();
+  const dateToday = new Date(Date.now()).toDateString();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [goldPrices, setGoldPrices] = useState<GoldPriceDto[] | null>(null);
   const [startDate, setStartDate] = useState<string>(dateYesterday);
   const [endDate, setEndDate] = useState<string>(dateToday);
+
+  const handleStartDateChange = (date: string) => setStartDate(date);
+
+  const handleEndDateChange = (date: string) => setEndDate(date);
 
   const handleSnackbarOpen = (error: string | null) => {
     setErrorMessage(error);
@@ -59,86 +48,35 @@ const GoldPricesByDate: React.FC = () => {
     }
   };
 
-  const getGoldPricesDetails = () => (
-    <TableContainer component={Paper}>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>{t("goldPrice.date")}</TableCell>
-            <TableCell>{t("goldPrice.price")}</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {goldPrices?.map((goldPrice) => (
-            <TableRow key={uuid()}>
-              <TableCell>{goldPrice.date}</TableCell>
-              <TableCell>{goldPrice.price.toFixed(2)} zł</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-
-  const getNoDataDetails = () => (
-    <p>
-      <strong>{`${t("common.noData")}.`}</strong>
-    </p>
-  );
+  const getGoldPricesDetails = () => <GoldPricesTable goldPrices={goldPrices} />;
 
   const getLoadingIndicator = () => <LoadingIndicator />;
 
-  const getGoldPricesBody = () => (goldPrices ? getGoldPricesDetails() : getNoDataDetails());
-
   const getActionsBody = () => (
-    <>
-      <CardActions>
-        <DatePicker
-          inputFormat={dateFormat}
-          mask={dateMask}
-          renderInput={(props) => <TextField {...props} />}
-          label={t("goldPrice.startDate")}
-          value={startDate}
-          onChange={(value) => handleStartDateChange(value || dateToday)}
-        />
-        <DatePicker
-          inputFormat={dateFormat}
-          mask={dateMask}
-          renderInput={(props) => <TextField {...props} />}
-          label={t("goldPrice.endDate")}
-          value={endDate}
-          onChange={(value) => handleEndDateChange(value || dateToday)}
-        />
-      </CardActions>
-      <CardActions>
-        <Button size="small" onClick={getGoldPricesByDate}>
-          {t("common.download")}
-        </Button>
-      </CardActions>
-    </>
+    <GoldPricesDatesActions
+      startDate={startDate}
+      endDate={endDate}
+      onStartDateChange={handleStartDateChange}
+      onEndDateChange={handleEndDateChange}
+      onSubmit={() => getGoldPricesByDate()}
+    />
   );
 
-  const getDataBody = () => (isLoading ? getLoadingIndicator() : getGoldPricesBody());
+  const getDataBody = () => (isLoading ? getLoadingIndicator() : getGoldPricesDetails());
 
   const getDataActions = () => (isLoading ? <></> : getActionsBody());
 
-  const handleStartDateChange = (date: string) => setStartDate(date);
-
-  const handleEndDateChange = (date: string) => setEndDate(date);
+  const getErrorSnackbar = () => (
+    <ErrorSnackbar isOpen={isSnackbarOpen} errorMessage={errorMessage} onClose={handleSnackbarClose} />
+  );
 
   return (
-    <Card>
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div" color="primary">
-          {t("nbp.goldPricesByDate")}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" component="div">
-          {getDataBody()}
-        </Typography>
-      </CardContent>
-      {getDataActions()}
-      <ErrorSnackbar isOpen={isSnackbarOpen} errorMessage={errorMessage} onClose={handleSnackbarClose} />
-    </Card>
+    <GoldPricesCard
+      title={t("nbp.goldPricesByDate")}
+      body={getDataBody()}
+      actions={getDataActions()}
+      additional={getErrorSnackbar()}
+    />
   );
 };
 

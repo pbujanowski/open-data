@@ -1,4 +1,5 @@
 import axios from "axios";
+import { v4 as uuid } from "uuid";
 
 import { GoldPriceDto, NbpGoldPriceDto } from "open-data-common";
 
@@ -15,6 +16,7 @@ const nbpService = () => {
     const result = array[0];
 
     return {
+      id: uuid(),
       date: result.data,
       price: result.cena,
     };
@@ -29,6 +31,7 @@ const nbpService = () => {
     const array = response.data as NbpGoldPriceDto[];
     const result: GoldPriceDto[] = array.map((item) => {
       return {
+        id: uuid(),
         date: item.data,
         price: item.cena,
       };
