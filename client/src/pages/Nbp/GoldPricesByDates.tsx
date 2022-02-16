@@ -6,12 +6,12 @@ import { GoldPriceDto } from "open-data-common";
 
 import GoldPricesCard from "./components/GoldPricesCard";
 import GoldPricesTable from "./components/GoldPricesTable";
-
-import { ErrorSnackbar, LoadingIndicator } from "../../components";
-import { nbpService } from "../../services/nbpService";
 import GoldPricesDatesActions from "./components/GoldPricesDatesActions";
 
-const GoldPricesByDate: React.FC = () => {
+import { AppSnackbar, LoadingIndicator } from "../../components";
+import { nbpService } from "../../services/nbpService";
+
+const GoldPricesByDates: React.FC = () => {
   const [t] = useTranslation();
   const dateYesterday = addDays(new Date(Date.now()), -1).toDateString();
   const dateToday = new Date(Date.now()).toDateString();
@@ -36,13 +36,13 @@ const GoldPricesByDate: React.FC = () => {
     setIsSnackbarOpen(false);
   };
 
-  const getGoldPricesByDate = async () => {
+  const getGoldPricesByDates = async () => {
     try {
       setIsLoading(true);
-      const result = await nbpService().getGoldPricesByDate(startDate, endDate);
+      const result = await nbpService().getGoldPricesByDates(startDate, endDate);
       setGoldPrices(result);
     } catch (e) {
-      handleSnackbarOpen(t("nbp.errors.cannotFetchGoldPricesByDate"));
+      handleSnackbarOpen(t("nbp.messages.cannotFetchGoldPricesByDates"));
     } finally {
       setIsLoading(false);
     }
@@ -58,7 +58,7 @@ const GoldPricesByDate: React.FC = () => {
       endDate={endDate}
       onStartDateChange={handleStartDateChange}
       onEndDateChange={handleEndDateChange}
-      onSubmit={() => getGoldPricesByDate()}
+      onSubmit={() => getGoldPricesByDates()}
     />
   );
 
@@ -67,12 +67,12 @@ const GoldPricesByDate: React.FC = () => {
   const getDataActions = () => (isLoading ? <></> : getActionsBody());
 
   const getErrorSnackbar = () => (
-    <ErrorSnackbar isOpen={isSnackbarOpen} errorMessage={errorMessage} onClose={handleSnackbarClose} />
+    <AppSnackbar isOpen={isSnackbarOpen} message={errorMessage} type="error" onClose={handleSnackbarClose} />
   );
 
   return (
     <GoldPricesCard
-      title={t("nbp.goldPricesByDate")}
+      title={t("nbp.goldPricesByDates")}
       body={getDataBody()}
       actions={getDataActions()}
       additional={getErrorSnackbar()}
@@ -80,4 +80,4 @@ const GoldPricesByDate: React.FC = () => {
   );
 };
 
-export default GoldPricesByDate;
+export default GoldPricesByDates;

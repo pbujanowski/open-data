@@ -1,6 +1,6 @@
 import axios from "axios";
 import { format } from "date-fns";
-import { GoldPriceDto } from "open-data-common";
+import { GoldPriceDto, GoldPricesByDatesDto } from "open-data-common";
 
 import { appConfig } from "../configs";
 
@@ -17,10 +17,10 @@ const nbpService = () => {
     return response.data;
   };
 
-  const getGoldPricesByDate = async (startDate: string, endDate: string): Promise<GoldPriceDto[]> => {
+  const getGoldPricesByDates = async (startDate: string, endDate: string): Promise<GoldPriceDto[]> => {
     const startDateFormatted = format(new Date(startDate), dateFormat);
     const endDateFormatted = format(new Date(endDate), dateFormat);
-    const response = await axios.get(`${url}/goldPricesByDate/${startDateFormatted}/${endDateFormatted}`);
+    const response = await axios.get(`${url}/goldPricesByDates/${startDateFormatted}/${endDateFormatted}`);
     if (response.status !== 200) {
       throw new Error(response.statusText);
     }
@@ -28,7 +28,20 @@ const nbpService = () => {
     return response.data;
   };
 
-  return { getCurrentGoldPrice, getGoldPricesByDate };
+  const synchronizeGoldPricesByDates = async (startDate: string, endDate: string): Promise<void> => {
+    const startDateFormatted = format(new Date(startDate), dateFormat);
+    const endDateFormatted = format(new Date(endDate), dateFormat);
+    const parameters: GoldPricesByDatesDto = {
+      startDate: startDateFormatted,
+      endDate: endDateFormatted,
+    };
+    const response = await axios.post(`${url}/synchronizeGoldPricesByDates`, { ...parameters });
+    if (response.status !== 200) {
+      throw new Error(response.statusText);
+    }
+  };
+
+  return { getCurrentGoldPrice, getGoldPricesByDates, synchronizeGoldPricesByDates };
 };
 
 export { nbpService };

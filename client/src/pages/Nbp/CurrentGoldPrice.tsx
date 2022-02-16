@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
 import { GoldPriceDto } from "open-data-common";
 
-import { ErrorSnackbar, LoadingIndicator } from "../../components";
+import { AppSnackbar, LoadingIndicator } from "../../components";
 import { nbpService } from "../../services/nbpService";
 
 const CurrentGoldPrice: React.FC = () => {
@@ -30,7 +30,7 @@ const CurrentGoldPrice: React.FC = () => {
       const result = await nbpService().getCurrentGoldPrice();
       setGoldPrice(result);
     } catch (e) {
-      handleSnackbarOpen(t("nbp.errors.cannotFetchCurrentGoldPrice"));
+      handleSnackbarOpen(t("nbp.messages.cannotFetchCurrentGoldPrice"));
     } finally {
       setIsLoading(false);
     }
@@ -80,7 +80,7 @@ const CurrentGoldPrice: React.FC = () => {
           {t("common.refresh")}
         </Button>
       </CardActions>
-      <ErrorSnackbar isOpen={isSnackbarOpen} errorMessage={errorMessage} onClose={handleSnackbarClose} />
+      <AppSnackbar isOpen={isSnackbarOpen} message={errorMessage} type="error" onClose={handleSnackbarClose} />
     </Card>
   );
 };

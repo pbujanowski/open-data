@@ -22,7 +22,7 @@ const nbpService = () => {
     };
   };
 
-  const getGoldPricesByDate = async (startDate: string, endDate: string): Promise<GoldPriceDto[]> => {
+  const getGoldPricesByDates = async (startDate: string, endDate: string): Promise<GoldPriceDto[]> => {
     const response = await axios.get(`${url}/cenyzlota/${startDate}/${endDate}`);
     if (response.status !== 200) {
       throw new Error(response.statusText);
@@ -40,7 +40,7 @@ const nbpService = () => {
     return result;
   };
 
-  return { getCurrentGoldPrice, getGoldPricesByDate };
+  return { getCurrentGoldPrice, getGoldPricesByDates };
 };
 
 export { nbpService };

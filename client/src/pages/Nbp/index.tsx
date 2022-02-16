@@ -2,7 +2,8 @@ import React from "react";
 import { Box, Grid } from "@mui/material";
 
 import CurrentGoldPrice from "./CurrentGoldPrice";
-import GoldPricesByDate from "./GoldPricesByDate";
+import GoldPricesByDates from "./GoldPricesByDates";
+import SynchronizeGoldPricesByDates from "./SynchronizeGoldPricesByDates";
 
 const Nbp: React.FC = () => {
   return (
@@ -12,7 +13,10 @@ const Nbp: React.FC = () => {
           <CurrentGoldPrice />
         </Grid>
         <Grid item xs={6}>
-          <GoldPricesByDate />
+          <GoldPricesByDates />
+        </Grid>
+        <Grid item xs={6}>
+          <SynchronizeGoldPricesByDates />
         </Grid>
       </Grid>
     </Box>
