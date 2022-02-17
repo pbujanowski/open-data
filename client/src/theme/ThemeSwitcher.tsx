@@ -1,33 +1,30 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { FormControlLabel, Tooltip, Switch, useTheme } from "@mui/material";
+import { Button, Typography, useTheme } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 
+import { AppTooltip } from "../components";
 import { AppThemeContext } from "../providers/AppThemeProvider";
 import { ThemeMode } from "./ThemeMode";
-import { IconText } from "../components";
 
 const ThemeSwitcher: React.FC = () => {
   const [t] = useTranslation();
   const theme = useTheme();
   const themeContext = useContext(AppThemeContext);
   const themeDarkMode = theme.palette.mode === ThemeMode.Dark;
-  const [isDarkMode] = useState(themeDarkMode);
 
-  const getLightModeLabel = () => <IconText icon={Brightness7} text={t("theme.lightMode")} />;
-  const getDarkModeLabel = () => <IconText icon={Brightness4} text={t("theme.darkMode")} />;
-  const getSwitchLabel = () => (themeDarkMode ? getDarkModeLabel() : getLightModeLabel());
-  const getSwitchModeTooltip = () => (themeDarkMode ? t("theme.switchToLightMode") : t("theme.switchToDarkMode"));
+  const getLightModeIcon = () => <Brightness7 sx={{ color: "white" }} />;
+  const getDarkModeIcon = () => <Brightness4 sx={{ color: "white" }} />;
+  const getIcon = () => (themeDarkMode ? getDarkModeIcon() : getLightModeIcon());
+  const getTitle = () => (themeDarkMode ? t("theme.switchToLightMode") : t("theme.switchToDarkMode"));
+  const getContent = () => (themeDarkMode ? t("theme.darkMode") : t("theme.lightMode"));
 
   return (
-    <Tooltip title={getSwitchModeTooltip()}>
-      <FormControlLabel
-        control={
-          <Switch defaultChecked={isDarkMode} color="secondary" onClick={() => themeContext.switchThemeMode()} />
-        }
-        label={getSwitchLabel()}
-      />
-    </Tooltip>
+    <AppTooltip title={getTitle()}>
+      <Button variant="outlined" startIcon={getIcon()} onClick={() => themeContext.switchThemeMode()}>
+        <Typography color="white">{getContent()}</Typography>
+      </Button>
+    </AppTooltip>
   );
 };
 

@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Fade, Menu, MenuItem, Tooltip } from "@mui/material";
+import { Button, Fade, Menu, MenuItem } from "@mui/material";
 
+import { AppTooltip } from "../../components";
 import { languages } from "../../i18n";
 import { LocaleContext } from "../../providers/LocaleProvider";
 
@@ -32,7 +33,7 @@ const LanguageSwitcher: React.FC = () => {
 
   return (
     <>
-      <Tooltip title={getTooltipTitle()}>
+      <AppTooltip title={getTooltipTitle()}>
         <Button
           id="language-button"
           aria-controls={open ? "language-menu" : undefined}
@@ -43,7 +44,7 @@ const LanguageSwitcher: React.FC = () => {
         >
           {`${t("language.name")}: ${getLanguageByCode(i18n.language)?.displayName}`}
         </Button>
-      </Tooltip>
+      </AppTooltip>
       <Menu
         id="language-menu"
         MenuListProps={{

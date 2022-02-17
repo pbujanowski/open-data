@@ -1,6 +1,7 @@
 import React from "react";
-import { Alert, Snackbar } from "@mui/material";
-import { AppSnackbarType } from "./AppSnackbarType";
+import { Alert, AlertColor, Snackbar } from "@mui/material";
+
+export type AppSnackbarType = AlertColor;
 
 type AppSnackbarProps = {
   isOpen: boolean;
