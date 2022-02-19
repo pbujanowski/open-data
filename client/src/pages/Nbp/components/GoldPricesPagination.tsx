@@ -1,10 +1,11 @@
 import React from "react";
-import { Pagination } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { LabelDisplayedRowsArgs, TablePagination } from "@mui/material";
 
 type GoldPricesPaginationProps = {
   pageNumber: number;
   pageSize: number;
-  pageCount: number;
+  totalCount: number;
   onPageNumberChange: (pageNumber: number) => void;
   onPageSizeChange: (pageSize: number) => void;
 };
@@ -12,11 +13,30 @@ type GoldPricesPaginationProps = {
 const GoldPricesPagination: React.FC<GoldPricesPaginationProps> = ({
   pageNumber,
   pageSize,
-  pageCount,
+  totalCount,
   onPageNumberChange,
   onPageSizeChange,
 }) => {
-  return <Pagination onChange={(_event, page) => onPageNumberChange(page)} page={pageNumber} count={pageCount} />;
+  const [t] = useTranslation();
+
+  const getLabelDisplayedRows = (paginationInfo: LabelDisplayedRowsArgs) => {
+    return `${paginationInfo.from}–${paginationInfo.to} ${t("table.of")} ${
+      paginationInfo.count !== -1 ? paginationInfo.count : `${t("table.moreThan")} ${paginationInfo.to}`
+    }`;
+  };
+
+  return (
+    <TablePagination
+      onPageChange={(_event, page) => onPageNumberChange(page)}
+      onRowsPerPageChange={(event) => onPageSizeChange(Number.parseInt(event.target.value || "0"))}
+      page={pageNumber - 1}
+      rowsPerPage={pageSize}
+      count={totalCount}
+      labelDisplayedRows={getLabelDisplayedRows}
+      showFirstButton
+      showLastButton
+    />
+  );
 };
 
 export default GoldPricesPagination;

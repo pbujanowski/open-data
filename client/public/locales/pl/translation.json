@@ -23,6 +23,10 @@
       "synchronizedGoldPricesByDatesProperly": "Zsynchronizowano ceny złota w przedziale czasowym prawidłowo"
     }
   },
+  "table": {
+    "of": "z",
+    "moreThan": "więcej niż"
+  },
   "goldPrice": {
     "date": "Data",
     "price": "Cena",

@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   AppBar,
   AppBarProps,
@@ -49,6 +49,7 @@ const DrawerStyled = styled(Drawer, { shouldForwardProp: (prop) => prop !== "ope
 
 const AppLayout: React.FC = ({ children }) => {
   const [t] = useTranslation();
+  const location = useLocation();
   const navigate = useNavigate();
 
   return (
@@ -75,7 +76,7 @@ const AppLayout: React.FC = ({ children }) => {
             return (
               <AppTooltip key={route.key} title={title} placement="right">
                 <ListItem>
-                  <ListItemButton key={route.key} onClick={() => navigate(route.path)}>
+                  <ListItemButton selected={location.pathname === route.path} onClick={() => navigate(route.path)}>
                     {React.createElement(route.icon || React.Fragment)}
                   </ListItemButton>
                 </ListItem>

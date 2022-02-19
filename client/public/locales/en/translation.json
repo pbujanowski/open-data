@@ -23,6 +23,10 @@
       "synchronizedGoldPricesByDatesProperly": "Synchronized gold prices by dates properly"
     }
   },
+  "table": {
+    "of": "of",
+    "moreThan": "more than"
+  },
   "goldPrice": {
     "date": "Date",
     "price": "Price",

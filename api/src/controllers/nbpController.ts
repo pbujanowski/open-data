@@ -29,18 +29,6 @@ const nbpController = () => {
     }
   };
 
-  const getGoldPricesByDates = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const startDate = req.params.startDate;
-      const endDate = req.params.endDate;
-      const goldPrices = await goldPriceRepository().findGoldPricesByDates(startDate, endDate);
-      res.json(goldPrices);
-    } catch (e) {
-      res.status(500);
-      next(e);
-    }
-  };
-
   const getGoldPricesWithPagination = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const pageNumber = Number.parseInt(req.query.pageNumber?.toString() || "1");
@@ -79,7 +67,6 @@ const nbpController = () => {
   return {
     getCurrentGoldPrice,
     getGoldPricesCount,
-    getGoldPricesByDates,
     getGoldPricesWithPagination,
     synchronizeGoldPricesByDates,
   };

@@ -26,17 +26,6 @@ const nbpService = () => {
     return response.data;
   };
 
-  const getGoldPricesByDates = async (startDate: string, endDate: string): Promise<GoldPriceDto[]> => {
-    const startDateFormatted = format(new Date(startDate), dateFormat);
-    const endDateFormatted = format(new Date(endDate), dateFormat);
-    const response = await axios.get(`${url}/goldPricesByDates/${startDateFormatted}/${endDateFormatted}`);
-    if (response.status !== 200) {
-      throw new Error(response.statusText);
-    }
-
-    return response.data;
-  };
-
   const getGoldPricesWithPagination = async (pageNumber: number, pageSize: number): Promise<GoldPriceDto[]> => {
     const queryParams = `?pageNumber=${pageNumber}&pageSize=${pageSize}`;
     const response = await axios.get(`${url}/goldPrices${queryParams}`);
@@ -63,7 +52,6 @@ const nbpService = () => {
   return {
     getCurrentGoldPrice,
     getGoldPricesCount,
-    getGoldPricesByDates,
     getGoldPricesWithPagination,
     synchronizeGoldPricesByDates,
   };

@@ -17,8 +17,8 @@ const GoldPricesWithPagination: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [goldPrices, setGoldPrices] = useState<GoldPriceDto[] | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(5);
-  const [pageCount, setPageCount] = useState<number>(0);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
   const handleSnackbarOpen = (error: string | null) => {
     setErrorMessage(error);
@@ -58,7 +58,7 @@ const GoldPricesWithPagination: React.FC = () => {
       <GoldPricesPagination
         pageNumber={pageNumber}
         pageSize={pageSize}
-        pageCount={pageCount}
+        totalCount={totalCount}
         onPageNumberChange={handlePageNumberChange}
         onPageSizeChange={handlePageSizeChange}
       />
@@ -78,7 +78,7 @@ const GoldPricesWithPagination: React.FC = () => {
     nbpService()
       .getGoldPricesCount()
       .then((goldPricesCount) => {
-        setPageCount(goldPricesCount.count / pageSize);
+        setTotalCount(goldPricesCount.count);
       });
 
     getGoldPricesWithPagination();

@@ -20,8 +20,8 @@ const GoldPricesTable: React.FC<GoldPricesTableProps> = ({ goldPrices }) => {
   );
 
   const getGoldPricesTable = () => (
-    <TableContainer component={Paper}>
-      <Table size="small">
+    <TableContainer component={Paper} sx={{ maxHeight: 250 }}>
+      <Table size="small" stickyHeader>
         <TableHead>
           <TableRow>
             <TableCell>{t("goldPrice.date")}</TableCell>
