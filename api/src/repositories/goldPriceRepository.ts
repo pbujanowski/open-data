@@ -1,83 +1,90 @@
-import { GoldPriceDto } from "open-data-common";
-import { v4 as uuid } from "uuid";
+import { Between } from "typeorm";
+
 import { database } from "../database";
+import { GoldPrice } from "../entities";
 
 const goldPriceRepository = () => {
-  const createGoldPrice = (goldPrice: GoldPriceDto) => {
-    const connection = database().connection().createConnection();
+  const { createConnection } = database();
+  const connection = createConnection();
+
+  const createGoldPrice = async (goldPrice: GoldPrice) => {
+    await connection.connect();
     try {
-      connection.run(
-        database().scripts().insertGoldPrice(),
-        [goldPrice.id || uuid(), goldPrice.date, goldPrice.price],
-        handleError,
-      );
+      const repository = connection.getRepository(GoldPrice);
+      const created = repository.create(goldPrice);
+      await repository.save(created);
+      return created;
     } finally {
-      connection.close();
+      await connection.close();
     }
   };
 
-  const createGoldPrices = (goldPrices: GoldPriceDto[]) => {
-    const connection = database().connection().createConnection();
+  const createGoldPrices = async (goldPrices: GoldPrice[]) => {
+    await connection.connect();
     try {
-      connection.run(database().scripts().beginTransaction(), handleError);
-      goldPrices.forEach((goldPrice) => {
-        connection.run(
-          database().scripts().insertGoldPrice(),
-          [goldPrice.id || uuid(), goldPrice.date, goldPrice.price],
-          handleError,
-        );
+      const repository = connection.getRepository(GoldPrice);
+      const created = repository.create(goldPrices);
+      await repository.save(created);
+      return created;
+    } finally {
+      await connection.close();
+    }
+  };
+
+  const countAllGoldPrices = async () => {
+    await connection.connect();
+    try {
+      const repository = connection.getRepository(GoldPrice);
+      return await repository.count();
+    } finally {
+      await connection.close();
+    }
+  };
+
+  const findAllGoldPrices = async () => {
+    await connection.connect();
+    try {
+      const repository = connection.getRepository(GoldPrice);
+      return await repository.find();
+    } finally {
+      await connection.close();
+    }
+  };
+
+  const findGoldPricesByDates = async (startDate: string, endDate: string) => {
+    await connection.connect();
+    try {
+      const repository = connection.getRepository(GoldPrice);
+      return await repository.find({
+        where: {
+          date: Between(new Date(startDate), new Date(endDate)),
+        },
       });
-      connection.run(database().scripts().commitTransaction(), handleError);
-    } catch {
-      connection.run(database().scripts().rollbackTransaction(), handleError);
     } finally {
-      connection.close();
+      await connection.close();
     }
   };
 
-  const findAllGoldPrices = () => {
-    const connection = database().connection().createConnection();
+  const findGoldPricesWithPagination = async (pageNumber: number, pageSize: number) => {
+    const take = pageSize;
+    const skip = pageSize * (pageNumber - 1);
+    await connection.connect();
     try {
-      const goldPrices: GoldPriceDto[] = [];
-      connection.each(database().scripts().selectAllGoldPrices(), (err, row) => {
-        handleError(err);
-        goldPrices.push({
-          id: row.id,
-          date: row.date,
-          price: row.price,
-        });
-      });
-      return goldPrices;
+      const repository = connection.getRepository(GoldPrice);
+      return await repository.find({ take, skip });
     } finally {
-      connection.close();
+      await connection.close();
     }
   };
 
-  const findGoldPricesByDates = (startDate: string, endDate: string) => {
-    const connection = database().connection().createConnection();
-    try {
-      const goldPrices: GoldPriceDto[] = [];
-      connection.each(database().scripts().selectGoldPricesByDates(), [startDate, endDate], (err, row) => {
-        handleError(err);
-        goldPrices.push({
-          id: row.id,
-          date: row.date,
-          price: row.price,
-        });
-      });
-      return goldPrices;
-    } finally {
-      connection.close();
-    }
+  return {
+    createGoldPrice,
+    createGoldPrices,
+    countAllGoldPrices,
+    findAllGoldPrices,
+    findGoldPricesByDates,
+    findGoldPricesWithPagination,
   };
-
-  const handleError = (err: Error | null) => {
-    if (err) {
-      throw err;
-    }
-  };
-
-  return { createGoldPrice, createGoldPrices, findAllGoldPrices, findGoldPricesByDates };
 };
 
 export { goldPriceRepository };

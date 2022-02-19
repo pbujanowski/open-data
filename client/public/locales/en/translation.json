@@ -13,10 +13,12 @@
   "nbp": {
     "currentGoldPrice": "Current gold price",
     "goldPricesByDates": "Gold prices by date",
+    "goldPricesWithPagination": "Gold prices",
     "synchronizeGoldPricesByDates": "Synchronize gold prices by dates",
     "messages": {
       "cannotFetchCurrentGoldPrice": "Cannot fetch current gold price",
       "cannotFetchGoldPricesByDates": "Cannot fetch gold prices by dates",
+      "cannotFetchGoldPricesWithPagination": "Cannot fetch gold prices",
       "cannotSynchronizeGoldPricesByDates": "Cannot synchronize gold prices by dates",
       "synchronizedGoldPricesByDatesProperly": "Synchronized gold prices by dates properly"
     }

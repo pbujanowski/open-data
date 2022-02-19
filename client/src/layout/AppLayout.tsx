@@ -73,7 +73,7 @@ const AppLayout: React.FC = ({ children }) => {
           {menuRoutes.map((route) => {
             const title = t(`pages.${route.key}`);
             return (
-              <AppTooltip title={title} placement="right">
+              <AppTooltip key={route.key} title={title} placement="right">
                 <ListItem>
                   <ListItemButton key={route.key} onClick={() => navigate(route.path)}>
                     {React.createElement(route.icon || React.Fragment)}
@@ -84,7 +84,7 @@ const AppLayout: React.FC = ({ children }) => {
           })}
         </List>
       </DrawerStyled>
-      <Box component="main" sx={{ paddingLeft: 8 }}>
+      <Box component="main" sx={{ width: 1, height: 1, paddingLeft: 9, paddingRight: 3 }}>
         <DrawerHeaderStyled />
         {children}
       </Box>

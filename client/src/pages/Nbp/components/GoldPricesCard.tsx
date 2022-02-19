@@ -13,7 +13,7 @@ const GoldPricesCard: React.FC<GoldPricesCardProps> = ({ title, body, actions, a
   const getActions = () => <CardActions>{actions}</CardActions>;
 
   return (
-    <Card>
+    <Card sx={{ width: 1, height: 1 }}>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div" color="primary">
           {title}

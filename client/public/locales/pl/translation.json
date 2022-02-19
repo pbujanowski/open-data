@@ -13,10 +13,12 @@
   "nbp": {
     "currentGoldPrice": "Aktualna cena złota",
     "goldPricesByDates": "Ceny złota w przedziale czasowym",
+    "goldPricesWithPagination": "Ceny złota",
     "synchronizeGoldPricesByDates": "Synchronizacja cen złota w przedziale czasowym",
     "messages": {
       "cannotFetchCurrentGoldPrice": "Nie udało się pobrać aktualnej ceny złota",
       "cannotFetchGoldPricesByDates": "Nie udało się pobrać cen złota w przedziale czasowym",
+      "cannotFetchGoldPricesWithPagination": "Nie udało się pobrać cen złota",
       "cannotSynchronizeGoldPricesByDates": "Nie udało się zsynchronizować cen złota w przedziale czasowym",
       "synchronizedGoldPricesByDatesProperly": "Zsynchronizowano ceny złota w przedziale czasowym prawidłowo"
     }

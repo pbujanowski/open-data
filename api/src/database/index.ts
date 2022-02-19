@@ -1,22 +1,19 @@
-import { Database } from "sqlite3";
-import { connection } from "./connection";
-import { tables } from "./tables";
-import { scripts } from "./scripts";
+import { ConnectionManager, ConnectionOptions } from "typeorm";
 
 const database = () => {
-  const { createConnection } = connection();
+  const connectionManager = new ConnectionManager();
 
-  const initDatabase = () => {
-    let connection: Database | null = null;
-    try {
-      connection = createConnection();
-      connection.run(tables().goldPrices());
-    } finally {
-      connection?.close();
-    }
+  const connectionOptions: ConnectionOptions = {
+    type: "sqlite",
+    database: "open-data.db",
+    synchronize: true,
+    entities: ["src/entities/**/*.ts"],
+    migrations: ["src/migrations/**/*.ts"],
   };
 
-  return { connection, initDatabase, tables, scripts };
+  const createConnection = () => connectionManager.create(connectionOptions);
+
+  return { createConnection };
 };
 
 export { database };

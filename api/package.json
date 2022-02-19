@@ -24,8 +24,9 @@
     "helmet": "^5.0.2",
     "morgan": "^1.10.0",
     "open-data-common": "../common",
+    "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",
-    "uuid": "^8.3.2"
+    "typeorm": "^0.2.43"
   },
   "devDependencies": {
     "@types/compression": "^1.7.2",

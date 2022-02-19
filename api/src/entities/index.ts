@@ -1,0 +1,1 @@
+export { GoldPrice } from "./GoldPrice";

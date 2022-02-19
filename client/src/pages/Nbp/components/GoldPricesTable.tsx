@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { format } from "date-fns";
 import { v4 as uuid } from "uuid";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { GoldPriceDto } from "open-data-common";
@@ -10,6 +11,7 @@ type GoldPricesTableProps = {
 
 const GoldPricesTable: React.FC<GoldPricesTableProps> = ({ goldPrices }) => {
   const [t] = useTranslation();
+  const dateFormat = "yyyy-MM-dd";
 
   const getNoDataDetails = () => (
     <p>
@@ -29,7 +31,7 @@ const GoldPricesTable: React.FC<GoldPricesTableProps> = ({ goldPrices }) => {
         <TableBody>
           {goldPrices?.map((goldPrice) => (
             <TableRow key={goldPrice.id || uuid()}>
-              <TableCell>{goldPrice.date}</TableCell>
+              <TableCell>{format(new Date(goldPrice.date), dateFormat)}</TableCell>
               <TableCell>{goldPrice.price.toFixed(2)} zł</TableCell>
             </TableRow>
           ))}
