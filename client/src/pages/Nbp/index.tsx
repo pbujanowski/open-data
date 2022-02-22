@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Grid } from "@mui/material";
 
 import CurrentGoldPrice from "./CurrentGoldPrice";
-import GoldPricesWithPagination from "./GoldPricesWithPagination";
+import GoldPricesWithFilters from "./GoldPricesWithFilters";
 import SynchronizeGoldPricesByDates from "./SynchronizeGoldPricesByDates";
 
 const Nbp: React.FC = () => {
@@ -18,7 +18,7 @@ const Nbp: React.FC = () => {
           </Grid>
         </Grid>
         <Grid container item>
-          <GoldPricesWithPagination />
+          <GoldPricesWithFilters />
         </Grid>
       </Grid>
     </Box>

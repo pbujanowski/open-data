@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { GoldPriceDto } from "open-data-common";
 
+import { GoldPricesCard } from "./components";
 import { AppSnackbar, LoadingIndicator } from "../../components";
 import { nbpService } from "../../services/nbpService";
 
@@ -11,16 +12,16 @@ const CurrentGoldPrice: React.FC = () => {
   const [t] = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const [goldPrice, setGoldPrice] = useState<GoldPriceDto | null>(null);
 
   const handleSnackbarOpen = (error: string | null) => {
-    setErrorMessage(error);
+    setMessage(error);
     setIsSnackbarOpen(true);
   };
 
   const handleSnackbarClose = () => {
-    setErrorMessage(null);
+    setMessage(null);
     setIsSnackbarOpen(false);
   };
 
@@ -61,27 +62,27 @@ const CurrentGoldPrice: React.FC = () => {
 
   const getDataBody = () => (isLoading ? getLoadingIndicator() : getGoldPriceBody());
 
+  const getDataActions = () => (
+    <Button size="small" onClick={getCurrentGoldPrice}>
+      {t("common.refresh")}
+    </Button>
+  );
+
+  const getSnackbar = () => (
+    <AppSnackbar isOpen={isSnackbarOpen} message={message} type="info" onClose={handleSnackbarClose} />
+  );
+
   useEffect(() => {
     getCurrentGoldPrice();
   }, [getCurrentGoldPrice]);
 
   return (
-    <Card>
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div" color="primary">
-          {t("nbp.currentGoldPrice")}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" component="div">
-          {getDataBody()}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small" onClick={getCurrentGoldPrice}>
-          {t("common.refresh")}
-        </Button>
-      </CardActions>
-      <AppSnackbar isOpen={isSnackbarOpen} message={errorMessage} type="error" onClose={handleSnackbarClose} />
-    </Card>
+    <GoldPricesCard
+      title={t("nbp.currentGoldPrice")}
+      body={getDataBody()}
+      actions={getDataActions()}
+      additional={getSnackbar()}
+    />
   );
 };
 

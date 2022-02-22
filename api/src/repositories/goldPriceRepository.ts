@@ -31,11 +31,16 @@ const goldPriceRepository = () => {
     }
   };
 
-  const countAllGoldPrices = async () => {
+  const countGoldPrices = async (startDate?: string, endDate?: string) => {
     await connection.connect();
     try {
       const repository = connection.getRepository(GoldPrice);
-      return await repository.count();
+      return await repository.count({
+        where:
+          startDate && endDate
+            ? { date: Between(new Date(startDate).toISOString(), new Date(endDate).toISOString()) }
+            : undefined,
+      });
     } finally {
       await connection.close();
     }
@@ -57,7 +62,7 @@ const goldPriceRepository = () => {
       const repository = connection.getRepository(GoldPrice);
       return await repository.find({
         where: {
-          date: Between(new Date(startDate), new Date(endDate)),
+          date: Between(new Date(startDate).toISOString(), new Date(endDate).toISOString()),
         },
       });
     } finally {
@@ -65,13 +70,25 @@ const goldPriceRepository = () => {
     }
   };
 
-  const findGoldPricesWithPagination = async (pageNumber: number, pageSize: number) => {
+  const findGoldPricesWithFilters = async (
+    pageNumber: number,
+    pageSize: number,
+    startDate?: string,
+    endDate?: string,
+  ) => {
     const take = pageSize;
     const skip = pageSize * (pageNumber - 1);
     await connection.connect();
     try {
       const repository = connection.getRepository(GoldPrice);
-      return await repository.find({ take, skip });
+      return await repository.find({
+        take,
+        skip,
+        where:
+          startDate && endDate
+            ? { date: Between(new Date(startDate).toISOString(), new Date(endDate).toISOString()) }
+            : undefined,
+      });
     } finally {
       await connection.close();
     }
@@ -80,10 +97,10 @@ const goldPriceRepository = () => {
   return {
     createGoldPrice,
     createGoldPrices,
-    countAllGoldPrices,
+    countGoldPrices,
     findAllGoldPrices,
     findGoldPricesByDates,
-    findGoldPricesWithPagination,
+    findGoldPricesWithFilters,
   };
 };
 

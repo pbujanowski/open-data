@@ -5,7 +5,7 @@ export class GoldPrice {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
+  @Column({ type: "date" })
   date: Date;
 
   @Column("decimal")

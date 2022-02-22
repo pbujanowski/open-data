@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { addDays } from "date-fns";
+import { Button } from "@mui/material";
 
-import GoldPricesCard from "./components/GoldPricesCard";
-import GoldPricesDatesActions from "./components/GoldPricesDatesActions";
+import { GoldPricesCard, GoldPricesDates } from "./components";
 
 import { AppSnackbar, AppSnackbarType, LoadingIndicator } from "../../components";
 import { nbpService } from "../../services";
@@ -50,16 +50,22 @@ const SynchronizeGoldPricesByDates: React.FC = () => {
   const getLoadingIndicator = () => <LoadingIndicator />;
 
   const getActionsBody = () => (
-    <GoldPricesDatesActions
-      startDate={startDate}
-      endDate={endDate}
-      onStartDateChange={handleStartDateChange}
-      onEndDateChange={handleEndDateChange}
-      onSubmit={() => synchronizeGoldPricesByDates()}
-    />
+    <Button size="small" onClick={synchronizeGoldPricesByDates}>
+      {t("common.synchronize")}
+    </Button>
   );
 
-  const getDataBody = () => (isLoading ? getLoadingIndicator() : <></>);
+  const getDataBody = () =>
+    isLoading ? (
+      getLoadingIndicator()
+    ) : (
+      <GoldPricesDates
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={handleStartDateChange}
+        onEndDateChange={handleEndDateChange}
+      />
+    );
 
   const getDataActions = () => (isLoading ? <></> : getActionsBody());
 

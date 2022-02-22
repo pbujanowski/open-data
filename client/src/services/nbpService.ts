@@ -1,6 +1,6 @@
 import axios from "axios";
 import { format } from "date-fns";
-import { GoldPriceDto, GoldPricesByDatesDto, GoldPricesCountDto } from "open-data-common";
+import { GoldPriceDto, GoldPricesByDatesDto, GoldPricesCountDto, GoldPricesFiltersDto } from "open-data-common";
 
 import { appConfig } from "../configs";
 
@@ -17,8 +17,11 @@ const nbpService = () => {
     return response.data;
   };
 
-  const getGoldPricesCount = async (): Promise<GoldPricesCountDto> => {
-    const response = await axios.get(`${url}/goldPricesCount`);
+  const getGoldPricesCount = async (filters: GoldPricesFiltersDto): Promise<GoldPricesCountDto> => {
+    const startDateFormatted = format(new Date(filters.startDate), dateFormat);
+    const endDateFormatted = format(new Date(filters.endDate), dateFormat);
+    const queryParams = `?startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
+    const response = await axios.get(`${url}/goldPricesCount${queryParams}`);
     if (response.status !== 200) {
       throw new Error(response.statusText);
     }
@@ -26,8 +29,14 @@ const nbpService = () => {
     return response.data;
   };
 
-  const getGoldPricesWithPagination = async (pageNumber: number, pageSize: number): Promise<GoldPriceDto[]> => {
-    const queryParams = `?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+  const getGoldPricesWithFilters = async (
+    pageNumber: number,
+    pageSize: number,
+    filters: GoldPricesFiltersDto,
+  ): Promise<GoldPriceDto[]> => {
+    const startDateFormatted = format(new Date(filters.startDate), dateFormat);
+    const endDateFormatted = format(new Date(filters.endDate), dateFormat);
+    const queryParams = `?pageNumber=${pageNumber}&pageSize=${pageSize}&startDate=${startDateFormatted}&endDate=${endDateFormatted}`;
     const response = await axios.get(`${url}/goldPrices${queryParams}`);
     if (response.status !== 200) {
       throw new Error(response.statusText);
@@ -52,7 +61,7 @@ const nbpService = () => {
   return {
     getCurrentGoldPrice,
     getGoldPricesCount,
-    getGoldPricesWithPagination,
+    getGoldPricesWithFilters,
     synchronizeGoldPricesByDates,
   };
 };

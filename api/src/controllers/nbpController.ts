@@ -18,7 +18,9 @@ const nbpController = () => {
 
   const getGoldPricesCount = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const count = await goldPriceRepository().countAllGoldPrices();
+      const startDate = req.query.startDate?.toString();
+      const endDate = req.query.endDate?.toString();
+      const count = await goldPriceRepository().countGoldPrices(startDate, endDate);
       const goldPricesCount: GoldPricesCountDto = {
         count,
       };
@@ -29,11 +31,18 @@ const nbpController = () => {
     }
   };
 
-  const getGoldPricesWithPagination = async (req: Request, res: Response, next: NextFunction) => {
+  const getGoldPricesWithFilters = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const pageNumber = Number.parseInt(req.query.pageNumber?.toString() || "1");
       const pageSize = Number.parseInt(req.query.pageSize?.toString() || "10");
-      const goldPrices = await goldPriceRepository().findGoldPricesWithPagination(pageNumber, pageSize);
+      const startDate = req.query.startDate?.toString();
+      const endDate = req.query.endDate?.toString();
+      const goldPrices = await goldPriceRepository().findGoldPricesWithFilters(
+        pageNumber,
+        pageSize,
+        startDate,
+        endDate,
+      );
       res.json(goldPrices);
     } catch (e) {
       res.status(500);
@@ -67,7 +76,7 @@ const nbpController = () => {
   return {
     getCurrentGoldPrice,
     getGoldPricesCount,
-    getGoldPricesWithPagination,
+    getGoldPricesWithFilters,
     synchronizeGoldPricesByDates,
   };
 };

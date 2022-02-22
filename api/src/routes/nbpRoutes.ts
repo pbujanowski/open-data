@@ -7,7 +7,7 @@ const nbpRoutes = () => {
 
   router.get("/currentGoldPrice", nbpController().getCurrentGoldPrice);
   router.get("/goldPricesCount", nbpController().getGoldPricesCount);
-  router.get("/goldPrices", nbpController().getGoldPricesWithPagination);
+  router.get("/goldPrices", nbpController().getGoldPricesWithFilters);
   router.post("/synchronizeGoldPricesByDates", nbpController().synchronizeGoldPricesByDates);
 
   return router;
