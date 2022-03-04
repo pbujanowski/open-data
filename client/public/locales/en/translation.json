@@ -6,7 +6,9 @@
     "refresh": "Refresh",
     "apply": "Apply",
     "noData": "No data",
-    "synchronize": "Synchronize"
+    "synchronize": "Synchronize",
+    "table": "Table",
+    "chart": "Chart"
   },
   "pages": {
     "home": "Home",

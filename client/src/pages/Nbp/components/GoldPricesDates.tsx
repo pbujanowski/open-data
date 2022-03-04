@@ -1,8 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { addDays, format } from "date-fns";
 import { Grid, TextField } from "@mui/material";
 import { DatePicker } from "@mui/lab";
+
+import { appConstants, dateUtils } from "../../../utils";
 
 type GoldPricesDatesProps = {
   startDate: string;
@@ -18,10 +19,11 @@ const GoldPricesDates: React.FC<GoldPricesDatesProps> = ({
   onEndDateChange,
 }) => {
   const [t] = useTranslation();
-  const dateFormat = "yyyy-MM-dd";
-  const dateMask = "____-__-__";
-  const dateYesterday = format(addDays(Date.now(), -1), dateFormat);
-  const dateToday = format(Date.now(), dateFormat);
+  const { addDaysFromNow, toDateString } = dateUtils();
+  const dateFormat = appConstants().getDateFormat();
+  const dateMask = appConstants().getDateMask();
+  const dateYesterday = toDateString(addDaysFromNow(-1));
+  const dateToday = toDateString(Date.now());
 
   return (
     <Grid container direction="row" spacing={2}>

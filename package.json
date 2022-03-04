@@ -9,11 +9,13 @@
   "private": true,
   "scripts": {
     "dev:start": "concurrently \"cd client && yarn start\" \"cd api && yarn dev\"",
-    "dev:install": "yarn install && cd common && yarn install && cd .. && concurrently \"cd client && yarn install\" \"cd api && yarn install\"",
+    "dev:install": "(cd client && yarn install) && (cd api && yarn install)",
     "dev:common-update": "concurrently \"cd client && yarn upgrade open-data-common\" \"cd api && yarn upgrade open-data-common\"",
-    "build": "concurrently \"cd client && yarn build\" \"cd api && yarn build\""
+    "dev:rimraf": "concurrently \"cd common && rimraf node_modules\" \"cd client && rimraf node_modules\" \"cd api && rimraf node_modules\"",
+    "dev:build": "concurrently \"cd client && yarn build\" \"cd api && yarn build\""
   },
   "devDependencies": {
-    "concurrently": "^7.0.0"
+    "concurrently": "^7.0.0",
+    "rimraf": "^3.0.2"
   }
 }

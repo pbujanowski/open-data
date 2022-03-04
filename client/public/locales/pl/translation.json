@@ -6,7 +6,9 @@
     "refresh": "Odśwież",
     "apply": "Zastosuj",
     "noData": "Brak danych",
-    "synchronize": "Synchronizuj"
+    "synchronize": "Synchronizuj",
+    "table": "Tabela",
+    "chart": "Wykres"
   },
   "pages": {
     "home": "Strona główna",

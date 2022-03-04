@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { format } from "date-fns";
 import { v4 as uuid } from "uuid";
 import {
   Grid,
@@ -15,8 +14,10 @@ import {
   TableRow,
 } from "@mui/material";
 import { GoldPriceDto } from "open-data-common";
+import { dateUtils } from "../../../utils";
+import { NoData } from "../../../components";
 
-type GoldPricesTableProps = {
+export type GoldPricesTableProps = {
   goldPrices: GoldPriceDto[] | null;
   pageNumber: number;
   pageSize: number;
@@ -34,13 +35,9 @@ const GoldPricesTable: React.FC<GoldPricesTableProps> = ({
   onPageSizeChange,
 }) => {
   const [t] = useTranslation();
-  const dateFormat = "yyyy-MM-dd";
+  const { toDateString } = dateUtils();
 
-  const getNoDataDetails = () => (
-    <p>
-      <strong>{`${t("common.noData")}.`}</strong>
-    </p>
-  );
+  const getNoDataDetails = () => <NoData />;
 
   const pageSizes = [10, 25, 50, 100];
 
@@ -58,7 +55,7 @@ const GoldPricesTable: React.FC<GoldPricesTableProps> = ({
             <TableBody>
               {goldPrices?.map((goldPrice) => (
                 <TableRow key={goldPrice.id || uuid()}>
-                  <TableCell>{format(new Date(goldPrice.date), dateFormat)}</TableCell>
+                  <TableCell>{toDateString(goldPrice.date)}</TableCell>
                   <TableCell>{goldPrice.price.toFixed(2)} zł</TableCell>
                 </TableRow>
               ))}

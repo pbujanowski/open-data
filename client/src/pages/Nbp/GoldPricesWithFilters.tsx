@@ -4,7 +4,7 @@ import { addDays } from "date-fns";
 import { Grid } from "@mui/material";
 import { GoldPriceDto, GoldPricesFiltersDto } from "open-data-common";
 
-import { GoldPricesCard, GoldPricesFilters, GoldPricesTable } from "./components";
+import { GoldPricesCard, GoldPricesFilters, GoldPricesTabs } from "./components";
 
 import { AppSnackbar, LoadingIndicator } from "../../components";
 import { nbpService } from "../../services/nbpService";
@@ -66,13 +66,16 @@ const GoldPricesWithFilters: React.FC = () => {
   }, [t, startDate, endDate, pageNumber, pageSize]);
 
   const getGoldPricesDetails = () => (
-    <GoldPricesTable
-      goldPrices={goldPrices}
-      pageNumber={pageNumber}
-      pageSize={pageSize}
-      totalCount={totalCount}
-      onPageNumberChange={handlePageNumberChange}
-      onPageSizeChange={handlePageSizeChange}
+    <GoldPricesTabs
+      chartProps={{ goldPrices: goldPrices || [] }}
+      tableProps={{
+        goldPrices: goldPrices || [],
+        pageNumber,
+        pageSize,
+        totalCount,
+        onPageNumberChange: handlePageNumberChange,
+        onPageSizeChange: handlePageSizeChange,
+      }}
     />
   );
 

@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import { GoldPriceDto } from "open-data-common";
 
 import { GoldPricesCard } from "./components";
-import { AppSnackbar, LoadingIndicator } from "../../components";
+import { AppSnackbar, LoadingIndicator, NoData } from "../../components";
 import { nbpService } from "../../services/nbpService";
 
 const CurrentGoldPrice: React.FC = () => {
@@ -50,11 +50,7 @@ const CurrentGoldPrice: React.FC = () => {
     </>
   );
 
-  const getNoDataDetails = () => (
-    <p>
-      <strong>{`${t("common.noData")}.`}</strong>
-    </p>
-  );
+  const getNoDataDetails = () => <NoData />;
 
   const getLoadingIndicator = () => <LoadingIndicator />;
 
