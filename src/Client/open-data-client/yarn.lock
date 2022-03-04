@@ -6464,7 +6464,7 @@ onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
-open-data-common@../common:
+open-data-common@../../Common/open-data-common:
   version "1.0.0"
 
 open@^8.0.9, open@^8.4.0:

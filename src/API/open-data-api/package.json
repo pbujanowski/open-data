@@ -23,7 +23,7 @@
     "fs": "^0.0.1-security",
     "helmet": "^5.0.2",
     "morgan": "^1.10.0",
-    "open-data-common": "../common",
+    "open-data-common": "../../Common/open-data-common",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",
     "typeorm": "^0.2.43"
