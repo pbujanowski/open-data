@@ -25,7 +25,7 @@ public class SynchronizeGoldPricesByDatesQueryHandler : IRequestHandler<Synchron
 
     public async Task<SynchronizeGoldPricesByDatesQueryResponse> Handle(SynchronizeGoldPricesByDatesQuery request, CancellationToken cancellationToken)
     {
-        var fetched = await _nationalBankService.GetGoldPricesByDates(request.Parameters.StartDate, request.Parameters.EndDate);
+        var fetched = await _nationalBankService.GetGoldPricesByDatesAsync(request.Parameters.StartDate, request.Parameters.EndDate);
         var entities = _mapper.Map<ICollection<GoldPrice>>(fetched);
         var created = new List<GoldPrice>();
 

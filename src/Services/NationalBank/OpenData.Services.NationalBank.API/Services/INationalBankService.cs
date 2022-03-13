@@ -6,5 +6,5 @@ public interface INationalBankService
 {
     Task<NationalBankGoldPriceDto?> GetCurrentGoldPriceAsync();
 
-    Task<ICollection<NationalBankGoldPriceDto>> GetGoldPricesByDates(DateTime startDate, DateTime endDate);
+    Task<ICollection<NationalBankGoldPriceDto>> GetGoldPricesByDatesAsync(DateTime startDate, DateTime endDate);
 }

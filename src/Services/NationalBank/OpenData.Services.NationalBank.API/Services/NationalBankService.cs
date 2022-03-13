@@ -32,10 +32,9 @@ public class NationalBankService : INationalBankService
                 }
                 return null;
             });
-
     }
 
-    public async Task<ICollection<NationalBankGoldPriceDto>> GetGoldPricesByDates(DateTime startDate, DateTime endDate)
+    public async Task<ICollection<NationalBankGoldPriceDto>> GetGoldPricesByDatesAsync(DateTime startDate, DateTime endDate)
     {
         return await Policy<ICollection<NationalBankGoldPriceDto>>
             .Handle<HttpRequestException>()

@@ -1,14 +1,13 @@
 using Microsoft.EntityFrameworkCore;
-using OpenData.Services.NationalBank.API.Data;
 
 namespace OpenData.Services.NationalBank.API.Repositories;
 
 public abstract class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly DbContext _dbContext;
 
-    protected Repository(ApplicationDbContext dbContext)
+    protected Repository(DbContext dbContext)
     {
         _dbContext = dbContext;
     }

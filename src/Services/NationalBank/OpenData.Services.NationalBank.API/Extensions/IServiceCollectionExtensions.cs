@@ -12,7 +12,7 @@ public static class IServiceCollectionExtensions
     public static IServiceCollection ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connectionString));
+        services.AddDbContext<DbContext, ApplicationDbContext>(options => options.UseSqlite(connectionString));
 
         return services;
     }
