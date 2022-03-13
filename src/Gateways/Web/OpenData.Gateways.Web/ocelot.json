@@ -6,11 +6,16 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": "5001"
+          "Port": "5002"
         }
       ],
       "UpstreamPathTemplate": "/nationalBank/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST" ]
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 5,
+        "DurationOfBreak": 1000,
+        "TimeoutValue": 2000
+      }
     }
   ],
   "GlobalConfiguration": {
