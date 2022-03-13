@@ -1,0 +1,53 @@
+{
+  "brand": "Open Data",
+  "common": {
+    "download": "Pobierz",
+    "go": "Idź",
+    "refresh": "Odśwież",
+    "search": "Szukaj",
+    "apply": "Zastosuj",
+    "noData": "Brak danych",
+    "synchronize": "Synchronizuj",
+    "table": "Tabela",
+    "chart": "Wykres"
+  },
+  "pages": {
+    "home": "Strona główna",
+    "nationalBank": "Narodowy Bank Polski"
+  },
+  "nationalBank": {
+    "currentGoldPrice": "Aktualna cena złota",
+    "goldPricesWithFilters": "Ceny złota",
+    "synchronizeGoldPricesByDates": "Synchronizacja cen złota w przedziale czasowym",
+    "messages": {
+      "cannotFetchCurrentGoldPrice": "Nie udało się pobrać aktualnej ceny złota",
+      "cannotFetchGoldPricesWithFilters": "Nie udało się pobrać cen złota",
+      "cannotSynchronizeGoldPricesByDates": "Nie udało się zsynchronizować cen złota w przedziale czasowym",
+      "synchronizedGoldPricesByDatesProperly": "Zsynchronizowano ceny złota w przedziale czasowym prawidłowo"
+    }
+  },
+  "table": {
+    "of": "z",
+    "moreThan": "więcej niż"
+  },
+  "goldPrice": {
+    "date": "Data",
+    "price": "Cena",
+    "startDate": "Data początkowa",
+    "endDate": "Data końcowa",
+    "validation": {
+      "startDateIsEmpty": "Data początkowa jest pusta.",
+      "endDateIsEmpty": "Data końcowa jest pusta."
+    }
+  },
+  "language": {
+    "name": "Język",
+    "changeLanguage": "Zmień język"
+  },
+  "theme": {
+    "lightMode": "Tryb jasny",
+    "darkMode": "Tryb ciemny",
+    "switchToLightMode": "Zmień na tryb jasny",
+    "switchToDarkMode": "Zmień na tryb ciemny"
+  }
+}
