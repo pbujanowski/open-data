@@ -34,6 +34,27 @@ public class ExchangeRateService : IExchangeRateService
             });
     }
 
+    public async Task<ICollection<NationalBankExchangeRatesTableDto>> GetExchangeRatesTablesByDates(string table, DateTime startDate, DateTime endDate)
+    {
+        return await Policy<ICollection<NationalBankExchangeRatesTableDto>>
+            .Handle<HttpRequestException>()
+            .RetryAsync(GetRetry())
+            .ExecuteAsync(async () =>
+            {
+                const string dateFormat = "yyyy-MM-dd";
+                string formattedStartDate = startDate.ToString(dateFormat);
+                string formattedEndDate = endDate.ToString(dateFormat);
+
+                using var response = await _httpClient.GetAsync($"{baseUrl}/{table}/{formattedStartDate}/{formattedEndDate}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadFromJsonAsync<ICollection<NationalBankExchangeRatesTableDto>>();
+                    return result ?? new List<NationalBankExchangeRatesTableDto>();
+                }
+                return new List<NationalBankExchangeRatesTableDto>();
+            });
+    }
+
     private int GetRetry()
     {
         var pollyConfiguration = _configuration.GetRequiredSection("Polly").Get<PollyConfiguration>();

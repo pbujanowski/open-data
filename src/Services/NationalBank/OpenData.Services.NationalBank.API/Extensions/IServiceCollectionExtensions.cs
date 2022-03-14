@@ -44,6 +44,8 @@ public static class IServiceCollectionExtensions
     private static IServiceCollection ConfigureRepositories(this IServiceCollection services)
     {
         services.AddScoped<IGoldPriceRepository, GoldPriceRepository>();
+        services.AddScoped<IExchangeRateRepository, ExchangeRateRepository>();
+        services.AddScoped<IExchangeRatesTableRepository, ExchangeRatesTableRepository>();
 
         return services;
     }

@@ -15,7 +15,18 @@ public class MappingProfile : Profile
         CreateMap<NationalBankGoldPriceDto, GoldPriceDto>();
 
         CreateMap<NationalBankGoldPriceDto, GoldPrice>();
+        CreateMap<GoldPrice, NationalBankGoldPriceDto>();
 
         CreateMap<NationalBankExchangeRateDto, ExchangeRateDto>();
+        CreateMap<ExchangeRateDto, NationalBankExchangeRateDto>();
+
+        CreateMap<NationalBankExchangeRateDto, ExchangeRate>();
+        CreateMap<ExchangeRate, NationalBankExchangeRateDto>();
+
+        CreateMap<ExchangeRateDto, ExchangeRate>();
+        CreateMap<ExchangeRate, ExchangeRateDto>();
+
+        CreateMap<NationalBankExchangeRatesTableDto, ExchangeRatesTable>();
+        CreateMap<ExchangeRatesTable, NationalBankExchangeRatesTableDto>();
     }
 }

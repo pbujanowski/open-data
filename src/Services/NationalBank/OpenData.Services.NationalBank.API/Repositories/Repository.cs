@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace OpenData.Services.NationalBank.API.Repositories;
 
@@ -12,23 +13,16 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
         _dbContext = dbContext;
     }
 
-    public TEntity Create(TEntity entity)
-    {
-        return _dbContext.Set<TEntity>().Add(entity).Entity;
-    }
+    public TEntity Create(TEntity entity) => GetEntitySet().Add(entity).Entity;
 
-    public IQueryable<TEntity> FindAll()
-    {
-        return _dbContext.Set<TEntity>().AsNoTracking();
-    }
+    public IQueryable<TEntity> FindAll() => GetEntitySet().AsNoTracking();
 
-    public TEntity Update(TEntity entity)
-    {
-        return _dbContext.Set<TEntity>().Update(entity).Entity;
-    }
+    public IQueryable<TEntity> FindByCondition(Expression<Func<TEntity, bool>> condition) =>
+        GetEntitySet().Where(condition).AsNoTracking();
 
-    public TEntity Delete(TEntity entity)
-    {
-        return _dbContext.Set<TEntity>().Remove(entity).Entity;
-    }
+    public TEntity Update(TEntity entity) => GetEntitySet().Update(entity).Entity;
+
+    public TEntity Delete(TEntity entity) => GetEntitySet().Remove(entity).Entity;
+
+    private DbSet<TEntity> GetEntitySet() => _dbContext.Set<TEntity>();
 }

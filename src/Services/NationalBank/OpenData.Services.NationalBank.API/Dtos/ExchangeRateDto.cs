@@ -7,4 +7,8 @@ public class ExchangeRateDto
     public string? Code { get; set; }
 
     public decimal? Mid { get; set; }
+
+    public decimal? Bid { get; set; }
+
+    public decimal? Ask { get; set; }
 }

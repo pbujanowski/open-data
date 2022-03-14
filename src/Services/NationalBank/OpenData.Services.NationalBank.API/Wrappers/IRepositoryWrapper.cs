@@ -6,6 +6,10 @@ public interface IRepositoryWrapper
 {
     IGoldPriceRepository GoldPrices { get; }
 
+    IExchangeRateRepository ExchangeRates { get; }
+
+    IExchangeRatesTableRepository ExchangeRatesTables { get; }
+
     void SaveChanges();
 
     Task SaveChangesAsync();

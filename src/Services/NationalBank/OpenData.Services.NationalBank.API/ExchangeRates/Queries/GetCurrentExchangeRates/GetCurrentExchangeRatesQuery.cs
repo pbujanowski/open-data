@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace OpenData.Services.NationalBank.API.ExchangeRate.Queries.GetCurrentExchangeRates
+namespace OpenData.Services.NationalBank.API.ExchangeRates.Queries.GetCurrentExchangeRates
 {
     public class GetCurrentExchangeRatesQuery : IRequest<GetCurrentExchangeRatesQueryResponse>
     {

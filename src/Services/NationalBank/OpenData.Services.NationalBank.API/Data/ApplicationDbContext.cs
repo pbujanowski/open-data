@@ -7,6 +7,10 @@ public class ApplicationDbContext : DbContext
 {
     public DbSet<GoldPrice> GoldPrices => Set<GoldPrice>();
 
+    public DbSet<ExchangeRate> ExchangeRates => Set<ExchangeRate>();
+
+    public DbSet<ExchangeRatesTable> ExchangeRatesTables => Set<ExchangeRatesTable>();
+
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {

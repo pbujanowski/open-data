@@ -32,4 +32,17 @@ public class ExchangeRateServiceTests
             Assert.NotNull(result);
         }
     }
+
+    [Fact]
+    public async Task GetExchangeRatesTablesByDates()
+    {
+        var startDate = DateTime.Today.AddDays(-7);
+        var endDate = DateTime.Today;
+
+        foreach (var table in ExchangeRatesTableType.All)
+        {
+            var result = await _exchangeRateService.GetExchangeRatesTablesByDates(table, startDate, endDate);
+            Assert.NotNull(result);
+        }
+    }
 }

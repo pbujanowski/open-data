@@ -9,10 +9,20 @@ public class RepositoryWrapper : IRepositoryWrapper
 
     public IGoldPriceRepository GoldPrices { get; }
 
-    public RepositoryWrapper(DbContext dbContext, IGoldPriceRepository goldPrices)
+    public IExchangeRateRepository ExchangeRates { get; }
+
+    public IExchangeRatesTableRepository ExchangeRatesTables { get; }
+
+    public RepositoryWrapper(
+        DbContext dbContext,
+        IGoldPriceRepository goldPrices,
+        IExchangeRateRepository exchangeRates,
+        IExchangeRatesTableRepository exchangeRatesTables)
     {
         _dbContext = dbContext;
         GoldPrices = goldPrices;
+        ExchangeRates = exchangeRates;
+        ExchangeRatesTables = exchangeRatesTables;
     }
 
     public void SaveChanges()

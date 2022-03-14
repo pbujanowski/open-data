@@ -1,6 +1,6 @@
 ﻿using OpenData.Services.NationalBank.API.Dtos;
 
-namespace OpenData.Services.NationalBank.API.ExchangeRate.Queries.GetCurrentExchangeRates;
+namespace OpenData.Services.NationalBank.API.ExchangeRates.Queries.GetCurrentExchangeRates;
 
 public class GetCurrentExchangeRatesQueryResponse
 {

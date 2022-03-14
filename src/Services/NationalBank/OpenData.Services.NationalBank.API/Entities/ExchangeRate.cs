@@ -1,6 +1,6 @@
-﻿namespace OpenData.Services.NationalBank.API.Dtos;
+﻿namespace OpenData.Services.NationalBank.API.Entities;
 
-public class NationalBankExchangeRateDto
+public class ExchangeRate : Entity
 {
     public string? Currency { get; set; }
 
@@ -11,4 +11,8 @@ public class NationalBankExchangeRateDto
     public decimal? Bid { get; set; }
 
     public decimal? Ask { get; set; }
+
+    public Guid? TableId { get; set; }
+
+    public ExchangeRatesTable? Table { get; set; }
 }

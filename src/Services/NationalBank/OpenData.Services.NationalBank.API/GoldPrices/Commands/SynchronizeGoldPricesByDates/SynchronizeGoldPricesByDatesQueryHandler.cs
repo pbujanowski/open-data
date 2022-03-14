@@ -31,8 +31,12 @@ public class SynchronizeGoldPricesByDatesQueryHandler : IRequestHandler<Synchron
 
         foreach (var entity in entities)
         {
-            var createdEntity = _repositories.GoldPrices.Create(entity);
-            created.Add(createdEntity);
+            var found = _repositories.GoldPrices.FindByCondition(e => e.Date == entity.Date).FirstOrDefault();
+            if (found == null)
+            {
+                var createdEntity = _repositories.GoldPrices.Create(entity);
+                created.Add(createdEntity);
+            }
         }
 
         await _repositories.SaveChangesAsync();
