@@ -7,18 +7,18 @@ namespace OpenData.Services.NationalBank.API.GoldPrices.Queries.GetCurrentGoldPr
 
 public class GetCurrentGoldPriceQueryHandler : IRequestHandler<GetCurrentGoldPriceQuery, GetCurrentGoldPriceQueryResponse>
 {
-    private readonly INationalBankService _nationalBankService;
+    private readonly IGoldPriceService _goldPriceService;
     private readonly IMapper _mapper;
 
-    public GetCurrentGoldPriceQueryHandler(INationalBankService nationalBankService, IMapper mapper)
+    public GetCurrentGoldPriceQueryHandler(IGoldPriceService goldPriceService, IMapper mapper)
     {
-        _nationalBankService = nationalBankService;
+        _goldPriceService = goldPriceService;
         _mapper = mapper;
     }
 
     public async Task<GetCurrentGoldPriceQueryResponse> Handle(GetCurrentGoldPriceQuery request, CancellationToken cancellationToken)
     {
-        var goldPrice = await _nationalBankService.GetCurrentGoldPriceAsync();
+        var goldPrice = await _goldPriceService.GetCurrentGoldPriceAsync();
         var mapped = _mapper.Map<GoldPriceDto>(goldPrice);
         return new GetCurrentGoldPriceQueryResponse(mapped);
     }

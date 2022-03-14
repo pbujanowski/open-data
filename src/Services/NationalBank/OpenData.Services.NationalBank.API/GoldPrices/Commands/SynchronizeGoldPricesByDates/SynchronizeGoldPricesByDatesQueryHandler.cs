@@ -10,22 +10,22 @@ namespace OpenData.Services.NationalBank.API.GoldPrices.Commands.SynchronizeGold
 public class SynchronizeGoldPricesByDatesQueryHandler : IRequestHandler<SynchronizeGoldPricesByDatesQuery, SynchronizeGoldPricesByDatesQueryResponse>
 {
     private readonly IRepositoryWrapper _repositories;
-    private readonly INationalBankService _nationalBankService;
+    private readonly IGoldPriceService _goldPriceService;
     private readonly IMapper _mapper;
 
     public SynchronizeGoldPricesByDatesQueryHandler(
         IRepositoryWrapper repositories,
-        INationalBankService nationalBankService,
+        IGoldPriceService goldPriceService,
         IMapper mapper)
     {
         _repositories = repositories;
-        _nationalBankService = nationalBankService;
+        _goldPriceService = goldPriceService;
         _mapper = mapper;
     }
 
     public async Task<SynchronizeGoldPricesByDatesQueryResponse> Handle(SynchronizeGoldPricesByDatesQuery request, CancellationToken cancellationToken)
     {
-        var fetched = await _nationalBankService.GetGoldPricesByDatesAsync(request.Parameters.StartDate, request.Parameters.EndDate);
+        var fetched = await _goldPriceService.GetGoldPricesByDatesAsync(request.Parameters.StartDate, request.Parameters.EndDate);
         var entities = _mapper.Map<ICollection<GoldPrice>>(fetched);
         var created = new List<GoldPrice>();
 

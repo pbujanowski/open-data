@@ -4,7 +4,7 @@ using Xunit;
 
 namespace OpenData.Services.NationalBank.API.Tests.Services;
 
-public class NationalBankServiceTests
+public class GoldPriceServiceTests
 {
     private readonly Dictionary<string, string> _inMemoryConfiguration = new()
     {
@@ -13,19 +13,19 @@ public class NationalBankServiceTests
 
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
-    private readonly INationalBankService _nationalBankService;
+    private readonly IGoldPriceService _goldPriceService;
 
-    public NationalBankServiceTests()
+    public GoldPriceServiceTests()
     {
         _httpClient = new HttpClient();
         _configuration = new ConfigurationBuilder().AddInMemoryCollection(_inMemoryConfiguration).Build();
-        _nationalBankService = new NationalBankService(_httpClient, _configuration);
+        _goldPriceService = new GoldPriceService(_httpClient, _configuration);
     }
 
     [Fact]
     public async Task GetCurrentGoldPriceAsync()
     {
-        var result = await _nationalBankService.GetCurrentGoldPriceAsync();
+        var result = await _goldPriceService.GetCurrentGoldPriceAsync();
         Assert.NotNull(result);
     }
 
@@ -34,7 +34,7 @@ public class NationalBankServiceTests
     {
         var startDate = DateTime.Today.AddDays(-1);
         var endDate = DateTime.Today;
-        var result = await _nationalBankService.GetGoldPricesByDatesAsync(startDate, endDate);
+        var result = await _goldPriceService.GetGoldPricesByDatesAsync(startDate, endDate);
         Assert.NotNull(result);
     }
 }

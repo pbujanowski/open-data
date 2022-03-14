@@ -4,14 +4,14 @@ using Polly;
 
 namespace OpenData.Services.NationalBank.API.Services;
 
-public class NationalBankService : INationalBankService
+public class GoldPriceService : IGoldPriceService
 {
-    private const string baseUrl = "http://api.nbp.pl/api";
+    private const string baseUrl = "https://api.nbp.pl/api/cenyzlota";
 
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
 
-    public NationalBankService(HttpClient httpClient, IConfiguration configuration)
+    public GoldPriceService(HttpClient httpClient, IConfiguration configuration)
     {
         _httpClient = httpClient;
         _configuration = configuration;
@@ -24,7 +24,7 @@ public class NationalBankService : INationalBankService
             .RetryAsync(GetRetry())
             .ExecuteAsync(async () =>
             {
-                using var response = await _httpClient.GetAsync($"{baseUrl}/cenyzlota");
+                using var response = await _httpClient.GetAsync(baseUrl);
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<ICollection<NationalBankGoldPriceDto>>();
@@ -45,7 +45,7 @@ public class NationalBankService : INationalBankService
                 string formattedStartDate = startDate.ToString(dateFormat);
                 string formattedEndDate = endDate.ToString(dateFormat);
 
-                using var response = await _httpClient.GetAsync($"{baseUrl}/cenyzlota/{formattedStartDate}/{formattedEndDate}");
+                using var response = await _httpClient.GetAsync($"{baseUrl}/{formattedStartDate}/{formattedEndDate}");
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<ICollection<NationalBankGoldPriceDto>>()

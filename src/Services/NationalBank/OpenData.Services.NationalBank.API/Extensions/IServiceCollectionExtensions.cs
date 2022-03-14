@@ -27,7 +27,8 @@ public static class IServiceCollectionExtensions
 
     public static IServiceCollection ConfigureHttpClients(this IServiceCollection services)
     {
-        services.AddHttpClient<INationalBankService, NationalBankService>();
+        services.AddHttpClient<IGoldPriceService, GoldPriceService>();
+        services.AddHttpClient<IExchangeRateService, ExchangeRateService>();
 
         return services;
     }
