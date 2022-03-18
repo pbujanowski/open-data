@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { addDays } from "date-fns";
 import { Button } from "@mui/material";
 
-import { GoldPricesCard, GoldPricesDates } from "./components";
+import { GoldPricesDates } from "./components";
 
-import { AppSnackbar, AppSnackbarType, LoadingIndicator } from "../../components";
-import { nationalBankService } from "../../services";
+import { AppSnackbar, AppSnackbarType, DataCard, LoadingIndicator } from "components";
+import { goldPriceService } from "services";
 
 const SynchronizeGoldPricesByDates: React.FC = () => {
   const [t] = useTranslation();
@@ -38,7 +38,7 @@ const SynchronizeGoldPricesByDates: React.FC = () => {
   const synchronizeGoldPricesByDates = async () => {
     try {
       setIsLoading(true);
-      await nationalBankService().synchronizeGoldPricesByDates(startDate, endDate);
+      await goldPriceService().synchronizeGoldPricesByDates(startDate, endDate);
       handleSnackbarOpen(t("nationalBank.messages.synchronizedGoldPricesByDatesProperly"), "success");
     } catch (e) {
       handleSnackbarOpen(t("nationalBank.messages.cannotSynchronizeGoldPricesByDates"), "error");
@@ -79,7 +79,7 @@ const SynchronizeGoldPricesByDates: React.FC = () => {
   );
 
   return (
-    <GoldPricesCard
+    <DataCard
       title={t("nationalBank.synchronizeGoldPricesByDates")}
       body={getDataBody()}
       actions={getDataActions()}

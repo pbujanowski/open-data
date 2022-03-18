@@ -14,9 +14,9 @@ import {
   TableRow,
 } from "@mui/material";
 
-import { GoldPriceDto } from "../../../dtos";
-import { dateUtils } from "../../../utils";
-import { NoData } from "../../../components";
+import { GoldPriceDto } from "dtos";
+import { dateUtils } from "utils";
+import { NoData } from "components";
 
 export type GoldPricesTableProps = {
   goldPrices: GoldPriceDto[] | null;

@@ -3,11 +3,11 @@ import { useTranslation } from "react-i18next";
 import { addDays } from "date-fns";
 import { Button, Grid } from "@mui/material";
 
-import { GoldPriceDto, GoldPricesFiltersDto } from "../../dtos";
-import { GoldPricesCard, GoldPricesFilters, GoldPricesTabs } from "./components";
+import { GoldPriceDto, GoldPricesFiltersDto } from "dtos";
+import { GoldPricesFilters, GoldPricesTabs } from "./components";
 
-import { AppSnackbar, LoadingIndicator } from "../../components";
-import { nationalBankService } from "../../services/nationalBankService";
+import { AppSnackbar, DataCard, LoadingIndicator } from "components";
+import { goldPriceService } from "services/goldPriceService";
 
 const GoldPricesWithFilters: React.FC = () => {
   const [t] = useTranslation();
@@ -54,9 +54,9 @@ const GoldPricesWithFilters: React.FC = () => {
         startDate,
         endDate,
       };
-      const goldPricesCount = await nationalBankService().getGoldPricesCount(filters);
+      const goldPricesCount = await goldPriceService().getGoldPricesCount(filters);
       setTotalCount(goldPricesCount.count);
-      const result = await nationalBankService().getGoldPricesWithFilters(pageNumber, pageSize, filters);
+      const result = await goldPriceService().getGoldPricesWithFilters(pageNumber, pageSize, filters);
       setGoldPrices(result);
     } catch (e) {
       handleSnackbarOpen(t("nationalBank.messages.cannotFetchGoldPricesWithFilters"));
@@ -106,7 +106,7 @@ const GoldPricesWithFilters: React.FC = () => {
     <AppSnackbar isOpen={isSnackbarOpen} message={errorMessage} type="error" onClose={handleSnackbarClose} />
   );
 
-  return <GoldPricesCard title={getDataTitle()} body={getDataBody()} additional={getErrorSnackbar()} />;
+  return <DataCard title={getDataTitle()} body={getDataBody()} additional={getErrorSnackbar()} />;
 };
 
 export default GoldPricesWithFilters;

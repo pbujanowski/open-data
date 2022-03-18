@@ -16,12 +16,12 @@ import {
   Typography,
 } from "@mui/material";
 
-import { AppTooltip } from "../components";
+import { AppTooltip } from "components";
 import { LanguageSwitcher } from "./components";
-import { ThemeSwitcher } from "../theme";
-import { menuRoutes } from "../routes";
+import { ThemeSwitcher } from "theme";
+import { menuRoutes } from "routes";
 
-import logo from "../assets/logo.svg";
+import logo from "assets/logo.svg";
 
 const DrawerHeaderStyled = styled("div")(({ theme }) => ({
   display: "flex",

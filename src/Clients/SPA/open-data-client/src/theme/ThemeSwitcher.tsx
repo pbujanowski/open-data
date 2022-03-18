@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { Button, Typography, useTheme } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 
-import { AppTooltip } from "../components";
-import { AppThemeContext } from "../providers/AppThemeProvider";
+import { AppTooltip } from "components";
+import { AppThemeContext } from "providers/AppThemeProvider";
 import { ThemeMode } from "./ThemeMode";
 
 const ThemeSwitcher: React.FC = () => {

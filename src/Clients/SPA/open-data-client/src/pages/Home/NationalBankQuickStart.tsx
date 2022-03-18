@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { Button, Card, CardActions, CardContent, Grid, Typography } from "@mui/material";
-import { nationalBankRoute } from "../../routes";
+import { nationalBankRoute } from "routes";
 
 const NationalBankQuickStart: React.FC = () => {
   const [t] = useTranslation();

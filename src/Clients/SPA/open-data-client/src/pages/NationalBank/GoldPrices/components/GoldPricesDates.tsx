@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, TextField } from "@mui/material";
 import { DatePicker } from "@mui/lab";
 
-import { appConstants, dateUtils } from "../../../utils";
+import { appConstants, dateUtils } from "utils";
 
 type GoldPricesDatesProps = {
   startDate: string;

@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Fade, Menu, MenuItem } from "@mui/material";
 
-import { AppTooltip } from "../../components";
-import { languages } from "../../i18n";
-import { LocaleContext } from "../../providers/LocaleProvider";
+import { AppTooltip } from "components";
+import { languages } from "i18n";
+import { LocaleContext } from "providers/LocaleProvider";
 
 const { getLanguageByCode, supportedLanguages } = languages();
 

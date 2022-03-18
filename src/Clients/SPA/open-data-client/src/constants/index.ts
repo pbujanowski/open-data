@@ -1,0 +1,1 @@
+export { exchangeRatesTableType } from "./exchangeRatesTableType";

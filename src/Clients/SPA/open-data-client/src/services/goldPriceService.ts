@@ -1,10 +1,10 @@
 import axios from "axios";
 
-import { GoldPriceDto, GoldPricesByDatesDto, GoldPricesCountDto, GoldPricesFiltersDto } from "../dtos";
-import { appConfig } from "../configs";
-import { dateUtils } from "../utils";
+import { GoldPriceDto, GoldPricesByDatesDto, GoldPricesCountDto, GoldPricesFiltersDto } from "dtos";
+import { appConfig } from "configs";
+import { dateUtils } from "utils";
 
-const nationalBankService = () => {
+const goldPriceService = () => {
   const httpClient = axios.create({
     baseURL: `${appConfig().apiUrl}/nationalBank/goldPrices`,
   });
@@ -67,4 +67,4 @@ const nationalBankService = () => {
   };
 };
 
-export { nationalBankService };
+export { goldPriceService };

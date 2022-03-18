@@ -4,14 +4,14 @@ import { createTheme, ThemeProvider, useMediaQuery } from "@mui/material";
 import { LocalizationProvider } from "@mui/lab";
 import DateAdapter from "@mui/lab/AdapterDateFns";
 
-import { AppThemeProvider } from "../providers/AppThemeProvider";
+import { AppThemeProvider } from "providers/AppThemeProvider";
 import {
   LocaleProvider,
   dateLocalesMap,
   SupportedLocales,
   themeLocales,
   themeLocalesMap,
-} from "../providers/LocaleProvider";
+} from "providers/LocaleProvider";
 
 import { ThemeMode } from "./ThemeMode";
 

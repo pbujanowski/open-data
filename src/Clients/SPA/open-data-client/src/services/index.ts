@@ -1,1 +1,2 @@
-export { nationalBankService } from "./nationalBankService";
+export { exchangeRateService } from "./exchangeRateService";
+export { goldPriceService } from "./goldPriceService";

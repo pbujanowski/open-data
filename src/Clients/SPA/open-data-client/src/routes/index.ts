@@ -1,6 +1,6 @@
 import { Home as HomeIcon, AccountBalance as AccountBalanceIcon } from "@mui/icons-material";
 
-import { Home, NationalBank } from "../pages";
+import { Home, NationalBank } from "pages";
 
 export type RouteType = {
   key: string;

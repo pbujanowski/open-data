@@ -2,14 +2,14 @@ import React from "react";
 
 import { Card, CardActions, CardContent, Typography } from "@mui/material";
 
-type GoldPricesCardProps = {
+export type DataCardProps = {
   title: string | JSX.Element;
   body: JSX.Element;
   actions?: JSX.Element;
   additional?: JSX.Element;
 };
 
-const GoldPricesCard: React.FC<GoldPricesCardProps> = ({ title, body, actions, additional }) => {
+const DataCard: React.FC<DataCardProps> = ({ title, body, actions, additional }) => {
   const getActions = () => <CardActions>{actions}</CardActions>;
 
   return (
@@ -28,4 +28,4 @@ const GoldPricesCard: React.FC<GoldPricesCardProps> = ({ title, body, actions, a
   );
 };
 
-export default GoldPricesCard;
+export default DataCard;

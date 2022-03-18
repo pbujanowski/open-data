@@ -3,7 +3,7 @@ import * as locales from "@mui/material/locale";
 import enLocale from "date-fns/locale/en-US";
 import plLocale from "date-fns/locale/pl";
 
-import { i18nextInstance, languages } from "../i18n";
+import { i18nextInstance, languages } from "i18n";
 
 const i18n = i18nextInstance().i18next;
 const { english, polish } = languages();

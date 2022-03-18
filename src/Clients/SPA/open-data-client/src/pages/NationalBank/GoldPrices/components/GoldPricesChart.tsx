@@ -2,9 +2,9 @@ import React from "react";
 import { useTheme } from "@mui/material";
 import { Bar, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-import { GoldPriceDto } from "../../../dtos";
-import { dateUtils } from "../../../utils";
-import { NoData } from "../../../components";
+import { GoldPriceDto } from "dtos";
+import { dateUtils } from "utils";
+import { NoData } from "components";
 
 export type GoldPricesChartProps = {
   goldPrices: GoldPriceDto[] | null;

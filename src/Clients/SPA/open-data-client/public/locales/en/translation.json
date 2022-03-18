@@ -16,14 +16,20 @@
     "nationalBank": "National Bank of Poland"
   },
   "nationalBank": {
+    "tabs": {
+      "goldPrices": "Gold prices",
+      "exchangeRates": "Exchange rates"
+    },
     "currentGoldPrice": "Current gold price",
     "goldPricesWithFilters": "Gold prices",
     "synchronizeGoldPricesByDates": "Synchronize gold prices by dates",
+    "currentExchangeRates": "Current exchange rates",
     "messages": {
       "cannotFetchCurrentGoldPrice": "Cannot fetch current gold price",
       "cannotFetchGoldPricesWithFilters": "Cannot fetch gold prices",
       "cannotSynchronizeGoldPricesByDates": "Cannot synchronize gold prices by dates",
-      "synchronizedGoldPricesByDatesProperly": "Synchronized gold prices by dates properly"
+      "synchronizedGoldPricesByDatesProperly": "Synchronized gold prices by dates properly",
+      "cannotFetchCurrentExchangeRates": "Cannot fetch current exchange rates"
     }
   },
   "table": {
@@ -39,6 +45,14 @@
       "startDateIsEmpty": "Start date is empty.",
       "endDateIsEmpty": "End date is empty."
     }
+  },
+  "exchangeRate": {
+    "currency": "Currency",
+    "code": "Code",
+    "mid": "Mid",
+    "bid": "Bid",
+    "ask": "Ask",
+    "table": "Table"
   },
   "language": {
     "name": "Language",

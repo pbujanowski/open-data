@@ -3,11 +3,10 @@ import { useTranslation } from "react-i18next";
 
 import { Button } from "@mui/material";
 
-import { GoldPriceDto } from "../../dtos";
-import { GoldPricesCard } from "./components";
-import { AppSnackbar, LoadingIndicator, NoData } from "../../components";
-import { nationalBankService } from "../../services/nationalBankService";
-import { dateUtils } from "../../utils";
+import { GoldPriceDto } from "dtos";
+import { AppSnackbar, DataCard, LoadingIndicator, NoData } from "components";
+import { goldPriceService } from "services/goldPriceService";
+import { dateUtils } from "utils";
 
 const CurrentGoldPrice: React.FC = () => {
   const [t] = useTranslation();
@@ -29,7 +28,7 @@ const CurrentGoldPrice: React.FC = () => {
   const getCurrentGoldPrice = useCallback(async () => {
     try {
       setIsLoading(true);
-      const result = await nationalBankService().getCurrentGoldPrice();
+      const result = await goldPriceService().getCurrentGoldPrice();
       setGoldPrice(result);
     } catch (e) {
       handleSnackbarOpen(t("nationalBank.messages.cannotFetchCurrentGoldPrice"));
@@ -74,7 +73,7 @@ const CurrentGoldPrice: React.FC = () => {
   }, [getCurrentGoldPrice]);
 
   return (
-    <GoldPricesCard
+    <DataCard
       title={t("nationalBank.currentGoldPrice")}
       body={getDataBody()}
       actions={getDataActions()}

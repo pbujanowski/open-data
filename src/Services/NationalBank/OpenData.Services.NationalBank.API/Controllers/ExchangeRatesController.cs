@@ -19,7 +19,7 @@ public class ExchangeRatesController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("Current")]
+    [HttpGet("Current/{table}")]
     public async Task<IActionResult> GetCurrentExchangeRates(string table)
     {
         try
