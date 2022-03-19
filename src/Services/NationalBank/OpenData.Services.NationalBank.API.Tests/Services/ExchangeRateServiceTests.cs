@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OpenData.Services.NationalBank.API.Constants;
-using OpenData.Services.NationalBank.API.Services;
+using OpenData.Services.NationalBank.Application.Common.Services;
+using OpenData.Services.NationalBank.Domain.Constants;
+using OpenData.Services.NationalBank.Infrastructure.Services;
 using Xunit;
 
 namespace OpenData.Services.NationalBank.API.Tests.Services;

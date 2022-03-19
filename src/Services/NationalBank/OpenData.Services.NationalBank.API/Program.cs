@@ -1,13 +1,12 @@
 using OpenData.Common.Extensions;
-using OpenData.Services.NationalBank.API.Extensions;
+using OpenData.Services.NationalBank.Application;
+using OpenData.Services.NationalBank.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureCors(builder.Configuration);
-builder.Services.ConfigureDbContext(builder.Configuration);
-builder.Services.ConfigureScoped();
-builder.Services.ConfigureHttpClients();
-builder.Services.ConfigureMiddlewares();
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,7 +21,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 
-await app.ApplyDatabaseMigrations();
+await app.Services.AddInfrastructureForServiceProviderAsync();
 
 app.UseAuthorization();
 

@@ -1,10 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OpenData.Services.NationalBank.API.Dtos;
-using OpenData.Services.NationalBank.API.GoldPrices.Commands.SynchronizeGoldPricesByDates;
-using OpenData.Services.NationalBank.API.GoldPrices.Queries.GetCurrentGoldPrice;
-using OpenData.Services.NationalBank.API.GoldPrices.Queries.GetGoldPricesCountByDates;
-using OpenData.Services.NationalBank.API.GoldPrices.Queries.GetGoldPricesWithFilters;
+using OpenData.Services.NationalBank.Application.Dtos;
+using OpenData.Services.NationalBank.Application.GoldPrices.Commands.SynchronizeGoldPricesByDates;
+using OpenData.Services.NationalBank.Application.GoldPrices.Queries.GetCurrentGoldPrice;
+using OpenData.Services.NationalBank.Application.GoldPrices.Queries.GetGoldPricesCountByDates;
+using OpenData.Services.NationalBank.Application.GoldPrices.Queries.GetGoldPricesWithFilters;
 
 namespace OpenData.Services.NationalBank.API.Controllers;
 

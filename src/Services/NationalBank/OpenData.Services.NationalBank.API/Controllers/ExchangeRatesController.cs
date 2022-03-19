@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OpenData.Services.NationalBank.API.Dtos;
-using OpenData.Services.NationalBank.API.ExchangeRates.Commands.SynchronizeExchangeRatesByDates;
-using OpenData.Services.NationalBank.API.ExchangeRates.Queries.GetCurrentExchangeRates;
+using OpenData.Services.NationalBank.Application.Dtos;
+using OpenData.Services.NationalBank.Application.ExchangeRates.Commands.SynchronizeExchangeRatesByDates;
+using OpenData.Services.NationalBank.Application.ExchangeRates.Queries.GetCurrentExchangeRates;
 
 namespace OpenData.Services.NationalBank.API.Controllers;
 
