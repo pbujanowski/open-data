@@ -1,68 +1,46 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { addDays } from "date-fns";
 import { Button, Grid } from "@mui/material";
 
-import { GoldPriceDto, GoldPricesFiltersDto } from "dtos";
 import { GoldPricesFilters, GoldPricesTabs } from "./components";
 
 import { AppSnackbar, DataCard, LoadingIndicator } from "components";
-import { goldPriceService } from "services/goldPriceService";
+import { useAppDispatch, useAppSelector } from "hooks";
+import {
+  fetchGoldPricesWithFilters,
+  selectGoldPricesWithFiltersState,
+  setGoldPricesWithFiltersPageNumber,
+  setGoldPricesWithFiltersPageSize,
+  setGoldPricesWithFiltersStartDate,
+  setGoldPricesWithFiltersEndDate,
+} from "slices";
 
 const GoldPricesWithFilters: React.FC = () => {
   const [t] = useTranslation();
-  const dateYesterday = addDays(new Date(Date.now()), -1).toDateString();
-  const dateToday = new Date(Date.now()).toDateString();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [goldPrices, setGoldPrices] = useState<GoldPriceDto[] | null>(null);
-  const [startDate, setStartDate] = useState<string>(dateYesterday);
-  const [endDate, setEndDate] = useState<string>(dateToday);
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const [pageSize, setPageSize] = useState<number>(10);
-  const [totalCount, setTotalCount] = useState<number>(0);
-
-  const handleSnackbarOpen = (error: string | null) => {
-    setErrorMessage(error);
-    setIsSnackbarOpen(true);
-  };
-
-  const handleSnackbarClose = () => {
-    setErrorMessage(null);
-    setIsSnackbarOpen(false);
-  };
+  const dispatch = useAppDispatch();
+  const message = t("nationalBank.messages.cannotFetchGoldPricesWithFilters");
+  const { goldPrices, goldPricesCount, pageNumber, pageSize, filters, isLoading, isError } = useAppSelector(
+    selectGoldPricesWithFiltersState,
+  );
 
   const handleStartDateChange = (date: string) => {
-    setStartDate(date);
+    dispatch(setGoldPricesWithFiltersStartDate(date));
   };
 
   const handleEndDateChange = (date: string) => {
-    setEndDate(date);
+    dispatch(setGoldPricesWithFiltersEndDate(date));
   };
 
   const handlePageNumberChange = (number: number) => {
-    setPageNumber(number);
+    dispatch(setGoldPricesWithFiltersPageNumber(number));
   };
 
-  const handlePageSizeChange = (size: number) => setPageSize(size);
+  const handlePageSizeChange = (size: number) => {
+    dispatch(setGoldPricesWithFiltersPageSize(size));
+  };
 
   const getGoldPricesWithFilters = async () => {
-    try {
-      setIsLoading(true);
-      const filters: GoldPricesFiltersDto = {
-        startDate,
-        endDate,
-      };
-      const goldPricesCount = await goldPriceService().getGoldPricesCount(filters);
-      setTotalCount(goldPricesCount.count);
-      const result = await goldPriceService().getGoldPricesWithFilters(pageNumber, pageSize, filters);
-      setGoldPrices(result);
-    } catch (e) {
-      handleSnackbarOpen(t("nationalBank.messages.cannotFetchGoldPricesWithFilters"));
-    } finally {
-      setIsLoading(false);
-    }
+    await dispatch(fetchGoldPricesWithFilters({ pageNumber, pageSize, filters }));
   };
 
   const getGoldPricesDetails = () => (
@@ -72,7 +50,7 @@ const GoldPricesWithFilters: React.FC = () => {
         goldPrices: goldPrices || [],
         pageNumber,
         pageSize,
-        totalCount,
+        totalCount: goldPricesCount.count,
         onPageNumberChange: handlePageNumberChange,
         onPageSizeChange: handlePageSizeChange,
       }}
@@ -86,8 +64,8 @@ const GoldPricesWithFilters: React.FC = () => {
       <Grid item>{t("nationalBank.goldPricesWithFilters")}</Grid>
       <Grid item>
         <GoldPricesFilters
-          startDate={startDate}
-          endDate={endDate}
+          startDate={filters.startDate}
+          endDate={filters.endDate}
           onStartDateChange={handleStartDateChange}
           onEndDateChange={handleEndDateChange}
         />
@@ -102,9 +80,7 @@ const GoldPricesWithFilters: React.FC = () => {
 
   const getDataBody = () => (isLoading ? getLoadingIndicator() : getGoldPricesDetails());
 
-  const getErrorSnackbar = () => (
-    <AppSnackbar isOpen={isSnackbarOpen} message={errorMessage} type="error" onClose={handleSnackbarClose} />
-  );
+  const getErrorSnackbar = () => <AppSnackbar isOpen={isError || false} message={message} type="error" />;
 
   return <DataCard title={getDataTitle()} body={getDataBody()} additional={getErrorSnackbar()} />;
 };

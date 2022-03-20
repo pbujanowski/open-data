@@ -1,43 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, MenuItem, Select } from "@mui/material";
+import { Button, Grid, MenuItem, Select } from "@mui/material";
 
 import { AppSnackbar, DataCard, LoadingIndicator, NoData } from "components";
+import { useAppDispatch, useAppSelector } from "hooks";
 import { exchangeRatesTableType } from "constants/exchangeRatesTableType";
-import { exchangeRateService } from "services";
-import { ExchangeRateDto } from "dtos";
+import { fetchCurrentExchangeRates, selectCurrentExchangeRatesState } from "slices";
 
 import { ExchangeRatesTable } from "./components";
 
 const CurrentExchangeRates: React.FC = () => {
   const [t] = useTranslation();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [exchangeRates, setExchangeRates] = useState<ExchangeRateDto[] | null>(null);
+  const dispatch = useAppDispatch();
+  const message = t("nationalBank.messages.cannotFetchCurrentExchangeRates");
   const [exchangeRatesTable, setExchangeRatesTable] = useState<string>(exchangeRatesTableType().tableA);
-
-  const handleSnackbarOpen = (error: string | null) => {
-    setMessage(error);
-    setIsSnackbarOpen(true);
-  };
-
-  const handleSnackbarClose = () => {
-    setMessage(null);
-    setIsSnackbarOpen(false);
-  };
+  const { exchangeRates, isLoading, isError } = useAppSelector(selectCurrentExchangeRatesState);
 
   const getCurrentExchangeRates = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const result = await exchangeRateService().getCurrentExchangeRates(exchangeRatesTable);
-      setExchangeRates(result);
-    } catch (e) {
-      handleSnackbarOpen(t("nationalBank.messages.cannotFetchCurrentExchangeRates"));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [t, exchangeRatesTable]);
+    await dispatch(fetchCurrentExchangeRates(exchangeRatesTable));
+  }, [dispatch, exchangeRatesTable]);
 
   const getNoDataDetails = () => <NoData />;
 
@@ -71,15 +52,21 @@ const CurrentExchangeRates: React.FC = () => {
 
   const getDataBody = () => (isLoading ? getLoadingIndicator() : getExchangeRatesBody());
 
-  const getSnackbar = () => (
-    <AppSnackbar isOpen={isSnackbarOpen} message={message} type="info" onClose={handleSnackbarClose} />
+  const getDataActions = () => (
+    <Button size="small" onClick={getCurrentExchangeRates}>
+      {t("common.refresh")}
+    </Button>
   );
 
-  useEffect(() => {
-    getCurrentExchangeRates();
-  }, [getCurrentExchangeRates]);
+  const getSnackbar = () => <AppSnackbar isOpen={isError || false} message={message} type="error" />;
 
-  return <DataCard title={getDataTitle()} body={getDataBody()} additional={getSnackbar()} />;
+  useEffect(() => {
+    if (!exchangeRates) {
+      getCurrentExchangeRates();
+    }
+  }, [exchangeRates, getCurrentExchangeRates]);
+
+  return <DataCard title={getDataTitle()} body={getDataBody()} actions={getDataActions()} additional={getSnackbar()} />;
 };
 
 export default CurrentExchangeRates;

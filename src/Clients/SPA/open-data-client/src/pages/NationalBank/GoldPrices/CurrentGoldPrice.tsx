@@ -1,41 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@mui/material";
 
-import { GoldPriceDto } from "dtos";
 import { AppSnackbar, DataCard, LoadingIndicator, NoData } from "components";
-import { goldPriceService } from "services/goldPriceService";
+import { useAppDispatch, useAppSelector } from "hooks";
+import { fetchCurrentGoldPrice, selectCurrentGoldPriceState } from "slices";
 import { dateUtils } from "utils";
 
 const CurrentGoldPrice: React.FC = () => {
   const [t] = useTranslation();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [goldPrice, setGoldPrice] = useState<GoldPriceDto | null>(null);
-
-  const handleSnackbarOpen = (error: string | null) => {
-    setMessage(error);
-    setIsSnackbarOpen(true);
-  };
-
-  const handleSnackbarClose = () => {
-    setMessage(null);
-    setIsSnackbarOpen(false);
-  };
+  const dispatch = useAppDispatch();
+  const message = t("nationalBank.messages.cannotFetchCurrentGoldPrice");
+  const { goldPrice, isLoading, isError } = useAppSelector(selectCurrentGoldPriceState);
 
   const getCurrentGoldPrice = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const result = await goldPriceService().getCurrentGoldPrice();
-      setGoldPrice(result);
-    } catch (e) {
-      handleSnackbarOpen(t("nationalBank.messages.cannotFetchCurrentGoldPrice"));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [t]);
+    await dispatch(fetchCurrentGoldPrice());
+  }, [dispatch]);
 
   const getGoldPriceDetails = () => (
     <>
@@ -64,13 +45,13 @@ const CurrentGoldPrice: React.FC = () => {
     </Button>
   );
 
-  const getSnackbar = () => (
-    <AppSnackbar isOpen={isSnackbarOpen} message={message} type="info" onClose={handleSnackbarClose} />
-  );
+  const getSnackbar = () => <AppSnackbar isOpen={isError || false} message={message} type="error" />;
 
   useEffect(() => {
-    getCurrentGoldPrice();
-  }, [getCurrentGoldPrice]);
+    if (!goldPrice) {
+      getCurrentGoldPrice();
+    }
+  }, [goldPrice, getCurrentGoldPrice]);
 
   return (
     <DataCard

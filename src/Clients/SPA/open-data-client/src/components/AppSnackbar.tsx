@@ -7,7 +7,7 @@ type AppSnackbarProps = {
   isOpen: boolean;
   message: string | null;
   type: AppSnackbarType;
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 const AppSnackbar: React.FC<AppSnackbarProps> = ({ isOpen, message, type, onClose }) => {

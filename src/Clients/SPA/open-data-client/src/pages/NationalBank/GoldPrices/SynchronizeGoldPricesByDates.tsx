@@ -1,56 +1,40 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { addDays } from "date-fns";
 import { Button } from "@mui/material";
 
 import { GoldPricesDates } from "./components";
 
-import { AppSnackbar, AppSnackbarType, DataCard, LoadingIndicator } from "components";
-import { goldPriceService } from "services";
+import { AppSnackbar, DataCard, LoadingIndicator } from "components";
+import { useAppDispatch, useAppSelector } from "hooks";
+import {
+  synchronizeGoldPricesByDates,
+  selectSynchronizeGoldPricesByDatesState,
+  setSynchronizeGoldPricesByDatesStartDate,
+  setSynchronizeGoldPricesByDatesEndDate,
+} from "slices";
 
 const SynchronizeGoldPricesByDates: React.FC = () => {
   const [t] = useTranslation();
-  const dateYesterday = addDays(new Date(Date.now()), -1).toDateString();
-  const dateToday = new Date(Date.now()).toDateString();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false);
-  const [snackbarType, setSnackbarType] = useState<AppSnackbarType | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
-  const [startDate, setStartDate] = useState<string>(dateYesterday);
-  const [endDate, setEndDate] = useState<string>(dateToday);
+  const dispatch = useAppDispatch();
+  const message = t("nationalBank.messages.cannotSynchronizeGoldPricesByDates");
+  const { dates, isLoading, isError } = useAppSelector(selectSynchronizeGoldPricesByDatesState);
 
-  const handleStartDateChange = (date: string) => setStartDate(date);
-
-  const handleEndDateChange = (date: string) => setEndDate(date);
-
-  const handleSnackbarOpen = (message: string | null, type: AppSnackbarType) => {
-    setMessage(message);
-    setSnackbarType(type);
-    setIsSnackbarOpen(true);
+  const handleStartDateChange = (date: string) => {
+    dispatch(setSynchronizeGoldPricesByDatesStartDate(date));
   };
 
-  const handleSnackbarClose = () => {
-    setMessage(null);
-    setSnackbarType(null);
-    setIsSnackbarOpen(false);
+  const handleEndDateChange = (date: string) => {
+    dispatch(setSynchronizeGoldPricesByDatesEndDate(date));
   };
 
-  const synchronizeGoldPricesByDates = async () => {
-    try {
-      setIsLoading(true);
-      await goldPriceService().synchronizeGoldPricesByDates(startDate, endDate);
-      handleSnackbarOpen(t("nationalBank.messages.synchronizedGoldPricesByDatesProperly"), "success");
-    } catch (e) {
-      handleSnackbarOpen(t("nationalBank.messages.cannotSynchronizeGoldPricesByDates"), "error");
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSynchronizeGoldPricesByDates = async () => {
+    await dispatch(synchronizeGoldPricesByDates(dates));
   };
 
   const getLoadingIndicator = () => <LoadingIndicator />;
 
   const getActionsBody = () => (
-    <Button size="small" onClick={synchronizeGoldPricesByDates}>
+    <Button size="small" onClick={handleSynchronizeGoldPricesByDates}>
       {t("common.synchronize")}
     </Button>
   );
@@ -60,8 +44,8 @@ const SynchronizeGoldPricesByDates: React.FC = () => {
       getLoadingIndicator()
     ) : (
       <GoldPricesDates
-        startDate={startDate}
-        endDate={endDate}
+        startDate={dates.startDate}
+        endDate={dates.endDate}
         onStartDateChange={handleStartDateChange}
         onEndDateChange={handleEndDateChange}
       />
@@ -69,14 +53,7 @@ const SynchronizeGoldPricesByDates: React.FC = () => {
 
   const getDataActions = () => (isLoading ? <></> : getActionsBody());
 
-  const getSnackbar = () => (
-    <AppSnackbar
-      isOpen={isSnackbarOpen}
-      message={message}
-      type={snackbarType || "info"}
-      onClose={handleSnackbarClose}
-    />
-  );
+  const getSnackbar = () => <AppSnackbar isOpen={isError || false} message={message} type="error" />;
 
   return (
     <DataCard
