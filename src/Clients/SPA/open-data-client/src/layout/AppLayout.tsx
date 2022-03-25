@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 
 import { AppTooltip } from "components";
-import { LanguageSwitcher } from "./components";
+import { LanguageSwitcher, UserMenu } from "./components";
 import { ThemeSwitcher } from "theme";
 import { menuRoutes } from "routes";
 
@@ -63,6 +63,7 @@ const AppLayout: React.FC = ({ children }) => {
               {t("brand")}
             </Typography>
           </Box>
+          <UserMenu />
           <LanguageSwitcher />
           <ThemeSwitcher />
         </Toolbar>

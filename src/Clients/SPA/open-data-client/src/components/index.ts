@@ -1,6 +1,8 @@
 export { default as AppSnackbar } from "./AppSnackbar";
 export type { AppSnackbarType } from "./AppSnackbar";
 export { default as AppTooltip } from "./AppTooltip";
+export { default as AuthorizeComponent } from "./AuthorizeComponent";
+export { default as AuthorizeRoute } from "./AuthorizeRoute";
 export type { DataCardProps } from "./DataCard";
 export { default as DataCard } from "./DataCard";
 export { default as LoadingIndicator } from "./LoadingIndicator";

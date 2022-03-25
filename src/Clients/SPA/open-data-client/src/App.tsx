@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { AppTheme } from "./theme";
 import { AppLayout } from "./layout";
-import { PageContainer } from "./components";
+import { AuthorizeRoute, PageContainer } from "./components";
 import { routes } from "./routes";
 
 const App: React.FC = () => {
@@ -12,9 +12,16 @@ const App: React.FC = () => {
       <Router>
         <AppLayout>
           <Routes>
-            {routes.map((route) => (
-              <Route key={route.key} path={route.path} element={<PageContainer page={route.component} />} />
-            ))}
+            {routes.map((route) => {
+              const page = <PageContainer page={route.component} />;
+              return (
+                <Route
+                  key={route.key}
+                  path={route.path}
+                  element={route.authorize ? <AuthorizeRoute>{page}</AuthorizeRoute> : <>{page}</>}
+                />
+              );
+            })}
           </Routes>
         </AppLayout>
       </Router>

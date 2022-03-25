@@ -15,6 +15,12 @@ internal static class HostingExtensions
     {
         builder.Services.AddRazorPages();
 
+        builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
+            policy.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()));
+
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -61,6 +67,8 @@ internal static class HostingExtensions
         {
             app.UseDeveloperExceptionPage();
         }
+
+        app.UseCors();
 
         app.UseStaticFiles();
         app.UseRouting();

@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
-import { goldPriceSlice, exchangeRateSlice } from "slices";
+import { exchangeRateSlice, goldPriceSlice } from "slices";
 
 export const store = configureStore({
   reducer: {
-    goldPrice: goldPriceSlice.reducer,
     exchangeRate: exchangeRateSlice.reducer,
+    goldPrice: goldPriceSlice.reducer,
   },
 });
 

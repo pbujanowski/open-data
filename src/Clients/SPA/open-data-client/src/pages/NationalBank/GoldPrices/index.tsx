@@ -1,6 +1,8 @@
 import React from "react";
 import { Grid } from "@mui/material";
 
+import { AuthorizeComponent } from "components";
+
 import CurrentGoldPrice from "./CurrentGoldPrice";
 import GoldPricesWithFilters from "./GoldPricesWithFilters";
 import SynchronizeGoldPricesByDates from "./SynchronizeGoldPricesByDates";
@@ -13,7 +15,9 @@ const GoldPrices: React.FC = () => {
           <CurrentGoldPrice />
         </Grid>
         <Grid item xs>
-          <SynchronizeGoldPricesByDates />
+          <AuthorizeComponent>
+            <SynchronizeGoldPricesByDates />
+          </AuthorizeComponent>
         </Grid>
       </Grid>
       <Grid container item>

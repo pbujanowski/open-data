@@ -1,6 +1,7 @@
 {
   "brand": "Open Data",
   "common": {
+    "loading": "Loading...",
     "download": "Download",
     "go": "Go",
     "refresh": "Refresh",
@@ -10,6 +11,14 @@
     "synchronize": "Synchronize",
     "table": "Table",
     "chart": "Chart"
+  },
+  "auth": {
+    "login": "Log in",
+    "logout": "Log out",
+    "register": "Register",
+    "loggedOut": "Logged out",
+    "loggedInRequired": "You have to log in to display this content",
+    "profile": "Profile"
   },
   "pages": {
     "home": "Home",
