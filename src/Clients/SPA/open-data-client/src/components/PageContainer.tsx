@@ -1,12 +1,12 @@
 import React from "react";
-import { Container } from "@mui/material";
+import { Box } from "@mui/material";
 
 type PageContainerProps = {
   page: React.ElementType;
 };
 
 const PageContainer: React.FC<PageContainerProps> = ({ page }) => {
-  return <Container>{React.createElement(page)}</Container>;
+  return <Box sx={{ width: 1, height: 1, m: 3 }}>{React.createElement(page)}</Box>;
 };
 
 export default PageContainer;

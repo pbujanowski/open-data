@@ -1,6 +1,6 @@
 import { Home as HomeIcon, AccountBalance as AccountBalanceIcon } from "@mui/icons-material";
 
-import { Home, Login, NationalBank } from "pages";
+import { Home, Login, LoginCallback, LogoutCallback, NationalBank } from "pages";
 
 export type RouteType = {
   key: string;
@@ -23,6 +23,18 @@ const loginRoute: RouteType = {
   component: Login,
 };
 
+const loginCallbackRoute: RouteType = {
+  key: "loginCallback",
+  path: "/login-callback",
+  component: LoginCallback,
+};
+
+const logoutCallbackRoute: RouteType = {
+  key: "logoutCallback",
+  path: "/logout-callback",
+  component: LogoutCallback,
+};
+
 const nationalBankRoute: RouteType = {
   key: "nationalBank",
   path: "/national-bank",
@@ -30,8 +42,8 @@ const nationalBankRoute: RouteType = {
   icon: AccountBalanceIcon,
 };
 
-const routes: RouteType[] = [homeRoute, loginRoute, nationalBankRoute];
+const routes: RouteType[] = [homeRoute, loginRoute, loginCallbackRoute, logoutCallbackRoute, nationalBankRoute];
 
 const menuRoutes: RouteType[] = [homeRoute, nationalBankRoute];
 
-export { homeRoute, loginRoute, nationalBankRoute, routes, menuRoutes };
+export { homeRoute, loginRoute, loginCallbackRoute, logoutCallbackRoute, nationalBankRoute, routes, menuRoutes };

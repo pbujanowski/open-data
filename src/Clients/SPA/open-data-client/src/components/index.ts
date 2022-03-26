@@ -8,3 +8,4 @@ export { default as DataCard } from "./DataCard";
 export { default as LoadingIndicator } from "./LoadingIndicator";
 export { default as NoData } from "./NoData";
 export { default as PageContainer } from "./PageContainer";
+export { default as UnauthorizedAccess } from "./UnauthorizedAccess";

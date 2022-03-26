@@ -1,2 +1,3 @@
-export { exchangeRateService } from "./exchangeRateService";
-export { goldPriceService } from "./goldPriceService";
+export * from "./authService";
+export * from "./exchangeRateService";
+export * from "./goldPriceService";

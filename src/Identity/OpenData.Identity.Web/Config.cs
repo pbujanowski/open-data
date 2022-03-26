@@ -30,9 +30,9 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.Code,
                 RequireClientSecret = false,
 
-                RedirectUris = { "http://localhost:3000" },
-                FrontChannelLogoutUri = "http://localhost:3000",
-                PostLogoutRedirectUris = { "http://localhost:3000" },
+                RedirectUris = { "http://localhost:3000/login-callback" },
+                FrontChannelLogoutUri = "http://localhost:3000/logout-callback",
+                PostLogoutRedirectUris = { "http://localhost:3000/logout-callback" },
 
                 AllowOfflineAccess = true,
                 AllowedScopes = { "openid", "profile", "email", "open-data-api" }
