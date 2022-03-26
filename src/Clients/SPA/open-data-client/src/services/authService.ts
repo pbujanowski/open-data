@@ -38,6 +38,8 @@ const authService = () => {
 
   const isAuthenticated = async () => (await userManager.getUser()) !== null;
 
+  const getEvents = () => userManager.events;
+
   return {
     signinRedirect,
     signinRedirectCallback,
@@ -46,6 +48,7 @@ const authService = () => {
     getUser,
     storeUser,
     isAuthenticated,
+    getEvents,
   };
 };
 
