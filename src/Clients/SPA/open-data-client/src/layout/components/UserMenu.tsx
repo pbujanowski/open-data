@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import { Button } from "@mui/material";
+import { Button, SxProps } from "@mui/material";
 
 import { useAuth } from "hooks";
 
@@ -9,17 +9,22 @@ const UserMenu: React.FC = () => {
   const [t] = useTranslation();
   const auth = useAuth();
 
+  const getButtonSxProps = (): SxProps => ({ my: 2, color: "white", display: "block" });
+
   const getComponentBody = () =>
     auth.isAuthenticated ? (
-      <Button
-        sx={{ my: 2, color: "white", display: "block" }}
-        onClick={() => auth.authService().signoutRedirect({ state: window.location.pathname })}
-      >
-        {t("auth.logout")}
-      </Button>
+      <>
+        <Button sx={getButtonSxProps()}>{`${t("auth.profile")} (${auth.user?.profile.email})`}</Button>
+        <Button
+          sx={getButtonSxProps()}
+          onClick={() => auth.authService().signoutRedirect({ state: window.location.pathname })}
+        >
+          {t("auth.logout")}
+        </Button>
+      </>
     ) : (
       <Button
-        sx={{ my: 2, color: "white", display: "block" }}
+        sx={getButtonSxProps()}
         onClick={() => auth.authService().signinRedirect({ state: window.location.pathname })}
       >
         {t("auth.login")}

@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { User } from "oidc-client-ts";
 import { authService } from "services";
 
 const useAuth = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
 
   const handleIsAuthenticated = () => {
     authService()
@@ -11,20 +13,25 @@ const useAuth = () => {
       .then((result) => setIsAuthenticated(result));
   };
 
-  const handleUserChanged = useCallback(() => handleIsAuthenticated(), []);
+  const handleUserChanged = useCallback(() => {
+    authService()
+      .getUser()
+      .then((result) => setUser(result));
+    handleIsAuthenticated();
+  }, []);
 
   useEffect(() => {
     try {
       setIsLoading(true);
       authService().getEvents().addUserLoaded(handleUserChanged);
       authService().getEvents().addUserUnloaded(handleUserChanged);
-      handleIsAuthenticated();
+      handleUserChanged();
     } finally {
       setIsLoading(false);
     }
   }, [handleUserChanged]);
 
-  return { isLoading, isAuthenticated, authService };
+  return { isLoading, isAuthenticated, user, authService };
 };
 
 export { useAuth };
