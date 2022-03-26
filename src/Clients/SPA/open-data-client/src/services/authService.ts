@@ -7,15 +7,17 @@ import {
   WebStorageStateStore,
 } from "oidc-client-ts";
 
+import { authConfig } from "configs";
+
 const settings: UserManagerSettings = {
   automaticSilentRenew: true,
-  authority: "https://localhost:5001",
-  client_id: "open-data-client",
+  authority: authConfig().authority,
+  client_id: authConfig().clientId,
   loadUserInfo: true,
-  post_logout_redirect_uri: "http://localhost:3000/logout-callback",
-  redirect_uri: "http://localhost:3000/login-callback",
-  response_type: "code",
-  scope: "openid profile email open-data-api",
+  post_logout_redirect_uri: `${window.location.origin}/logout-callback`,
+  redirect_uri: `${window.location.origin}/login-callback`,
+  response_type: authConfig().responseType,
+  scope: authConfig().scope,
   userStore: new WebStorageStateStore({ store: window.localStorage }),
 };
 
