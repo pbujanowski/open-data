@@ -90,13 +90,13 @@ internal static class HostingExtensions
         context.Database.Migrate();
 
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        var alice = userManager.FindByNameAsync("alice").Result;
+        var alice = userManager.FindByEmailAsync("alice@mail.com").Result;
         if (alice == null)
         {
             alice = new ApplicationUser
             {
-                UserName = "alice",
-                Email = "AliceSmith@email.com",
+                UserName = "alice@mail.com",
+                Email = "alice@mail.com",
                 EmailConfirmed = true,
             };
             var result = userManager.CreateAsync(alice, "Pass123$").Result;
@@ -108,8 +108,7 @@ internal static class HostingExtensions
             result = userManager.AddClaimsAsync(alice, new Claim[]{
                             new Claim(JwtClaimTypes.Name, "Alice Smith"),
                             new Claim(JwtClaimTypes.GivenName, "Alice"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+                            new Claim(JwtClaimTypes.FamilyName, "Smith")
                         }).Result;
             if (!result.Succeeded)
             {
@@ -122,13 +121,13 @@ internal static class HostingExtensions
             Log.Debug("alice already exists");
         }
 
-        var bob = userManager.FindByNameAsync("bob").Result;
+        var bob = userManager.FindByEmailAsync("bob@mail.com").Result;
         if (bob == null)
         {
             bob = new ApplicationUser
             {
-                UserName = "bob",
-                Email = "BobSmith@email.com",
+                UserName = "bob@mail.com",
+                Email = "bob@mail.com",
                 EmailConfirmed = true
             };
             var result = userManager.CreateAsync(bob, "Pass123$").Result;
@@ -140,9 +139,7 @@ internal static class HostingExtensions
             result = userManager.AddClaimsAsync(bob, new Claim[]{
                             new Claim(JwtClaimTypes.Name, "Bob Smith"),
                             new Claim(JwtClaimTypes.GivenName, "Bob"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                            new Claim("location", "somewhere")
+                            new Claim(JwtClaimTypes.FamilyName, "Smith")
                         }).Result;
             if (!result.Succeeded)
             {

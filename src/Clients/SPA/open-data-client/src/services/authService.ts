@@ -32,6 +32,11 @@ const authService = () => {
 
   const signoutRedirectCallback = (url?: string | undefined) => userManager.signoutRedirectCallback(url);
 
+  const signupRedirect = () =>
+    (window.location.href = `${userManager.settings.authority}/account/register?returnUrl=${encodeURIComponent(
+      window.location.href,
+    )}`);
+
   const getUser = () => userManager.getUser();
 
   const storeUser = (user: User | null) => userManager.storeUser(user);
@@ -45,6 +50,7 @@ const authService = () => {
     signinRedirectCallback,
     signoutRedirect,
     signoutRedirectCallback,
+    signupRedirect,
     getUser,
     storeUser,
     isAuthenticated,

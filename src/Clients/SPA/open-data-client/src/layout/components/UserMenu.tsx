@@ -23,12 +23,17 @@ const UserMenu: React.FC = () => {
         </Button>
       </>
     ) : (
-      <Button
-        sx={getButtonSxProps()}
-        onClick={() => auth.authService().signinRedirect({ state: window.location.pathname })}
-      >
-        {t("auth.login")}
-      </Button>
+      <>
+        <Button
+          sx={getButtonSxProps()}
+          onClick={() => auth.authService().signinRedirect({ state: window.location.pathname })}
+        >
+          {t("auth.login")}
+        </Button>
+        <Button sx={getButtonSxProps()} onClick={() => auth.authService().signupRedirect()}>
+          {t("auth.register")}
+        </Button>
+      </>
     );
 
   return auth.isLoading ? <></> : getComponentBody();

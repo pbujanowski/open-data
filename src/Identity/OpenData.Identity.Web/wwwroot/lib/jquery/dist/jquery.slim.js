@@ -1209,7 +1209,7 @@
         });
 
         /* Attributes
-                ---------------------------------------------------------------------- */
+                        ---------------------------------------------------------------------- */
 
         // Support: IE<8
         // Verify that getAttribute really returns attributes and not properties
@@ -1220,7 +1220,7 @@
         });
 
         /* getElement(s)By*
-                ---------------------------------------------------------------------- */
+                        ---------------------------------------------------------------------- */
 
         // Check if getElementsByTagName("*") returns only elements
         support.getElementsByTagName = assert(function (el) {
@@ -1352,7 +1352,7 @@
           };
 
         /* QSA/matchesSelector
-                ---------------------------------------------------------------------- */
+                        ---------------------------------------------------------------------- */
 
         // QSA and matchesSelector support
 
@@ -1511,7 +1511,7 @@
           rbuggyMatches.length && new RegExp(rbuggyMatches.join("|"));
 
         /* Contains
-                ---------------------------------------------------------------------- */
+                        ---------------------------------------------------------------------- */
         hasCompare = rnative.test(docElem.compareDocumentPosition);
 
         // Element contains another
@@ -1546,7 +1546,7 @@
               };
 
         /* Sorting
-                ---------------------------------------------------------------------- */
+                        ---------------------------------------------------------------------- */
 
         // Document order sorting
         sortOrder = hasCompare
@@ -1872,15 +1872,15 @@
 
           CHILD: function (match) {
             /* matches from matchExpr["CHILD"]
-                            1 type (only|nth|...)
-                            2 what (child|of-type)
-                            3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
-                            4 xn-component of xn+y argument ([+-]?\d*n|)
-                            5 sign of xn-component
-                            6 x of xn-component
-                            7 sign of y-component
-                            8 y of y-component
-                        */
+                                        1 type (only|nth|...)
+                                        2 what (child|of-type)
+                                        3 argument (even|odd|\d*|\d*n([+-]\d+)?|...)
+                                        4 xn-component of xn+y argument ([+-]?\d*n|)
+                                        5 sign of xn-component
+                                        6 x of xn-component
+                                        7 sign of y-component
+                                        8 y of y-component
+                                    */
             match[1] = match[1].toLowerCase();
 
             if (match[1].slice(0, 3) === "nth") {
