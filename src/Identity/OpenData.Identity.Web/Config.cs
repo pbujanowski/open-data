@@ -15,7 +15,7 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         new ApiScope[]
         {
-            new ApiScope("open-data-api"),
+            new ApiScope("open-data-api", "Open Data API"),
         };
 
     public static IEnumerable<Client> Clients =>

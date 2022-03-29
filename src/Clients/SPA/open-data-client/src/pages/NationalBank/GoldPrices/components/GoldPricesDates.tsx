@@ -34,7 +34,7 @@ const GoldPricesDates: React.FC<GoldPricesDatesProps> = ({
           renderInput={(props) => <TextField size="small" {...props} />}
           label={t("goldPrice.startDate")}
           value={startDate}
-          onChange={(value) => onStartDateChange(value || dateYesterday)}
+          onChange={(value) => onStartDateChange(dateUtils().toDateString(value, false) || dateYesterday)}
         />
       </Grid>
       <Grid item>
@@ -44,7 +44,7 @@ const GoldPricesDates: React.FC<GoldPricesDatesProps> = ({
           renderInput={(props) => <TextField size="small" {...props} />}
           label={t("goldPrice.endDate")}
           value={endDate}
-          onChange={(value) => onEndDateChange(value || dateToday)}
+          onChange={(value) => onEndDateChange(dateUtils().toDateString(value, false) || dateToday)}
         />
       </Grid>
     </Grid>

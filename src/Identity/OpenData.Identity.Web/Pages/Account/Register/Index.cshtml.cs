@@ -72,10 +72,16 @@ public class Index : PageModel
                         return Redirect(Input.ReturnUrl);
                     }
                 }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, identityResult.Errors.FirstOrDefault().Description);
+                }
             }
-
-            await _events.RaiseAsync(new UserRegisterFailureEvent(Input.Email, "User already exists"));
-            ModelState.AddModelError(string.Empty, RegisterOptions.UserAlreadyExistsErrorMessage);
+            else
+            {
+                await _events.RaiseAsync(new UserRegisterFailureEvent(Input.Email, "User already exists"));
+                ModelState.AddModelError(string.Empty, RegisterOptions.UserAlreadyExistsErrorMessage);
+            }
         }
 
         // something went wrong, show form with error

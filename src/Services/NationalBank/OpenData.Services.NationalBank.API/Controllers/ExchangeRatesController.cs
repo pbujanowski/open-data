@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenData.Services.NationalBank.Application.Dtos;
 using OpenData.Services.NationalBank.Application.ExchangeRates.Commands.SynchronizeExchangeRatesByDates;
@@ -35,6 +36,7 @@ public class ExchangeRatesController : ControllerBase
     }
 
     [HttpPost("Synchronize")]
+    [Authorize]
     public async Task<IActionResult> SynchronizeExchangeRatesByDates([FromBody] ExchangeRatesByDatesDto body)
     {
         try

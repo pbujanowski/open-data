@@ -1,7 +1,6 @@
-﻿namespace OpenData.Common.Configurations
+﻿namespace OpenData.Common.Configurations;
+
+public class PollyConfiguration
 {
-    public class PollyConfiguration
-    {
-        public int Retry { get; set; }
-    }
+    public int Retry { get; set; }
 }

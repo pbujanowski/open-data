@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { GoldPriceDto, GoldPricesByDatesDto, GoldPricesCountDto, GoldPricesFiltersDto } from "dtos";
 import { appConfig } from "configs";
+import { authService } from "services";
 import { dateUtils } from "utils";
 
 const goldPriceService = () => {
@@ -47,13 +48,18 @@ const goldPriceService = () => {
   };
 
   const synchronizeGoldPricesByDates = async (startDate: string, endDate: string): Promise<void> => {
+    const user = await authService().getUser();
     const startDateFormatted = dateUtils().toDateString(startDate);
     const endDateFormatted = dateUtils().toDateString(endDate);
     const parameters: GoldPricesByDatesDto = {
       startDate: startDateFormatted,
       endDate: endDateFormatted,
     };
-    const response = await httpClient.post(`/synchronize`, { ...parameters });
+    const response = await httpClient.post(
+      `/synchronize`,
+      { ...parameters },
+      { headers: { Authorization: `Bearer ${user?.access_token}` } },
+    );
     if (response.status !== 200) {
       throw new Error(response.statusText);
     }

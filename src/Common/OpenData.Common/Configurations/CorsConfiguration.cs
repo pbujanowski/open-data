@@ -1,7 +1,6 @@
-﻿namespace OpenData.Common.Configurations
+﻿namespace OpenData.Common.Configurations;
+
+public class CorsConfiguration
 {
-    public class CorsConfiguration
-    {
-        public string[] Urls { get; set; }
-    }
+    public string[]? Urls { get; set; }
 }
