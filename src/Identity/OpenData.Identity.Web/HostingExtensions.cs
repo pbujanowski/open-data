@@ -2,6 +2,7 @@ using Duende.IdentityServer;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OpenData.Common.Extensions;
 using OpenData.Identity.Web.Data;
 using OpenData.Identity.Web.Models;
 using Serilog;
@@ -13,6 +14,8 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.Host.ConfigureLogger();
+
         builder.Services.AddRazorPages();
 
         builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
@@ -61,7 +64,7 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
-        app.UseSerilogRequestLogging();
+        app.UseLogger();
 
         if (app.Environment.IsDevelopment())
         {

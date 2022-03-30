@@ -4,6 +4,8 @@ using OpenData.Services.NationalBank.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.ConfigureLogger();
+
 builder.Services.ConfigureCors(builder.Configuration);
 builder.Services.ConfigureAuthentication(builder.Configuration);
 builder.Services.AddApplication();
@@ -20,6 +22,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseLogger();
 app.UseCors();
 
 await app.Services.AddInfrastructureForServiceProviderAsync();
