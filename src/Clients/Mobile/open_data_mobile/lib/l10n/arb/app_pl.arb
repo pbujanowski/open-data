@@ -1,0 +1,7 @@
+{
+  "@@locale": "pl",
+  "counterAppBarTitle": "Licznik",
+  "@counterAppBarTitle": {
+    "description": "Tekst wyświetlony na pasku aplikacji na stronie z licznikiem"
+  }
+}
