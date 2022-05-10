@@ -29,6 +29,13 @@
             "prefix": "app",
             "style": "kebab-case"
           }
+        ],
+        "@angular-eslint/no-empty-lifecycle-method": "off",
+        "prettier/prettier": [
+          "error",
+          {
+            "endOfLine": "auto"
+          }
         ]
       }
     },
