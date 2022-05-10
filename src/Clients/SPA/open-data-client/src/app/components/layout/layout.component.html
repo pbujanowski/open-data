@@ -1,0 +1,33 @@
+<nav class="container" [class.is-mobile]="mobileQueryList.matches">
+  <mat-toolbar color="primary" class="toolbar">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="app-name">{{ title }}</h1>
+  </mat-toolbar>
+
+  <mat-sidenav-container
+    class="sidenav-container"
+    [style.marginTop.px]="mobileQueryList.matches ? 56 : 0">
+    <mat-sidenav
+      #sidenav
+      [opened]="opened"
+      [mode]="mode"
+      [fixedInViewport]="mobileQueryList.matches"
+      fixedTopGap="56">
+      <mat-nav-list>
+        <a
+          *ngFor="let route of routes"
+          mat-list-item
+          [routerLink]="route.path"
+          (click)="onListItemClick()"
+          >{{ route.label }}</a
+        >
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <ng-content></ng-content>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</nav>
