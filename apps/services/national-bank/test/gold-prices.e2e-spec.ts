@@ -27,4 +27,20 @@ describe('GoldPricesController (e2e)', () => {
     expect(response.body).toHaveProperty('price');
     expect(response.body).toHaveProperty('date');
   });
+
+  it('/gold-prices/last/:topCount (GET)', async () => {
+    const topCount = 5;
+    const response = await request(app.getHttpServer())
+      .get(`/gold-prices/last/${topCount}`)
+      .expect(200);
+
+    expect(response.body).toBeDefined();
+    expect(Array.isArray(response.body)).toBe(true);
+    expect((response.body as []).length).toBe(topCount);
+
+    (response.body as []).forEach((item) => {
+      expect(item).toHaveProperty('price');
+      expect(item).toHaveProperty('date');
+    });
+  });
 });

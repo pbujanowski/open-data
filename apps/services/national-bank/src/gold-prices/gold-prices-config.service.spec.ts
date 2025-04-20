@@ -8,7 +8,10 @@ describe('GoldPricesConfigService', () => {
   beforeEach(async () => {
     const configModule = ConfigModule.forRoot({
       load: [
-        () => ({ GOLD_PRICES_CURRENT_URL: 'https://gold-prices-current' }),
+        () => ({
+          GOLD_PRICES_CURRENT_URL: 'https://gold-prices-current',
+          GOLD_PRICES_LAST_URL: 'https://gold-prices-last',
+        }),
       ],
     });
     const module = await createGoldPricesModuleMock(configModule);
@@ -26,5 +29,11 @@ describe('GoldPricesConfigService', () => {
     const result = goldPricesConfigService.currentGoldPrice;
 
     expect(result).toBe('https://gold-prices-current');
+  });
+
+  it('should return URL for getting last gold prices', () => {
+    const result = goldPricesConfigService.lastGoldPrices;
+
+    expect(result).toBe('https://gold-prices-last');
   });
 });

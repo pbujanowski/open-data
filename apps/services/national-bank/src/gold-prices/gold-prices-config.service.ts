@@ -8,4 +8,8 @@ export class GoldPricesConfigService {
   get currentGoldPrice(): string {
     return this.configService.get<string>('GOLD_PRICES_CURRENT_URL') || '';
   }
+
+  get lastGoldPrices(): string {
+    return this.configService.get<string>('GOLD_PRICES_LAST_URL') || '';
+  }
 }

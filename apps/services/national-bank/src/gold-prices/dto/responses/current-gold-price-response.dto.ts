@@ -1,16 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { GoldPrice } from '../interfaces/gold-price.interface';
+import { GoldPriceResponseDto } from './gold-price-response.dto';
 
-export class CurrentGoldPriceResponseDto implements GoldPrice {
-  @ApiProperty({
-    description: 'The date when the gold price was recorded',
-    type: Date,
-  })
-  date: Date;
-
-  @ApiProperty({
-    description: 'The price of gold in the specified currency',
-    type: Number,
-  })
-  price: number;
-}
+export class CurrentGoldPriceResponseDto extends GoldPriceResponseDto {}

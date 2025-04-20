@@ -30,4 +30,17 @@ describe('GoldPricesController', () => {
       expect(goldPricesService).toHaveBeenCalled();
     });
   });
+
+  it('should return the last gold prices', () => {
+    const mockGoldPrices = [createGoldPriceFixture(), createGoldPriceFixture()];
+
+    jest
+      .spyOn(goldPricesService, 'getLastGoldPrices')
+      .mockReturnValue(of(mockGoldPrices));
+
+    controller.getLastGoldPrices(2).subscribe((result) => {
+      expect(result).toEqual(mockGoldPrices);
+      expect(goldPricesService).toHaveBeenCalled();
+    });
+  });
 });
