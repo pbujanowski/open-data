@@ -1,0 +1,18 @@
+{
+  "name": "@open-data/software",
+  "version": "0.0.1",
+  "description": "The Open Data software.",
+  "author": {
+    "name": "Patryk Bujanowski",
+    "email": "patryk.bujanowski@hotmail.com"
+  },
+  "repository": {
+    "url": "https://github.com/pbujanowski/open-data",
+    "type": "git"
+  },
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "apps/**/*"
+  ]
+}
