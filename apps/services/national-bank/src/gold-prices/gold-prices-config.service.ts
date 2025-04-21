@@ -12,4 +12,8 @@ export class GoldPricesConfigService {
   get lastGoldPrices(): string {
     return this.configService.get<string>('GOLD_PRICES_LAST_URL') || '';
   }
+
+  get todayGoldPrice(): string {
+    return this.configService.get<string>('GOLD_PRICES_TODAY_URL') || '';
+  }
 }

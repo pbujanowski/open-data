@@ -3,6 +3,7 @@ import { GoldPricesService } from './gold-prices.service';
 import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentGoldPriceResponseDto } from './dto/responses/current-gold-price-response.dto';
 import { LastGoldPricesResponseDto } from './dto/responses/last-gold-prices-response.dto';
+import { TodayGoldPriceResponseDto } from './dto/responses/today-gold-price-response.dto';
 
 @ApiTags('gold-prices')
 @Controller('gold-prices')
@@ -33,5 +34,19 @@ export class GoldPricesController {
   })
   getLastGoldPrices(@Param('topCount') topCount: number) {
     return this.goldPricesService.getLastGoldPrices(topCount);
+  }
+
+  @Get('today')
+  @ApiResponse({
+    status: 200,
+    description: 'Fetches the today gold price',
+    type: TodayGoldPriceResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No gold price found for today',
+  })
+  getTodayGoldPrice() {
+    return this.goldPricesService.getTodayGoldPrice();
   }
 }

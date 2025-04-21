@@ -43,4 +43,26 @@ describe('GoldPricesController (e2e)', () => {
       expect(item).toHaveProperty('date');
     });
   });
+
+  it('/gold-prices/today (GET)', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/gold-prices/today')
+      .expect((res) => {
+        if (![200, 404].includes(res.status)) {
+          throw new Error(`Unexpected status code: ${res.status}`);
+        }
+      });
+
+    if (response.status === 200) {
+      expect(response.body).toBeDefined();
+      expect(typeof response.body).toBe('object');
+      expect(response.body).toHaveProperty('price');
+      expect(response.body).toHaveProperty('date');
+    } else if (response.status === 404) {
+      expect(response.body).toBeDefined();
+      expect(typeof response.body).toBe('object');
+      expect(response.body).toHaveProperty('statusCode', 404);
+      expect(response.body).toHaveProperty('message');
+    }
+  });
 });

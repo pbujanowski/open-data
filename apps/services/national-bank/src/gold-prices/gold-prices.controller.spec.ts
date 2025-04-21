@@ -1,8 +1,9 @@
 import { GoldPricesController } from './gold-prices.controller';
 import { createGoldPricesModuleMock } from './__mocks__/gold-prices.module.mock';
 import { GoldPricesService } from './gold-prices.service';
-import { of } from 'rxjs';
 import { createGoldPriceFixture } from './__fixtures__/gold-price.fixture';
+import { NotFoundException } from '@nestjs/common';
+import { of, throwError } from 'rxjs';
 
 describe('GoldPricesController', () => {
   let controller: GoldPricesController;
@@ -41,6 +42,41 @@ describe('GoldPricesController', () => {
     controller.getLastGoldPrices(2).subscribe((result) => {
       expect(result).toEqual(mockGoldPrices);
       expect(goldPricesService).toHaveBeenCalled();
+    });
+  });
+
+  it('should return the today gold price', () => {
+    const mockGoldPrice = createGoldPriceFixture();
+
+    jest
+      .spyOn(goldPricesService, 'getTodayGoldPrice')
+      .mockReturnValue(of(mockGoldPrice));
+
+    controller.getTodayGoldPrice().subscribe((result) => {
+      expect(result).toEqual(mockGoldPrice);
+      expect(goldPricesService).toHaveBeenCalled();
+    });
+  });
+
+  it('should return 404 if no gold price found for today', () => {
+    const notFoundException = new NotFoundException(
+      'No gold price found for today',
+    );
+
+    jest
+      .spyOn(goldPricesService, 'getTodayGoldPrice')
+      .mockReturnValueOnce(throwError(() => notFoundException));
+
+    controller.getTodayGoldPrice().subscribe({
+      next: () => {
+        fail('Expected method to throw NotFoundException');
+      },
+      error: (error) => {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect((error as NotFoundException).message).toBe(
+          'No gold price found for today',
+        );
+      },
     });
   });
 });

@@ -86,4 +86,32 @@ describe('GoldPricesService', () => {
       expect(result).toEqual(expectedResult);
     });
   });
+
+  it('should return today gold price', () => {
+    const nationalBankGoldPrice = createNationalBankGoldPriceFixture();
+    const mockDataResponse: NationalBankCurrentGoldPriceResponseDto[] = [
+      nationalBankGoldPrice,
+    ];
+    const mockResponse: AxiosResponse<
+      NationalBankCurrentGoldPriceResponseDto[]
+    > = {
+      data: mockDataResponse,
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {
+        url: 'https://api.example.com/gold-prices',
+        headers: new AxiosHeaders().set('Content-Type', 'application/json'),
+      },
+    };
+    const expectedResult = {
+      date: nationalBankGoldPrice.data,
+      price: nationalBankGoldPrice.cena,
+    };
+    jest.spyOn(httpService, 'get').mockReturnValue(of(mockResponse));
+
+    goldPriceService.getTodayGoldPrice().subscribe((result) => {
+      expect(result).toEqual(expectedResult);
+    });
+  });
 });

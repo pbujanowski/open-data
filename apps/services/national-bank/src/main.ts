@@ -19,5 +19,5 @@ async function bootstrap() {
 }
 
 bootstrap().catch((error) => {
-  console.error('Error during application start.', error);
+  console.error('Error during application start', error);
 });

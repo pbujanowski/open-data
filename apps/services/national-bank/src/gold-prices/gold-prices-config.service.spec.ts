@@ -11,6 +11,7 @@ describe('GoldPricesConfigService', () => {
         () => ({
           GOLD_PRICES_CURRENT_URL: 'https://gold-prices-current',
           GOLD_PRICES_LAST_URL: 'https://gold-prices-last',
+          GOLD_PRICES_TODAY_URL: 'https://gold-prices-today',
         }),
       ],
     });
@@ -35,5 +36,11 @@ describe('GoldPricesConfigService', () => {
     const result = goldPricesConfigService.lastGoldPrices;
 
     expect(result).toBe('https://gold-prices-last');
+  });
+
+  it('should return URL for getting today gold price', () => {
+    const result = goldPricesConfigService.todayGoldPrice;
+
+    expect(result).toBe('https://gold-prices-today');
   });
 });
