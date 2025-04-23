@@ -49,4 +49,24 @@ export class GoldPricesController {
   getTodayGoldPrice() {
     return this.goldPricesService.getTodayGoldPrice();
   }
+
+  @Get('by-date/:date')
+  @ApiParam({
+    name: 'date',
+    description: 'The date for which to retrieve the gold price',
+    type: Date,
+    example: '2025-01-01',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Fetches the gold price for a specific date',
+    type: TodayGoldPriceResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No gold price found for the specified date',
+  })
+  getGoldPriceByDate(@Param('date') date: Date) {
+    return this.goldPricesService.getGoldPriceByDate(date);
+  }
 }
