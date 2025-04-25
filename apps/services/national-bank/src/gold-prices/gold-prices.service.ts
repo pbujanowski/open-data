@@ -12,6 +12,8 @@ import { AxiosError } from 'axios';
 import { format } from 'date-fns';
 import { GoldPriceByDateResponseDto } from './dto/responses/gold-price-by-date-response.dto';
 import { NationalBankGoldPriceByDateResponseDto } from './dto/responses/national-bank-gold-price-by-date-response.dto';
+import { GoldPricesByDateRangeResponseDto } from './dto/responses/gold-price-by-date-range-response.dto';
+import { NationalBankGoldPricesByDateRangeResponseDto } from './dto/responses/national-bank-gold-prices-by-date-range-response.dto';
 
 @Injectable()
 export class GoldPricesService {
@@ -90,6 +92,39 @@ export class GoldPricesService {
           if (error.response?.status === 404) {
             throw new NotFoundException(
               'No gold price found for the given date',
+            );
+          }
+          return throwError(() => error);
+        }),
+      );
+  }
+
+  getGoldPricesByDateRange(
+    startDate: Date,
+    endDate: Date,
+  ): Observable<GoldPricesByDateRangeResponseDto[]> {
+    const startDateFormatted = format(startDate, 'yyyy-MM-dd');
+    const endDateFormatted = format(endDate, 'yyyy-MM-dd');
+
+    return this.httpService
+      .get<
+        NationalBankGoldPricesByDateRangeResponseDto[]
+      >(`${this.goldPricesConfigService.goldPricesByDateRange}/${startDateFormatted}/${endDateFormatted}`)
+      .pipe(
+        map(
+          (response: {
+            data: NationalBankGoldPricesByDateRangeResponseDto[];
+          }) => {
+            return response.data.map((goldPrice) => ({
+              date: goldPrice.data,
+              price: goldPrice.cena,
+            }));
+          },
+        ),
+        catchError((error: AxiosError) => {
+          if (error.response?.status === 404) {
+            throw new NotFoundException(
+              'No gold prices found for the given date range',
             );
           }
           return throwError(() => error);

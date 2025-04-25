@@ -88,4 +88,30 @@ describe('GoldPricesController (e2e)', () => {
       expect(response.body).toHaveProperty('message');
     }
   });
+
+  it('/gold-prices/by-date-range/:startDate/:endDate (GET)', async () => {
+    const startDate = '2025-01-01';
+    const endDate = '2025-01-31';
+    const response = await request(app.getHttpServer())
+      .get(`/gold-prices/by-date-range/${startDate}/${endDate}`)
+      .expect((res) => {
+        if (![200, 404].includes(res.status)) {
+          throw new Error(`Unexpected status code: ${res.status}`);
+        }
+      });
+
+    if (response.status === 200) {
+      expect(response.body).toBeDefined();
+      expect(Array.isArray(response.body)).toBe(true);
+      (response.body as []).forEach((item) => {
+        expect(item).toHaveProperty('price');
+        expect(item).toHaveProperty('date');
+      });
+    } else if (response.status === 404) {
+      expect(response.body).toBeDefined();
+      expect(typeof response.body).toBe('object');
+      expect(response.body).toHaveProperty('statusCode', 404);
+      expect(response.body).toHaveProperty('message');
+    }
+  });
 });

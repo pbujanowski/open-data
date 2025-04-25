@@ -114,4 +114,41 @@ describe('GoldPricesController', () => {
       },
     });
   });
+
+  it('should return the gold prices by date range', () => {
+    const mockGoldPrices = [createGoldPriceFixture(), createGoldPriceFixture()];
+
+    jest
+      .spyOn(goldPricesService, 'getGoldPricesByDateRange')
+      .mockReturnValue(of(mockGoldPrices));
+
+    controller
+      .getGoldPricesByDateRange(new Date(), new Date())
+      .subscribe((result) => {
+        expect(result).toEqual(mockGoldPrices);
+        expect(goldPricesService).toHaveBeenCalled();
+      });
+  });
+
+  it('should return 404 if no gold prices found for the specified date range', () => {
+    const notFoundException = new NotFoundException(
+      'No gold prices found for the specified date range',
+    );
+
+    jest
+      .spyOn(goldPricesService, 'getGoldPricesByDateRange')
+      .mockReturnValueOnce(throwError(() => notFoundException));
+
+    controller.getGoldPricesByDateRange(new Date(), new Date()).subscribe({
+      next: () => {
+        fail('Expected method to throw NotFoundException');
+      },
+      error: (error) => {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect((error as NotFoundException).message).toBe(
+          'No gold prices found for the specified date range',
+        );
+      },
+    });
+  });
 });

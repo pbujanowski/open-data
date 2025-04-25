@@ -13,6 +13,7 @@ describe('GoldPricesConfigService', () => {
           GOLD_PRICES_LAST_URL: 'https://gold-prices-last',
           GOLD_PRICES_TODAY_URL: 'https://gold-prices-today',
           GOLD_PRICES_BY_DATE_URL: 'https://gold-prices-by-date',
+          GOLD_PRICES_BY_DATE_RANGE_URL: 'https://gold-prices-by-date-range',
         }),
       ],
     });
@@ -49,5 +50,11 @@ describe('GoldPricesConfigService', () => {
     const result = goldPricesConfigService.goldPriceByDate;
 
     expect(result).toBe('https://gold-prices-by-date');
+  });
+
+  it('should return URL for getting gold prices by date range', () => {
+    const result = goldPricesConfigService.goldPricesByDateRange;
+
+    expect(result).toBe('https://gold-prices-by-date-range');
   });
 });

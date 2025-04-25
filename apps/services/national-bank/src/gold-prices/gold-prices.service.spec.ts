@@ -10,6 +10,7 @@ import { createNationalBankGoldPriceFixture } from './__fixtures__/national-bank
 import { NationalBankLastGoldPricesResponseDto } from './dto/responses/national-bank-last-gold-prices-response.dto';
 import { NationalBankTodayGoldPriceResponseDto } from './dto/responses/national-bank-today-gold-price-response.dto';
 import { NationalBankGoldPriceByDateResponseDto } from './dto/responses/national-bank-gold-price-by-date-response.dto';
+import { NationalBankGoldPricesByDateRangeResponseDto } from './dto/responses/national-bank-gold-prices-by-date-range-response.dto';
 
 describe('GoldPricesService', () => {
   let goldPricesConfigService: GoldPricesConfigService;
@@ -143,5 +144,39 @@ describe('GoldPricesService', () => {
     goldPriceService.getGoldPriceByDate(date).subscribe((result) => {
       expect(result).toEqual(expectedResult);
     });
+  });
+
+  it('should return gold prices by date range', () => {
+    const nationalBankGoldPrice = createNationalBankGoldPriceFixture();
+    const startDate = new Date();
+    const endDate = new Date();
+    const mockDataResponse: NationalBankGoldPricesByDateRangeResponseDto[] = [
+      nationalBankGoldPrice,
+    ];
+    const mockResponse: AxiosResponse<
+      NationalBankGoldPricesByDateRangeResponseDto[]
+    > = {
+      data: mockDataResponse,
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {
+        url: 'https://api.example.com/gold-prices',
+        headers: new AxiosHeaders().set('Content-Type', 'application/json'),
+      },
+    };
+    const expectedResult = [
+      {
+        date: nationalBankGoldPrice.data,
+        price: nationalBankGoldPrice.cena,
+      },
+    ];
+    jest.spyOn(httpService, 'get').mockReturnValue(of(mockResponse));
+
+    goldPriceService
+      .getGoldPricesByDateRange(startDate, endDate)
+      .subscribe((result) => {
+        expect(result).toEqual(expectedResult);
+      });
   });
 });

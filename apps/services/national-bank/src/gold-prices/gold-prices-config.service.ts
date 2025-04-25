@@ -20,4 +20,10 @@ export class GoldPricesConfigService {
   get goldPriceByDate(): string {
     return this.configService.get<string>('GOLD_PRICES_BY_DATE_URL') || '';
   }
+
+  get goldPricesByDateRange(): string {
+    return (
+      this.configService.get<string>('GOLD_PRICES_BY_DATE_RANGE_URL') || ''
+    );
+  }
 }

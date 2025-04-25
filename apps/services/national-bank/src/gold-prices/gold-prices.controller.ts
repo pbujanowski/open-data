@@ -4,6 +4,8 @@ import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CurrentGoldPriceResponseDto } from './dto/responses/current-gold-price-response.dto';
 import { LastGoldPricesResponseDto } from './dto/responses/last-gold-prices-response.dto';
 import { TodayGoldPriceResponseDto } from './dto/responses/today-gold-price-response.dto';
+import { GoldPriceByDateResponseDto } from './dto/responses/gold-price-by-date-response.dto';
+import { GoldPricesByDateRangeResponseDto } from './dto/responses/gold-price-by-date-range-response.dto';
 
 @ApiTags('gold-prices')
 @Controller('gold-prices')
@@ -60,7 +62,7 @@ export class GoldPricesController {
   @ApiResponse({
     status: 200,
     description: 'Fetches the gold price for a specific date',
-    type: TodayGoldPriceResponseDto,
+    type: GoldPriceByDateResponseDto,
   })
   @ApiResponse({
     status: 404,
@@ -68,5 +70,34 @@ export class GoldPricesController {
   })
   getGoldPriceByDate(@Param('date') date: Date) {
     return this.goldPricesService.getGoldPriceByDate(date);
+  }
+
+  @Get('by-date-range/:startDate/:endDate')
+  @ApiParam({
+    name: 'startDate',
+    description: 'The start date for the range',
+    type: Date,
+    example: '2025-01-01',
+  })
+  @ApiParam({
+    name: 'endDate',
+    description: 'The end date for the range',
+    type: Date,
+    example: '2025-01-31',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Fetches the gold prices for a specific date range',
+    type: GoldPricesByDateRangeResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No gold prices found for the specified date range',
+  })
+  getGoldPricesByDateRange(
+    @Param('startDate') startDate: Date,
+    @Param('endDate') endDate: Date,
+  ) {
+    return this.goldPricesService.getGoldPricesByDateRange(startDate, endDate);
   }
 }
