@@ -3,7 +3,7 @@ import { createGoldPricesModuleMock } from './__mocks__/gold-prices.module.mock'
 import { GoldPricesService } from './gold-prices.service';
 import { createGoldPriceFixture } from './__fixtures__/gold-price.fixture';
 import { NotFoundException } from '@nestjs/common';
-import { of, throwError } from 'rxjs';
+import { firstValueFrom, of, throwError } from 'rxjs';
 import { QueryBus } from '@nestjs/cqrs';
 
 describe('GoldPricesController', () => {
@@ -46,39 +46,33 @@ describe('GoldPricesController', () => {
     expect(result).toEqual(mockGoldPrices);
   });
 
-  it('should return the today gold price', () => {
+  it('should return the today gold price', async () => {
     const mockGoldPrice = createGoldPriceFixture();
 
     jest
-      .spyOn(goldPricesService, 'getTodayGoldPrice')
-      .mockReturnValue(of(mockGoldPrice));
+      .spyOn(queryBus, 'execute')
+      .mockReturnValue(Promise.resolve(mockGoldPrice));
 
-    controller.getTodayGoldPrice().subscribe((result) => {
-      expect(result).toEqual(mockGoldPrice);
-      expect(goldPricesService).toHaveBeenCalled();
-    });
+    const result = await controller.getTodayGoldPrice();
+
+    expect(result).toEqual(mockGoldPrice);
   });
 
-  it('should return 404 if no gold price found for today', () => {
+  it('should return 404 if no gold price found for today', async () => {
     const notFoundException = new NotFoundException(
       'No gold price found for today',
     );
 
     jest
-      .spyOn(goldPricesService, 'getTodayGoldPrice')
-      .mockReturnValueOnce(throwError(() => notFoundException));
+      .spyOn(queryBus, 'execute')
+      .mockReturnValue(Promise.reject(notFoundException));
 
-    controller.getTodayGoldPrice().subscribe({
-      next: () => {
-        fail('Expected method to throw NotFoundException');
-      },
-      error: (error) => {
-        expect(error).toBeInstanceOf(NotFoundException);
-        expect((error as NotFoundException).message).toBe(
-          'No gold price found for today',
-        );
-      },
-    });
+    await expect(controller.getTodayGoldPrice()).rejects.toThrow(
+      NotFoundException,
+    );
+    await expect(controller.getTodayGoldPrice()).rejects.toThrow(
+      'No gold price found for today',
+    );
   });
 
   it('should return the gold price by date', () => {

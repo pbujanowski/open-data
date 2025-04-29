@@ -10,6 +10,9 @@ import { QueryBus } from '@nestjs/cqrs';
 import { GetCurrentGoldPriceQuery } from './queries/get-current-gold-price/get-current-gold-price.query';
 import { GetCurrentGoldPriceQueryResponse } from './queries/get-current-gold-price/get-current-gold-price.query-response';
 import { GetLastGoldPricesQuery } from './queries/get-last-gold-prices/get-last-gold-prices.query';
+import { GetTodayGoldPriceQuery } from './queries/get-today-gold-price/get-today-gold-price.query';
+import { GetTodayGoldPriceQueryResponse } from './queries/get-today-gold-price/get-today-gold-price.query-response';
+import { GetLastGoldPricesQueryResponse } from './queries/get-last-gold-prices/get-last-gold-prices.query-response';
 
 @ApiTags('gold-prices')
 @Controller('gold-prices')
@@ -52,7 +55,7 @@ export class GoldPricesController {
   async getLastGoldPrices(@Param('topCount') topCount: number) {
     const queryResponse = await this.queryBus.execute<
       GetLastGoldPricesQuery,
-      GetCurrentGoldPriceQueryResponse[]
+      GetLastGoldPricesQueryResponse[]
     >(new GetLastGoldPricesQuery(topCount));
 
     return queryResponse.map((goldPrice) => ({
@@ -71,8 +74,16 @@ export class GoldPricesController {
     status: 404,
     description: 'No gold price found for today',
   })
-  getTodayGoldPrice() {
-    return this.goldPricesService.getTodayGoldPrice();
+  async getTodayGoldPrice() {
+    const queryResponse = await this.queryBus.execute<
+      GetTodayGoldPriceQuery,
+      GetTodayGoldPriceQueryResponse
+    >(new GetTodayGoldPriceQuery());
+
+    return {
+      date: queryResponse.date,
+      price: queryResponse.price,
+    };
   }
 
   @Get('by-date/:date')

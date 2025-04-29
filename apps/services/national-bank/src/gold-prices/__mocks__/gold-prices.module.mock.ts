@@ -8,6 +8,7 @@ import { DynamicModule, ForwardReference, Type } from '@nestjs/common';
 import { GetCurrentGoldPriceQueryHandler } from '../queries/get-current-gold-price/get-current-gold-price.query-handler';
 import { CqrsModule } from '@nestjs/cqrs';
 import { GetLastGoldPricesQueryHandler } from '../queries/get-last-gold-prices/get-last-gold-prices.query-handler';
+import { GetTodayGoldPriceQueryHandler } from '../queries/get-today-gold-price/get-today-gold-price.query-handler';
 
 export const createGoldPricesModuleMock = (
   configModule:
@@ -23,6 +24,7 @@ export const createGoldPricesModuleMock = (
     providers: [
       GetCurrentGoldPriceQueryHandler,
       GetLastGoldPricesQueryHandler,
+      GetTodayGoldPriceQueryHandler,
       GoldPricesConfigService,
       GoldPricesService,
     ],

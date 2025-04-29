@@ -5,6 +5,7 @@ import { GoldPricesService } from './gold-prices.service';
 import { HttpModule } from '@nestjs/axios';
 import { GetCurrentGoldPriceQueryHandler } from './queries/get-current-gold-price/get-current-gold-price.query-handler';
 import { GetLastGoldPricesQueryHandler } from './queries/get-last-gold-prices/get-last-gold-prices.query-handler';
+import { GetTodayGoldPriceQueryHandler } from './queries/get-today-gold-price/get-today-gold-price.query-handler';
 
 @Module({
   imports: [HttpModule],
@@ -12,6 +13,7 @@ import { GetLastGoldPricesQueryHandler } from './queries/get-last-gold-prices/ge
   providers: [
     GetCurrentGoldPriceQueryHandler,
     GetLastGoldPricesQueryHandler,
+    GetTodayGoldPriceQueryHandler,
     GoldPricesConfigService,
     GoldPricesService,
   ],
