@@ -1,20 +1,16 @@
 import { GoldPricesController } from './gold-prices.controller';
 import { createGoldPricesModuleMock } from './__mocks__/gold-prices.module.mock';
-import { GoldPricesService } from './gold-prices.service';
 import { createGoldPriceFixture } from './__fixtures__/gold-price.fixture';
 import { NotFoundException } from '@nestjs/common';
-import { firstValueFrom, of, throwError } from 'rxjs';
 import { QueryBus } from '@nestjs/cqrs';
 
 describe('GoldPricesController', () => {
   let controller: GoldPricesController;
-  let goldPricesService: GoldPricesService;
   let queryBus: QueryBus;
 
   beforeEach(async () => {
     const module = await createGoldPricesModuleMock();
     controller = module.get<GoldPricesController>(GoldPricesController);
-    goldPricesService = module.get<GoldPricesService>(GoldPricesService);
     queryBus = module.get<QueryBus>(QueryBus);
   });
 
@@ -104,40 +100,35 @@ describe('GoldPricesController', () => {
     );
   });
 
-  it('should return the gold prices by date range', () => {
+  it('should return the gold prices by date range', async () => {
     const mockGoldPrices = [createGoldPriceFixture(), createGoldPriceFixture()];
 
     jest
-      .spyOn(goldPricesService, 'getGoldPricesByDateRange')
-      .mockReturnValue(of(mockGoldPrices));
+      .spyOn(queryBus, 'execute')
+      .mockReturnValue(Promise.resolve(mockGoldPrices));
 
-    controller
-      .getGoldPricesByDateRange(new Date(), new Date())
-      .subscribe((result) => {
-        expect(result).toEqual(mockGoldPrices);
-        expect(goldPricesService).toHaveBeenCalled();
-      });
+    const result = await controller.getGoldPricesByDateRange(
+      new Date(),
+      new Date(),
+    );
+
+    expect(result).toEqual(mockGoldPrices);
   });
 
-  it('should return 404 if no gold prices found for the specified date range', () => {
+  it('should return 404 if no gold prices found for the specified date range', async () => {
     const notFoundException = new NotFoundException(
       'No gold prices found for the specified date range',
     );
 
     jest
-      .spyOn(goldPricesService, 'getGoldPricesByDateRange')
-      .mockReturnValueOnce(throwError(() => notFoundException));
+      .spyOn(queryBus, 'execute')
+      .mockReturnValue(Promise.reject(notFoundException));
 
-    controller.getGoldPricesByDateRange(new Date(), new Date()).subscribe({
-      next: () => {
-        fail('Expected method to throw NotFoundException');
-      },
-      error: (error) => {
-        expect(error).toBeInstanceOf(NotFoundException);
-        expect((error as NotFoundException).message).toBe(
-          'No gold prices found for the specified date range',
-        );
-      },
-    });
+    await expect(controller.getGoldPriceByDate(new Date())).rejects.toThrow(
+      NotFoundException,
+    );
+    await expect(controller.getTodayGoldPrice()).rejects.toThrow(
+      'No gold prices found for the specified date range',
+    );
   });
 });
