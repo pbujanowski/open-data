@@ -75,39 +75,33 @@ describe('GoldPricesController', () => {
     );
   });
 
-  it('should return the gold price by date', () => {
+  it('should return the gold price by date', async () => {
     const mockGoldPrice = createGoldPriceFixture();
 
     jest
-      .spyOn(goldPricesService, 'getGoldPriceByDate')
-      .mockReturnValue(of(mockGoldPrice));
+      .spyOn(queryBus, 'execute')
+      .mockReturnValue(Promise.resolve(mockGoldPrice));
 
-    controller.getGoldPriceByDate(new Date()).subscribe((result) => {
-      expect(result).toEqual(mockGoldPrice);
-      expect(goldPricesService).toHaveBeenCalled();
-    });
+    const result = await controller.getGoldPriceByDate(new Date());
+
+    expect(result).toEqual(mockGoldPrice);
   });
 
-  it('should return 404 if no gold price found for the specified date', () => {
+  it('should return 404 if no gold price found for the specified date', async () => {
     const notFoundException = new NotFoundException(
       'No gold price found for the specified date',
     );
 
     jest
-      .spyOn(goldPricesService, 'getGoldPriceByDate')
-      .mockReturnValueOnce(throwError(() => notFoundException));
+      .spyOn(queryBus, 'execute')
+      .mockReturnValue(Promise.reject(notFoundException));
 
-    controller.getGoldPriceByDate(new Date()).subscribe({
-      next: () => {
-        fail('Expected method to throw NotFoundException');
-      },
-      error: (error) => {
-        expect(error).toBeInstanceOf(NotFoundException);
-        expect((error as NotFoundException).message).toBe(
-          'No gold price found for the specified date',
-        );
-      },
-    });
+    await expect(controller.getGoldPriceByDate(new Date())).rejects.toThrow(
+      NotFoundException,
+    );
+    await expect(controller.getTodayGoldPrice()).rejects.toThrow(
+      'No gold price found for the specified date',
+    );
   });
 
   it('should return the gold prices by date range', () => {

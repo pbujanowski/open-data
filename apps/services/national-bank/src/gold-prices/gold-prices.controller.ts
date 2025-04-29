@@ -13,6 +13,8 @@ import { GetLastGoldPricesQuery } from './queries/get-last-gold-prices/get-last-
 import { GetTodayGoldPriceQuery } from './queries/get-today-gold-price/get-today-gold-price.query';
 import { GetTodayGoldPriceQueryResponse } from './queries/get-today-gold-price/get-today-gold-price.query-response';
 import { GetLastGoldPricesQueryResponse } from './queries/get-last-gold-prices/get-last-gold-prices.query-response';
+import { GetGoldPriceByDateQuery } from './queries/get-gold-price-by-date/get-gold-price-by-date.query';
+import { GetGoldPriceByDateQueryResponse } from './queries/get-gold-price-by-date/get-gold-price-by-date.query-response';
 
 @ApiTags('gold-prices')
 @Controller('gold-prices')
@@ -102,8 +104,16 @@ export class GoldPricesController {
     status: 404,
     description: 'No gold price found for the specified date',
   })
-  getGoldPriceByDate(@Param('date') date: Date) {
-    return this.goldPricesService.getGoldPriceByDate(date);
+  async getGoldPriceByDate(@Param('date') date: Date) {
+    const queryResponse = await this.queryBus.execute<
+      GetGoldPriceByDateQuery,
+      GetGoldPriceByDateQueryResponse
+    >(new GetGoldPriceByDateQuery(date));
+
+    return {
+      date: queryResponse.date,
+      price: queryResponse.price,
+    };
   }
 
   @Get('by-date-range/:startDate/:endDate')
