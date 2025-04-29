@@ -1,6 +1,3 @@
-import { GoldPrice } from '../interfaces/gold-price.interface';
+import { GoldPriceResponseDto } from './gold-price-response.dto';
 
-export class CurrentGoldPriceResponseDto implements GoldPrice {
-  date: Date;
-  price: number;
-}
+export class CurrentGoldPriceResponseDto extends GoldPriceResponseDto {}

@@ -8,7 +8,13 @@ describe('GoldPricesConfigService', () => {
   beforeEach(async () => {
     const configModule = ConfigModule.forRoot({
       load: [
-        () => ({ GOLD_PRICES_CURRENT_URL: 'https://gold-prices-current' }),
+        () => ({
+          GOLD_PRICES_CURRENT_URL: 'https://gold-prices-current',
+          GOLD_PRICES_LAST_URL: 'https://gold-prices-last',
+          GOLD_PRICES_TODAY_URL: 'https://gold-prices-today',
+          GOLD_PRICES_BY_DATE_URL: 'https://gold-prices-by-date',
+          GOLD_PRICES_BY_DATE_RANGE_URL: 'https://gold-prices-by-date-range',
+        }),
       ],
     });
     const module = await createGoldPricesModuleMock(configModule);
@@ -26,5 +32,29 @@ describe('GoldPricesConfigService', () => {
     const result = goldPricesConfigService.currentGoldPrice;
 
     expect(result).toBe('https://gold-prices-current');
+  });
+
+  it('should return URL for getting last gold prices', () => {
+    const result = goldPricesConfigService.lastGoldPrices;
+
+    expect(result).toBe('https://gold-prices-last');
+  });
+
+  it('should return URL for getting today gold price', () => {
+    const result = goldPricesConfigService.todayGoldPrice;
+
+    expect(result).toBe('https://gold-prices-today');
+  });
+
+  it('should return URL for getting gold price by date', () => {
+    const result = goldPricesConfigService.goldPriceByDate;
+
+    expect(result).toBe('https://gold-prices-by-date');
+  });
+
+  it('should return URL for getting gold prices by date range', () => {
+    const result = goldPricesConfigService.goldPricesByDateRange;
+
+    expect(result).toBe('https://gold-prices-by-date-range');
   });
 });

@@ -1,8 +1,3 @@
-import { NationalBankGoldPrice } from '../interfaces/national-bank-gold-price.interface';
+import { NationalBankGoldPriceResponseDto } from './national-bank-gold-price-response.dto';
 
-export class NationalBankCurrentGoldPriceResponseDto
-  implements NationalBankGoldPrice
-{
-  data: Date;
-  cena: number;
-}
+export class NationalBankCurrentGoldPriceResponseDto extends NationalBankGoldPriceResponseDto {}
