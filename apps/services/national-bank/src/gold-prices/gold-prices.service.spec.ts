@@ -11,6 +11,7 @@ import { NationalBankLastGoldPricesResponseDto } from './dto/responses/national-
 import { NationalBankTodayGoldPriceResponseDto } from './dto/responses/national-bank-today-gold-price-response.dto';
 import { NationalBankGoldPriceByDateResponseDto } from './dto/responses/national-bank-gold-price-by-date-response.dto';
 import { NationalBankGoldPricesByDateRangeResponseDto } from './dto/responses/national-bank-gold-prices-by-date-range-response.dto';
+import { createAxiosResponseFixture } from './__fixtures__/axios-response.fixture';
 
 describe('GoldPricesService', () => {
   let goldPricesConfigService: GoldPricesConfigService;
@@ -38,18 +39,7 @@ describe('GoldPricesService', () => {
     const mockDataResponse: NationalBankCurrentGoldPriceResponseDto[] = [
       nationalBankGoldPrice,
     ];
-    const mockResponse: AxiosResponse<
-      NationalBankCurrentGoldPriceResponseDto[]
-    > = {
-      data: mockDataResponse,
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config: {
-        url: 'https://api.example.com/gold-prices',
-        headers: new AxiosHeaders().set('Content-Type', 'application/json'),
-      },
-    };
+    const mockResponse = createAxiosResponseFixture(mockDataResponse);
     const expectedResult: CurrentGoldPriceResponseDto = {
       date: nationalBankGoldPrice.data,
       price: nationalBankGoldPrice.cena,
@@ -66,17 +56,7 @@ describe('GoldPricesService', () => {
     const mockDataResponse: NationalBankLastGoldPricesResponseDto[] = [
       nationalBankGoldPrice,
     ];
-    const mockResponse: AxiosResponse<NationalBankLastGoldPricesResponseDto[]> =
-      {
-        data: mockDataResponse,
-        status: 200,
-        statusText: 'OK',
-        headers: {},
-        config: {
-          url: 'https://api.example.com/gold-prices',
-          headers: new AxiosHeaders().set('Content-Type', 'application/json'),
-        },
-      };
+    const mockResponse = createAxiosResponseFixture(mockDataResponse);
     const expectedResult = [
       {
         date: nationalBankGoldPrice.data,
@@ -95,17 +75,7 @@ describe('GoldPricesService', () => {
     const mockDataResponse: NationalBankTodayGoldPriceResponseDto[] = [
       nationalBankGoldPrice,
     ];
-    const mockResponse: AxiosResponse<NationalBankTodayGoldPriceResponseDto[]> =
-      {
-        data: mockDataResponse,
-        status: 200,
-        statusText: 'OK',
-        headers: {},
-        config: {
-          url: 'https://api.example.com/gold-prices',
-          headers: new AxiosHeaders().set('Content-Type', 'application/json'),
-        },
-      };
+    const mockResponse = createAxiosResponseFixture(mockDataResponse);
     const expectedResult = {
       date: nationalBankGoldPrice.data,
       price: nationalBankGoldPrice.cena,
@@ -123,18 +93,7 @@ describe('GoldPricesService', () => {
     const mockDataResponse: NationalBankGoldPriceByDateResponseDto[] = [
       nationalBankGoldPrice,
     ];
-    const mockResponse: AxiosResponse<
-      NationalBankGoldPriceByDateResponseDto[]
-    > = {
-      data: mockDataResponse,
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config: {
-        url: 'https://api.example.com/gold-prices',
-        headers: new AxiosHeaders().set('Content-Type', 'application/json'),
-      },
-    };
+    const mockResponse = createAxiosResponseFixture(mockDataResponse);
     const expectedResult = {
       date: nationalBankGoldPrice.data,
       price: nationalBankGoldPrice.cena,
@@ -153,18 +112,7 @@ describe('GoldPricesService', () => {
     const mockDataResponse: NationalBankGoldPricesByDateRangeResponseDto[] = [
       nationalBankGoldPrice,
     ];
-    const mockResponse: AxiosResponse<
-      NationalBankGoldPricesByDateRangeResponseDto[]
-    > = {
-      data: mockDataResponse,
-      status: 200,
-      statusText: 'OK',
-      headers: {},
-      config: {
-        url: 'https://api.example.com/gold-prices',
-        headers: new AxiosHeaders().set('Content-Type', 'application/json'),
-      },
-    };
+    const mockResponse = createAxiosResponseFixture(mockDataResponse);
     const expectedResult = [
       {
         date: nationalBankGoldPrice.data,

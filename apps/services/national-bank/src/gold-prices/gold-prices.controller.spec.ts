@@ -32,12 +32,13 @@ describe('GoldPricesController', () => {
 
   it('should return the last gold prices', async () => {
     const mockGoldPrices = [createGoldPriceFixture(), createGoldPriceFixture()];
+    const topCount = 2;
 
     jest
       .spyOn(queryBus, 'execute')
       .mockReturnValue(Promise.resolve(mockGoldPrices));
 
-    const result = await controller.getLastGoldPrices(2);
+    const result = await controller.getLastGoldPrices(topCount);
 
     expect(result).toEqual(mockGoldPrices);
   });
@@ -73,12 +74,13 @@ describe('GoldPricesController', () => {
 
   it('should return the gold price by date', async () => {
     const mockGoldPrice = createGoldPriceFixture();
+    const date = new Date();
 
     jest
       .spyOn(queryBus, 'execute')
       .mockReturnValue(Promise.resolve(mockGoldPrice));
 
-    const result = await controller.getGoldPriceByDate(new Date());
+    const result = await controller.getGoldPriceByDate(date);
 
     expect(result).toEqual(mockGoldPrice);
   });
@@ -87,29 +89,32 @@ describe('GoldPricesController', () => {
     const notFoundException = new NotFoundException(
       'No gold price found for the specified date',
     );
+    const date = new Date();
 
     jest
       .spyOn(queryBus, 'execute')
       .mockReturnValue(Promise.reject(notFoundException));
 
-    await expect(controller.getGoldPriceByDate(new Date())).rejects.toThrow(
+    await expect(controller.getGoldPriceByDate(date)).rejects.toThrow(
       NotFoundException,
     );
-    await expect(controller.getTodayGoldPrice()).rejects.toThrow(
+    await expect(controller.getGoldPriceByDate(date)).rejects.toThrow(
       'No gold price found for the specified date',
     );
   });
 
   it('should return the gold prices by date range', async () => {
     const mockGoldPrices = [createGoldPriceFixture(), createGoldPriceFixture()];
+    const startDate = new Date();
+    const endDate = new Date();
 
     jest
       .spyOn(queryBus, 'execute')
       .mockReturnValue(Promise.resolve(mockGoldPrices));
 
     const result = await controller.getGoldPricesByDateRange(
-      new Date(),
-      new Date(),
+      startDate,
+      endDate,
     );
 
     expect(result).toEqual(mockGoldPrices);
@@ -119,14 +124,16 @@ describe('GoldPricesController', () => {
     const notFoundException = new NotFoundException(
       'No gold prices found for the specified date range',
     );
+    const startDate = new Date();
+    const endDate = new Date();
 
     jest
       .spyOn(queryBus, 'execute')
       .mockReturnValue(Promise.reject(notFoundException));
 
-    await expect(controller.getGoldPriceByDate(new Date())).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(
+      controller.getGoldPricesByDateRange(startDate, endDate),
+    ).rejects.toThrow(NotFoundException);
     await expect(controller.getTodayGoldPrice()).rejects.toThrow(
       'No gold prices found for the specified date range',
     );

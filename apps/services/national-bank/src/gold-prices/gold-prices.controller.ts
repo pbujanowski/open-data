@@ -56,7 +56,9 @@ export class GoldPricesController {
     description: 'Fetches the last gold prices',
     type: LastGoldPricesResponseDto,
   })
-  async getLastGoldPrices(@Param('topCount') topCount: number) {
+  async getLastGoldPrices(
+    @Param('topCount') topCount: number,
+  ): Promise<LastGoldPricesResponseDto[]> {
     const queryResponse = await this.queryBus.execute<
       GetLastGoldPricesQuery,
       GetLastGoldPricesQueryResponse[]
@@ -78,7 +80,7 @@ export class GoldPricesController {
     status: 404,
     description: 'No gold price found for today',
   })
-  async getTodayGoldPrice() {
+  async getTodayGoldPrice(): Promise<TodayGoldPriceResponseDto> {
     const queryResponse = await this.queryBus.execute<
       GetTodayGoldPriceQuery,
       GetTodayGoldPriceQueryResponse
@@ -106,7 +108,9 @@ export class GoldPricesController {
     status: 404,
     description: 'No gold price found for the specified date',
   })
-  async getGoldPriceByDate(@Param('date') date: Date) {
+  async getGoldPriceByDate(
+    @Param('date') date: Date,
+  ): Promise<GoldPriceByDateResponseDto> {
     const queryResponse = await this.queryBus.execute<
       GetGoldPriceByDateQuery,
       GetGoldPriceByDateQueryResponse
@@ -143,7 +147,7 @@ export class GoldPricesController {
   async getGoldPricesByDateRange(
     @Param('startDate') startDate: Date,
     @Param('endDate') endDate: Date,
-  ) {
+  ): Promise<GoldPricesByDateRangeResponseDto[]> {
     const queryResponse = await this.queryBus.execute<
       GetGoldPricesByDateRangeQuery,
       GetGoldPricesByDateRangeQueryResponse[]
