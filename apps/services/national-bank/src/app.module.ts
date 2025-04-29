@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { GoldPricesModule } from './gold-prices/gold-prices.module';
 import { ConfigModule } from '@nestjs/config';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
@@ -8,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: '.env.development',
       isGlobal: true,
     }),
+    CqrsModule.forRoot(),
     GoldPricesModule,
   ],
 })

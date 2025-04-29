@@ -5,6 +5,8 @@ import { GoldPricesController } from '../gold-prices.controller';
 import { GoldPricesConfigService } from '../gold-prices-config.service';
 import { GoldPricesService } from '../gold-prices.service';
 import { DynamicModule, ForwardReference, Type } from '@nestjs/common';
+import { GetCurrentGoldPriceQueryHandler } from '../queries/get-current-gold-price/get-current-gold-price.query-handler';
+import { CqrsModule } from '@nestjs/cqrs';
 
 export const createGoldPricesModuleMock = (
   configModule:
@@ -15,7 +17,11 @@ export const createGoldPricesModuleMock = (
     | undefined = undefined,
 ) =>
   Test.createTestingModule({
-    imports: [configModule || ConfigModule, HttpModule],
+    imports: [configModule || ConfigModule, CqrsModule, HttpModule],
     controllers: [GoldPricesController],
-    providers: [GoldPricesConfigService, GoldPricesService],
+    providers: [
+      GetCurrentGoldPriceQueryHandler,
+      GoldPricesConfigService,
+      GoldPricesService,
+    ],
   }).compile();

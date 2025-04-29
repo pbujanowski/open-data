@@ -4,32 +4,34 @@ import { GoldPricesService } from './gold-prices.service';
 import { createGoldPriceFixture } from './__fixtures__/gold-price.fixture';
 import { NotFoundException } from '@nestjs/common';
 import { of, throwError } from 'rxjs';
+import { QueryBus } from '@nestjs/cqrs';
 
 describe('GoldPricesController', () => {
   let controller: GoldPricesController;
   let goldPricesService: GoldPricesService;
+  let queryBus: QueryBus;
 
   beforeEach(async () => {
     const module = await createGoldPricesModuleMock();
     controller = module.get<GoldPricesController>(GoldPricesController);
     goldPricesService = module.get<GoldPricesService>(GoldPricesService);
+    queryBus = module.get<QueryBus>(QueryBus);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should return the current gold price', () => {
+  it('should return the current gold price', async () => {
     const mockGoldPrice = createGoldPriceFixture();
 
     jest
-      .spyOn(goldPricesService, 'getCurrentGoldPrice')
-      .mockReturnValue(of(mockGoldPrice));
+      .spyOn(queryBus, 'execute')
+      .mockReturnValue(Promise.resolve(mockGoldPrice));
 
-    controller.getCurrentGoldPrice().subscribe((result) => {
-      expect(result).toEqual(mockGoldPrice);
-      expect(goldPricesService).toHaveBeenCalled();
-    });
+    const result = await controller.getCurrentGoldPrice();
+
+    expect(result).toEqual(mockGoldPrice);
   });
 
   it('should return the last gold prices', () => {
