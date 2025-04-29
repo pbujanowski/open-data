@@ -9,6 +9,7 @@ import { GoldPricesByDateRangeResponseDto } from './dto/responses/gold-price-by-
 import { QueryBus } from '@nestjs/cqrs';
 import { GetCurrentGoldPriceQuery } from './queries/get-current-gold-price/get-current-gold-price.query';
 import { GetCurrentGoldPriceQueryResponse } from './queries/get-current-gold-price/get-current-gold-price.query-response';
+import { GetLastGoldPricesQuery } from './queries/get-last-gold-prices/get-last-gold-prices.query';
 
 @ApiTags('gold-prices')
 @Controller('gold-prices')
@@ -48,8 +49,16 @@ export class GoldPricesController {
     description: 'Fetches the last gold prices',
     type: LastGoldPricesResponseDto,
   })
-  getLastGoldPrices(@Param('topCount') topCount: number) {
-    return this.goldPricesService.getLastGoldPrices(topCount);
+  async getLastGoldPrices(@Param('topCount') topCount: number) {
+    const queryResponse = await this.queryBus.execute<
+      GetLastGoldPricesQuery,
+      GetCurrentGoldPriceQueryResponse[]
+    >(new GetLastGoldPricesQuery(topCount));
+
+    return queryResponse.map((goldPrice) => ({
+      date: goldPrice.date,
+      price: goldPrice.price,
+    }));
   }
 
   @Get('today')

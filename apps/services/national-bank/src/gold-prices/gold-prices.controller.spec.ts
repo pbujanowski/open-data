@@ -34,17 +34,16 @@ describe('GoldPricesController', () => {
     expect(result).toEqual(mockGoldPrice);
   });
 
-  it('should return the last gold prices', () => {
+  it('should return the last gold prices', async () => {
     const mockGoldPrices = [createGoldPriceFixture(), createGoldPriceFixture()];
 
     jest
-      .spyOn(goldPricesService, 'getLastGoldPrices')
-      .mockReturnValue(of(mockGoldPrices));
+      .spyOn(queryBus, 'execute')
+      .mockReturnValue(Promise.resolve(mockGoldPrices));
 
-    controller.getLastGoldPrices(2).subscribe((result) => {
-      expect(result).toEqual(mockGoldPrices);
-      expect(goldPricesService).toHaveBeenCalled();
-    });
+    const result = await controller.getLastGoldPrices(2);
+
+    expect(result).toEqual(mockGoldPrices);
   });
 
   it('should return the today gold price', () => {
