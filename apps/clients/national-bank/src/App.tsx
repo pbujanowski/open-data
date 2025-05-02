@@ -1,8 +1,17 @@
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import { Home } from './pages/Home';
+import { GoldPrices } from './pages/GoldPrices';
+
 export const App = () => {
   return (
-    <div>
-      <h1>Open Data National Bank Client</h1>
-      <p>This is a client application for the Open Data National Bank.</p>
-    </div>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/gold-prices" element={<GoldPrices />} />
+        </Routes>
+      </Layout>
+    </Router>
   );
 };
