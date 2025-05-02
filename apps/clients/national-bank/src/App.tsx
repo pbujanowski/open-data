@@ -1,17 +1,22 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { Home } from './pages/Home';
-import { GoldPrices } from './pages/GoldPrices';
+import { HomePage } from './pages/Home/HomePage';
+import { GoldPricesPage } from './pages/GoldPrices/GoldPricesPage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export const App = () => {
+  const queryClient = new QueryClient();
+
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/gold-prices" element={<GoldPrices />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/gold-prices" element={<GoldPricesPage />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </QueryClientProvider>
   );
 };
