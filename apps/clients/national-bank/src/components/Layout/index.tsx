@@ -32,7 +32,7 @@ export const Layout = ({ children }: LayoutProps) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Container>{children}</Container>
+      <Container sx={{ marginTop: 2 }}>{children}</Container>
     </>
   );
 };

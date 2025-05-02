@@ -15,6 +15,11 @@ export const CurrentGoldPrice = () => {
   return (
     <Card>
       <CardHeader title="Current Gold Price" />
+      <CardActions>
+        <Button size="small" onClick={() => refetch()} disabled={isFetching}>
+          Reload
+        </Button>
+      </CardActions>
       <CardContent>
         {isFetching ? (
           <CircularProgress />
@@ -27,11 +32,6 @@ export const CurrentGoldPrice = () => {
           </>
         )}
       </CardContent>
-      <CardActions>
-        <Button size="small" onClick={() => refetch()} disabled={isFetching}>
-          Reload
-        </Button>
-      </CardActions>
     </Card>
   );
 };
