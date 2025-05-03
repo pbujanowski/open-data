@@ -10,7 +10,7 @@ import {
 import { useGetCurrentGoldPrice } from '../hooks/useGetCurrentGoldPrice';
 
 export const CurrentGoldPrice = () => {
-  const { data, isFetching, refetch } = useGetCurrentGoldPrice();
+  const { data, isFetching, isError, refetch } = useGetCurrentGoldPrice();
 
   return (
     <Card>
@@ -23,6 +23,10 @@ export const CurrentGoldPrice = () => {
       <CardContent>
         {isFetching ? (
           <CircularProgress />
+        ) : isError ? (
+          <Typography variant="body1" color="error">
+            Not found
+          </Typography>
         ) : (
           <>
             <Typography variant="caption">Date</Typography>

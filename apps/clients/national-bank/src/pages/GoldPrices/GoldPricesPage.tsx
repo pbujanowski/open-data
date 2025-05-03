@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import { CurrentGoldPrice } from './components/CurrentGoldPrice';
 import { LastGoldPrices } from './components/LastGoldPrices';
 import { TodayGoldPrice } from './components/TodayGoldPrice';
+import { GoldPriceByDate } from './components/GoldPriceByDate';
 
 export const GoldPricesPage = () => {
   return (
@@ -9,6 +10,7 @@ export const GoldPricesPage = () => {
       <CurrentGoldPrice />
       <LastGoldPrices />
       <TodayGoldPrice />
+      <GoldPriceByDate />
     </Stack>
   );
 };

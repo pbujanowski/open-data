@@ -13,11 +13,12 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Typography,
 } from '@mui/material';
 
 export const LastGoldPrices = () => {
   const [topCount, setTopCount] = useState(3);
-  const { data, isFetching, refetch } = useGetLastGoldPrices(topCount);
+  const { data, isFetching, isError, refetch } = useGetLastGoldPrices(topCount);
 
   const handleTopCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value, 10);
@@ -36,6 +37,7 @@ export const LastGoldPrices = () => {
           value={topCount}
           onChange={handleTopCountChange}
           slotProps={{ htmlInput: { min: 0, max: 10 } }}
+          disabled={isFetching}
         />
         <Button size="small" onClick={() => refetch()} disabled={isFetching}>
           Reload
@@ -44,6 +46,10 @@ export const LastGoldPrices = () => {
       <CardContent>
         {isFetching ? (
           <CircularProgress />
+        ) : isError ? (
+          <Typography variant="body1" color="error">
+            Not found
+          </Typography>
         ) : (
           <Table>
             <TableHead>

@@ -10,6 +10,11 @@ export const useGetCurrentGoldPrice = () => {
     queryFn: async (): Promise<GoldPriceModel> => {
       const response = await fetch(getCurrentGoldPriceUrl());
       const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
       return {
         date: data.date,
         price: data.price,

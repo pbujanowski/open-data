@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Button,
   Card,
@@ -5,17 +6,34 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
+  TextField,
   Typography,
 } from '@mui/material';
-import { useGetTodayGoldPrice } from '../hooks/useGetTodayGoldPrice';
+import { useGetGoldPriceByDate } from '../hooks/useGetGoldPriceByDate';
+import { format } from 'date-fns';
 
-export const TodayGoldPrice = () => {
-  const { data, isFetching, isError, refetch } = useGetTodayGoldPrice();
+export const GoldPriceByDate = () => {
+  const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+  const { data, isFetching, isError, refetch } = useGetGoldPriceByDate(date);
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedDate = new Date(event.target.value);
+    setDate(format(selectedDate, 'yyyy-MM-dd'));
+  };
 
   return (
     <Card>
-      <CardHeader title="Today's Gold Price" />
+      <CardHeader title="Gold Price By Date" />
       <CardActions>
+        <TextField
+          label="Date"
+          type="date"
+          size="small"
+          sx={{ width: '150px' }}
+          value={date}
+          onChange={handleDateChange}
+          disabled={isFetching}
+        />
         <Button size="small" onClick={() => refetch()} disabled={isFetching}>
           Reload
         </Button>

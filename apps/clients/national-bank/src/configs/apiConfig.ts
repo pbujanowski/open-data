@@ -5,6 +5,7 @@ export const apiConfig = () => {
       currentGoldPrice: '/gold-prices/current',
       lastGoldPrices: '/gold-prices/last',
       todayGoldPrice: '/gold-prices/today',
+      goldPriceByDate: '/gold-prices/by-date',
     },
   } as const;
 
@@ -17,5 +18,8 @@ export const apiConfig = () => {
 
     getTodayGoldPriceUrl: () =>
       `${urls.baseUrl}${urls.endpoints.todayGoldPrice}`,
+
+    getGoldPriceByDateUrl: (date: string) =>
+      `${urls.baseUrl}${urls.endpoints.goldPriceByDate}/${date}`,
   };
 };

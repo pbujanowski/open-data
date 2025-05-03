@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import { GoldPriceModel } from '../models/GoldPriceModel';
 import { apiConfig } from '../../../configs/apiConfig';
+import { GoldPriceModel } from '../models/GoldPriceModel';
 
-export const useGetTodayGoldPrice = () => {
-  const { getTodayGoldPriceUrl } = apiConfig();
+export const useGetGoldPriceByDate = (date: string) => {
+  const { getGoldPriceByDateUrl } = apiConfig();
 
   return useQuery({
-    queryKey: ['todayGoldPrice'],
-    queryFn: async (): Promise<GoldPriceModel> => {
-      const response = await fetch(getTodayGoldPriceUrl());
+    queryKey: ['goldPriceByDate', date],
+    queryFn: async (): Promise<GoldPriceModel | undefined> => {
+      const response = await fetch(getGoldPriceByDateUrl(date));
       const data = await response.json();
 
       if (!response.ok) {
