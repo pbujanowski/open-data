@@ -3,6 +3,7 @@ import { CurrentGoldPrice } from './components/CurrentGoldPrice';
 import { LastGoldPrices } from './components/LastGoldPrices';
 import { TodayGoldPrice } from './components/TodayGoldPrice';
 import { GoldPriceByDate } from './components/GoldPriceByDate';
+import { GoldPricesByDateRange } from './components/GoldPricesByDateRange';
 
 export const GoldPricesPage = () => {
   return (
@@ -11,6 +12,7 @@ export const GoldPricesPage = () => {
       <LastGoldPrices />
       <TodayGoldPrice />
       <GoldPriceByDate />
+      <GoldPricesByDateRange />
     </Stack>
   );
 };

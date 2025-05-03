@@ -7,7 +7,7 @@ export const useGetGoldPriceByDate = (date: string) => {
 
   return useQuery({
     queryKey: ['goldPriceByDate', date],
-    queryFn: async (): Promise<GoldPriceModel | undefined> => {
+    queryFn: async (): Promise<GoldPriceModel> => {
       const response = await fetch(getGoldPriceByDateUrl(date));
       const data = await response.json();
 
