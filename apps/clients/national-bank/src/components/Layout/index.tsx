@@ -46,7 +46,7 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           {useMediaQuery(theme.breakpoints.down('sm')) ? (
             <MobileNavigation navigationItems={navigationItems} />
