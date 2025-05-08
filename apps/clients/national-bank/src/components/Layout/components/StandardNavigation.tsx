@@ -12,11 +12,12 @@ export const StandardNavigation = ({
 }: StandardNavigationProps) => {
   return (
     <>
-      <AppHeader />
-      <Box>
+      <AppHeader data-testid="app-header" />
+      <Box data-testid="navigation-box">
         {navigationItems.map((item) => (
           <Button
             key={item.label}
+            data-testid={`menu-item-${item.label}`}
             color="inherit"
             component={Link}
             to={item.to}

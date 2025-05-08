@@ -54,6 +54,7 @@ export const Layout = ({ children }: LayoutProps) => {
             <StandardNavigation navigationItems={navigationItems} />
           )}
           <IconButton
+            data-testid="theme-toggle-button"
             color="inherit"
             onClick={toggleTheme}
             sx={{ marginLeft: 'auto' }}
