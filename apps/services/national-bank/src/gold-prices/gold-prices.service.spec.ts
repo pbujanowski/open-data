@@ -4,7 +4,6 @@ import { NationalBankCurrentGoldPriceResponseDto } from './dto/responses/nationa
 import { CurrentGoldPriceResponseDto } from './dto/responses/current-gold-price-response.dto';
 import { HttpService } from '@nestjs/axios';
 import { of } from 'rxjs';
-import { AxiosHeaders, AxiosResponse } from 'axios';
 import { createGoldPricesModuleMock } from './__mocks__/gold-prices.module.mock';
 import { createNationalBankGoldPriceFixture } from './__fixtures__/national-bank-gold-price.fixture';
 import { NationalBankLastGoldPricesResponseDto } from './dto/responses/national-bank-last-gold-prices-response.dto';

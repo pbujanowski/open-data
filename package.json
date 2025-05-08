@@ -14,5 +14,12 @@
   "private": true,
   "workspaces": [
     "apps/**/*"
-  ]
+  ],
+  "scripts": {
+    "start": "concurrently \"yarn workspace @open-data/national-bank-client start\" \"yarn workspace @open-data/national-bank-service start\"",
+    "start:dev": "concurrently \"yarn workspace @open-data/national-bank-client start:dev\" \"yarn workspace @open-data/national-bank-service start:dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
 }
