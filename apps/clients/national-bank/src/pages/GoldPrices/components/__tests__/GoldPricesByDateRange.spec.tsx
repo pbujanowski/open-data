@@ -8,7 +8,6 @@ import {
 } from '@tanstack/react-query';
 import { GoldPricesByDateRange } from '../GoldPricesByDateRange';
 import { useGetGoldPricesByDateRange } from '../../hooks/useGetGoldPricesByDateRange';
-import { format } from 'date-fns';
 import { GoldPriceModel } from '../../models/GoldPriceModel';
 
 vi.mock('../../hooks/useGetGoldPricesByDateRange');

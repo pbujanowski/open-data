@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  national-bank-client:
+    image: open-data/national-bank-client
+    build:
+      context: ./apps/clients/national-bank
+      dockerfile: Dockerfile
+    ports:
+      - "3001:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5001
+
+  national-bank-service:
+    image: open-data/national-bank-service
+    build:
+      context: ./apps/services/national-bank
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=production
+      - PORT=5001
+      - CORS_ORIGIN=http://localhost:3001

@@ -13,7 +13,8 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "apps/**/*"
+    "apps/clients/*",
+    "apps/services/*"
   ],
   "scripts": {
     "start": "concurrently \"yarn workspace @open-data/national-bank-client start\" \"yarn workspace @open-data/national-bank-service start\"",
