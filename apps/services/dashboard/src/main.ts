@@ -6,21 +6,21 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('National Bank API')
-    .setDescription('API documentation for the National Bank service')
+    .setTitle('Dashboard API')
+    .setDescription('API documentation for the Dashboard service')
     .setVersion('1.0')
-    .addTag('gold-prices')
+    .addTag('dashboard')
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('swagger', app, document);
 
   app.enableCors({
-    origin: process.env.CORS_ORIGIN ?? 'http://localhost:3002',
+    origin: process.env.CORS_ORIGIN ?? 'http://localhost:3001',
     methods: 'GET,',
   });
 
-  await app.listen(process.env.PORT ?? 5002);
+  await app.listen(process.env.PORT ?? 5001);
 }
 
 bootstrap().catch((error) => {

@@ -1,20 +1,20 @@
 version: "3.8"
 
 services:
-  national-bank-client:
-    image: open-data/national-bank-client
+  dashboard-client:
+    image: open-data/dashboard-client
     build:
-      context: ./apps/clients/national-bank
+      context: ./apps/clients/dashboard
       dockerfile: Dockerfile
     ports:
       - "3001:80"
     environment:
-      - REACT_APP_API_URL=http://localhost:5001
+      - VITE_API_URL=http://localhost:5001
 
-  national-bank-service:
-    image: open-data/national-bank-service
+  dashboard-service:
+    image: open-data/dashboard-service
     build:
-      context: ./apps/services/national-bank
+      context: ./apps/services/dashboard
       dockerfile: Dockerfile
     ports:
       - "5001:5001"
@@ -22,3 +22,25 @@ services:
       - NODE_ENV=production
       - PORT=5001
       - CORS_ORIGIN=http://localhost:3001
+
+  national-bank-client:
+    image: open-data/national-bank-client
+    build:
+      context: ./apps/clients/national-bank
+      dockerfile: Dockerfile
+    ports:
+      - "3002:80"
+    environment:
+      - VITE_API_URL=http://localhost:5002
+
+  national-bank-service:
+    image: open-data/national-bank-service
+    build:
+      context: ./apps/services/national-bank
+      dockerfile: Dockerfile
+    ports:
+      - "5002:5002"
+    environment:
+      - NODE_ENV=production
+      - PORT=5002
+      - CORS_ORIGIN=http://localhost:3002

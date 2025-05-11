@@ -13,11 +13,17 @@ RUN yarn install --frozen-lockfile
 # Copy the rest of the application code
 COPY . .
 
-# Build the NestJS app
+# Build the React app
 RUN yarn build
 
-# Expose the application port
-EXPOSE 5002
+# Use a lightweight web server to serve the built app
+FROM docker.io/library/nginx:alpine
 
-# Start the application
-CMD ["yarn", "start:prod"]
+# Copy the built app to the Nginx web server
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

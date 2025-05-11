@@ -1,6 +1,6 @@
 export const apiConfig = () => {
   const urls = {
-    baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:5001',
+    baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:5002',
     endpoints: {
       currentGoldPrice: '/gold-prices/current',
       lastGoldPrices: '/gold-prices/last',
