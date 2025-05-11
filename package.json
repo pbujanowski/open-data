@@ -13,13 +13,16 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "apps/**/*"
+    "apps/clients/*",
+    "apps/services/*"
   ],
   "scripts": {
     "start": "concurrently \"yarn workspace @open-data/national-bank-client start\" \"yarn workspace @open-data/national-bank-service start\"",
-    "start:dev": "concurrently \"yarn workspace @open-data/national-bank-client start:dev\" \"yarn workspace @open-data/national-bank-service start:dev\""
+    "start:dev": "concurrently \"yarn workspace @open-data/national-bank-client start:dev\" \"yarn workspace @open-data/national-bank-service start:dev\"",
+    "prepare": "husky install"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "husky": "^8.0.0"
   }
 }
