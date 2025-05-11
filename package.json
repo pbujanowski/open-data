@@ -1,7 +1,7 @@
 {
-  "name": "@open-data/software",
+  "name": "@open-data/root",
   "version": "0.0.1",
-  "description": "The Open Data software.",
+  "description": "The Open Data root.",
   "author": {
     "name": "Patryk Bujanowski",
     "email": "patryk.bujanowski@hotmail.com"
@@ -17,8 +17,8 @@
     "apps/services/*"
   ],
   "scripts": {
-    "start": "concurrently \"yarn workspace @open-data/national-bank-client start\" \"yarn workspace @open-data/national-bank-service start\"",
-    "start:dev": "concurrently \"yarn workspace @open-data/national-bank-client start:dev\" \"yarn workspace @open-data/national-bank-service start:dev\"",
+    "start": "concurrently \"yarn workspace @open-data/dashboard-client start\" \"yarn workspace @open-data/dashboard-service start\" \"yarn workspace @open-data/national-bank-client start\" \"yarn workspace @open-data/national-bank-service start\"",
+    "start:dev": "concurrently \"yarn workspace @open-data/dashboard-client start:dev\" \"yarn workspace @open-data/dashboard-service start:dev\" \"yarn workspace @open-data/national-bank-client start:dev\" \"yarn workspace @open-data/national-bank-service start:dev\"",
     "prepare": "husky install"
   },
   "devDependencies": {
