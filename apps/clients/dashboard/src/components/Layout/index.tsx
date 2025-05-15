@@ -1,27 +1,32 @@
-import React, { useState, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
-  AppBar,
+  Box,
   Container,
-  CssBaseline,
+  Tabs,
+  Tab,
   Toolbar,
+  createTheme,
+  ThemeProvider,
   useMediaQuery,
-  IconButton,
 } from '@mui/material';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { MobileNavigation } from './components/MobileNavigation';
-import { StandardNavigation } from './components/StandardNavigation';
-import { NavigationItemViewModel } from './models/NavigationItemViewModel';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { Link, useLocation } from 'react-router-dom';
 
-interface LayoutProps {
+export interface LayoutProps {
   children: React.ReactNode;
 }
 
 export const Layout = ({ children }: LayoutProps) => {
+  const tabRoutes = [{ label: 'Home', to: '/dashboard' }];
+
+  const location = useLocation();
+  const currentTab = tabRoutes.findIndex((tab) => tab.to === location.pathname);
+
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
   const [mode, setMode] = useState<'light' | 'dark'>(
-    prefersDarkMode ? 'dark' : 'light',
+    ((localStorage.getItem('theme-mode') ?? prefersDarkMode)
+      ? 'dark'
+      : 'light') as 'light' | 'dark',
   );
 
   const theme = useMemo(
@@ -34,36 +39,43 @@ export const Layout = ({ children }: LayoutProps) => {
     [mode],
   );
 
-  const toggleTheme = () => {
-    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-  };
+  useEffect(() => {
+    const handleThemeChanged = (event: Event) => {
+      if (event.type === 'themeChanged') {
+        const newMode = localStorage.getItem('theme-mode');
+        if (newMode) {
+          setMode(newMode as 'light' | 'dark');
+        }
+      }
+    };
 
-  const navigationItems: NavigationItemViewModel[] = [
-    { label: 'Home', to: '/' },
-  ];
+    window.addEventListener('themeChanged', handleThemeChanged);
+
+    return () => {
+      window.removeEventListener('themeChanged', handleThemeChanged);
+    };
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AppBar position="fixed">
-        <Toolbar>
-          {useMediaQuery(theme.breakpoints.down('sm')) ? (
-            <MobileNavigation navigationItems={navigationItems} />
-          ) : (
-            <StandardNavigation navigationItems={navigationItems} />
-          )}
-          <IconButton
-            data-testid="theme-toggle-button"
-            color="inherit"
-            onClick={toggleTheme}
-            sx={{ marginLeft: 'auto' }}
-          >
-            {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Container sx={{ marginTop: 2 }} maxWidth="xl">
-        {children}
+      <Container maxWidth="xl">
+        <Toolbar />
+        <Tabs
+          value={currentTab === -1 ? 0 : currentTab}
+          indicatorColor="primary"
+          textColor="primary"
+        >
+          {tabRoutes.map((tab, idx) => (
+            <Tab
+              key={tab.to}
+              label={tab.label}
+              component={Link}
+              to={tab.to}
+              value={idx}
+            />
+          ))}
+        </Tabs>
+        <Box>{children}</Box>
       </Container>
     </ThemeProvider>
   );

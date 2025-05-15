@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   AppBar,
   Container,
@@ -19,7 +19,13 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children }: LayoutProps) => {
+  const navigationItems: NavigationItemViewModel[] = [
+    { label: 'Dashboard', to: '/' },
+    { label: 'National Bank', to: '/national-bank' },
+  ];
+
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
   const [mode, setMode] = useState<'light' | 'dark'>(
     prefersDarkMode ? 'dark' : 'light',
   );
@@ -38,9 +44,10 @@ export const Layout = ({ children }: LayoutProps) => {
     setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
-  const navigationItems: NavigationItemViewModel[] = [
-    { label: 'Home', to: '/' },
-  ];
+  useEffect(() => {
+    localStorage.setItem('theme-mode', mode);
+    dispatchEvent(new Event('themeChanged'));
+  }, [mode]);
 
   return (
     <ThemeProvider theme={theme}>
