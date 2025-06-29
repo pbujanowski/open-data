@@ -13,6 +13,7 @@ export const StandardNavigation = ({
   return (
     <>
       <AppHeader data-testid="app-header" />
+      <Box flexGrow={1} data-testid="navigation-spacer" />
       <Box data-testid="navigation-box">
         {navigationItems.map((item) => (
           <Button
