@@ -69,7 +69,13 @@ export const Layout = ({ children }: LayoutProps) => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Container sx={{ marginTop: 2 }} maxWidth="xl">
+      <Container
+        maxWidth={false}
+        disableGutters
+        sx={{
+          marginTop: '64px',
+        }}
+      >
         {children}
       </Container>
     </ThemeProvider>

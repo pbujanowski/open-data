@@ -19,6 +19,7 @@
     "dev": "vite",
     "test": "vitest",
     "build": "tsc -b && vite build",
+    "clean": "rimraf dist node_modules",
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "vite preview"
@@ -29,6 +30,7 @@
     "@fontsource/roboto": "^5.2.5",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
+    "@open-data/shared-ui-lib": "*",
     "@tanstack/react-query": "^5.75.0",
     "date-fns": "^4.1.0",
     "react": "^19.0.0",
@@ -52,6 +54,7 @@
     "globals": "^16.0.0",
     "playwright": "^1.52.0",
     "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.3.1",

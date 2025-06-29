@@ -14,15 +14,24 @@
   "private": true,
   "workspaces": [
     "apps/clients/*",
-    "apps/services/*"
+    "apps/services/*",
+    "libs/**/*"
   ],
   "scripts": {
     "start": "concurrently \"yarn workspace @open-data/main-client start\" \"yarn workspace @open-data/dashboard-client start\" \"yarn workspace @open-data/dashboard-service start\" \"yarn workspace @open-data/national-bank-client start\" \"yarn workspace @open-data/national-bank-service start\"",
     "start:dev": "concurrently \"yarn workspace @open-data/main-client start:dev\" \"yarn workspace @open-data/dashboard-client start:dev\" \"yarn workspace @open-data/dashboard-service start:dev\" \"yarn workspace @open-data/national-bank-client start:dev\" \"yarn workspace @open-data/national-bank-service start:dev\"",
-    "prepare": "husky install"
+    "build": "yarn workspaces run build",
+    "test": "yarn workspaces run test",
+    "lint": "yarn workspaces run lint",
+    "format": "yarn workspaces run format",
+    "clean": "rimraf node_modules",
+    "clean:all": "yarn workspaces run clean && yarn clean",
+    "prepare": "husky install",
+    "postinstall": "yarn workspace @open-data/shared-ui-lib run build"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "rimraf": "^6.0.1"
   }
 }

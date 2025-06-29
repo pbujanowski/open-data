@@ -17,6 +17,10 @@ yarn.lock
 
 # Ignore logs
 *.log
+yarn-error.log
+.cache
+coverage
+.env
 
 # Ignore Docker files themselves
 docker-compose.yml

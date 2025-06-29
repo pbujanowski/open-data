@@ -4,25 +4,21 @@ import {
   Container,
   Tabs,
   Tab,
-  Toolbar,
   createTheme,
   ThemeProvider,
   useMediaQuery,
 } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
+import { TabItemModel } from './models/TabItemModel';
 
 export interface LayoutProps {
+  tabItems: TabItemModel[];
   children: React.ReactNode;
 }
 
-export const Layout = ({ children }: LayoutProps) => {
-  const tabRoutes = [
-    { label: 'Home', to: '/national-bank' },
-    { label: 'Gold Prices', to: '/national-bank/gold-prices' },
-  ];
-
+export const Layout = ({ tabItems, children }: LayoutProps) => {
   const location = useLocation();
-  const currentTab = tabRoutes.findIndex((tab) => tab.to === location.pathname);
+  const currentTab = tabItems.findIndex((tab) => tab.to === location.pathname);
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
@@ -62,21 +58,30 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="xl">
-        <Toolbar />
         <Tabs
+          sx={{
+            border: 1,
+            borderColor: 'divider',
+            bgcolor: 'background.paper',
+          }}
           value={currentTab === -1 ? 0 : currentTab}
           indicatorColor="primary"
           textColor="primary"
         >
-          {tabRoutes.map((tab, idx) => (
-            <Tab
-              key={tab.to}
-              label={tab.label}
-              component={Link}
-              to={tab.to}
-              value={idx}
-            />
-          ))}
+          {tabItems.length === 0 ? (
+            <Tab label="No Tabs" disabled />
+          ) : (
+            tabItems.map((tab, idx) => (
+              <Tab
+                key={tab.to}
+                label={tab.label}
+                component={Link}
+                to={tab.to}
+                value={idx}
+                sx={{ color: 'text.primary' }}
+              />
+            ))
+          )}
         </Tabs>
         <Box>{children}</Box>
       </Container>

@@ -7,3 +7,13 @@ node_modules
 
 # Ignore editor config
 .vscode
+
+# Ignore system files
+.DS_Store
+
+# Ignore logs
+*.log
+yarn-error.log
+.cache
+coverage
+.env
