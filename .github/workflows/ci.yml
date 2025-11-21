@@ -126,6 +126,24 @@ jobs:
           cache-dependency-path: '**/yarn.lock'
       - name: Install dependencies (restore)
         run: yarn install --network-concurrency 1
+      - name: Restore Playwright cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ~/.cache/playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      - name: Install Playwright Browsers (retrying)
+        run: |
+          for i in 1 2 3; do
+            echo "Attempt $i: yarn playwright install --with-deps"
+            yarn playwright install --with-deps && break
+            echo "playwright install failed, sleeping before retry"
+            sleep $((i * 10))
+            if [ "$i" -eq 3 ]; then exit 1; fi
+          done
       - name: Test
         run: yarn test
 
@@ -145,22 +163,12 @@ jobs:
       - name: Show linked workspace packages
         run: |
           echo "node_modules/@open-data contents:"; ls -la node_modules/@open-data || true
-      - name: Topological workspace build (log to file)
+      - name: Build shared UI lib first
         run: |
-          echo "Running topological workspace build"
-          yarn workspaces foreach -pt run build 2>&1 | tee build.log
-          BUILD_EXIT=${PIPESTATUS[0]}
-          echo "build exit: $BUILD_EXIT"
-          if [ "$BUILD_EXIT" -ne 0 ]; then
-            echo "Workspace build failed"
-            exit $BUILD_EXIT
-          fi
-      - name: Upload build log on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: workspace-build-log
-          path: build.log
+          echo "Building @open-data/shared-ui-lib"
+          yarn workspace @open-data/shared-ui-lib run build
+      - name: Build
+        run: yarn build
 
   docker-build:
     runs-on: ubuntu-latest
