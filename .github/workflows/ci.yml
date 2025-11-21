@@ -27,6 +27,16 @@ jobs:
           node -v
           yarn -v || true
           npm -v
+      - name: Check Yarn presence and version
+        run: |
+          if ! command -v yarn >/dev/null 2>&1; then
+            echo "yarn is not installed in the runner"; exit 1;
+          fi
+          YARN_VER=$(yarn -v | cut -d. -f1)
+          echo "Yarn major version: $YARN_VER"
+          if [ "$YARN_VER" = "0" ]; then
+            echo "Unsupported Yarn version"; exit 1;
+          fi
       - name: Check lockfile
         run: |
           if [ ! -f yarn.lock ]; then
@@ -49,6 +59,15 @@ jobs:
             sleep $((i * 10))
             if [ "$i" -eq 3 ]; then exit 1; fi
           done
+      - name: Restore Playwright cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ~/.cache/playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Install Playwright Browsers (retrying)
         run: |
           for i in 1 2 3; do
@@ -88,6 +107,9 @@ jobs:
         with:
           node-version: 22
           cache: 'yarn'
+          cache-dependency-path: '**/yarn.lock'
+      - name: Install dependencies (restore)
+        run: yarn install --network-concurrency 1
       - name: Lint
         run: yarn lint
 
@@ -101,6 +123,9 @@ jobs:
         with:
           node-version: 22
           cache: 'yarn'
+          cache-dependency-path: '**/yarn.lock'
+      - name: Install dependencies (restore)
+        run: yarn install --network-concurrency 1
       - name: Test
         run: yarn test
 
@@ -114,8 +139,28 @@ jobs:
         with:
           node-version: 22
           cache: 'yarn'
-      - name: Build
-        run: yarn build
+          cache-dependency-path: '**/yarn.lock'
+      - name: Install dependencies (restore)
+        run: yarn install --network-concurrency 1
+      - name: Show linked workspace packages
+        run: |
+          echo "node_modules/@open-data contents:"; ls -la node_modules/@open-data || true
+      - name: Topological workspace build (log to file)
+        run: |
+          echo "Running topological workspace build"
+          yarn workspaces foreach -pt run build 2>&1 | tee build.log
+          BUILD_EXIT=${PIPESTATUS[0]}
+          echo "build exit: $BUILD_EXIT"
+          if [ "$BUILD_EXIT" -ne 0 ]; then
+            echo "Workspace build failed"
+            exit $BUILD_EXIT
+          fi
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workspace-build-log
+          path: build.log
 
   docker-build:
     runs-on: ubuntu-latest
