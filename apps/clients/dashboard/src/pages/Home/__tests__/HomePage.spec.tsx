@@ -7,7 +7,7 @@ describe('HomePage', () => {
   it('should render the heading', async () => {
     render(<HomePage />);
     const heading = page.getByRole('heading', { name: 'Home' });
-    await expect(heading).toBeInTheDocument();
+    expect(heading).toBeInTheDocument();
   });
 
   it('should render the description paragraph', async () => {
@@ -15,6 +15,6 @@ describe('HomePage', () => {
     const paragraph = page.getByText(
       'This is the home page of the Open Data Dashboard client application.',
     );
-    await expect(paragraph).toBeInTheDocument();
+    expect(paragraph).toBeInTheDocument();
   });
 });

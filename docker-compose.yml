@@ -1,6 +1,18 @@
 version: "3.8"
 
 services:
+  main-client:
+    image: open-data/main-client
+    build:
+      context: ./apps/clients/main
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - VITE_DASHBOARD_URL=http://localhost:3001
+      - VITE_NATIONAL_BANK_URL=http://localhost:3002
+    restart: unless-stopped
+
   dashboard-client:
     image: open-data/dashboard-client
     build:
@@ -10,6 +22,7 @@ services:
       - "3001:80"
     environment:
       - VITE_API_URL=http://localhost:5001
+    restart: unless-stopped
 
   dashboard-service:
     image: open-data/dashboard-service
@@ -21,7 +34,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=5001
-      - CORS_ORIGIN=http://localhost:3001
+      - CORS_ORIGIN=http://localhost:3000
+    restart: unless-stopped
 
   national-bank-client:
     image: open-data/national-bank-client
@@ -32,6 +46,7 @@ services:
       - "3002:80"
     environment:
       - VITE_API_URL=http://localhost:5002
+    restart: unless-stopped
 
   national-bank-service:
     image: open-data/national-bank-service
@@ -43,4 +58,5 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=5002
-      - CORS_ORIGIN=http://localhost:3002
+      - CORS_ORIGIN=http://localhost:3000
+    restart: unless-stopped

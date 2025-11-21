@@ -16,8 +16,8 @@ export const createGoldPricesModuleMock = (
   configModule:
     | DynamicModule
     | Promise<DynamicModule>
-    | Type<any>
-    | ForwardReference<any>
+    | Type<unknown>
+    | ForwardReference<unknown>
     | undefined = undefined,
 ) =>
   Test.createTestingModule({

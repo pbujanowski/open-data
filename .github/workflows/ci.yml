@@ -1,0 +1,203 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x and enable Yarn cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+          cache-dependency-path: '**/yarn.lock'
+      - name: Show environment
+        run: |
+          node -v
+          yarn -v || true
+          npm -v
+      - name: Check Yarn presence and version
+        run: |
+          if ! command -v yarn >/dev/null 2>&1; then
+            echo "yarn is not installed in the runner"; exit 1;
+          fi
+          YARN_VER=$(yarn -v | cut -d. -f1)
+          echo "Yarn major version: $YARN_VER"
+          if [ "$YARN_VER" = "0" ]; then
+            echo "Unsupported Yarn version"; exit 1;
+          fi
+      - name: Check lockfile
+        run: |
+          if [ ! -f yarn.lock ]; then
+            echo "yarn.lock not found"; exit 1;
+          fi
+      - name: Install dependencies (safer, retrying)
+        run: |
+          # reduce parallel network requests, helps runners with flaky network
+          # detect yarn major version and enable --frozen-lockfile for Yarn v1
+          YARN_VER=$(yarn -v | cut -d. -f1 || echo 0)
+          if [ "$YARN_VER" -eq 1 ]; then
+            INSTALL_FLAGS="--frozen-lockfile --network-concurrency 1"
+          else
+            INSTALL_FLAGS="--network-concurrency 1"
+          fi
+          for i in 1 2 3; do
+            echo "Attempt $i: yarn install $INSTALL_FLAGS"
+            yarn install $INSTALL_FLAGS && break
+            echo "yarn install failed, sleeping before retry"
+            sleep $((i * 10))
+            if [ "$i" -eq 3 ]; then exit 1; fi
+          done
+      - name: Verify single Vite version
+        run: |
+          yarn list --pattern vite > /tmp/vite-list.txt || true
+          # capture why output for debugging
+          yarn why vite > /tmp/vite-why.txt || true
+          grep -oE 'vite@[0-9]+\.[0-9]+\.[0-9]+' /tmp/vite-list.txt | sort -u > /tmp/vite-versions.txt || true
+          COUNT=$(wc -l < /tmp/vite-versions.txt || echo 0)
+          echo "vite versions found:"
+          cat /tmp/vite-versions.txt || true
+          echo "yarn why vite output:"
+          sed -n '1,200p' /tmp/vite-why.txt || true
+          if [ "$COUNT" -gt 1 ]; then echo "Multiple vite versions found"; exit 1; fi
+      - name: Restore Playwright cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ~/.cache/playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      - name: Install Playwright Browsers (retrying)
+        run: |
+          for i in 1 2 3; do
+            echo "Attempt $i: npx playwright install --with-deps"
+            npx playwright install --with-deps && break
+            echo "playwright install failed, sleeping before retry"
+            sleep $((i * 10))
+            if [ "$i" -eq 3 ]; then exit 1; fi
+          done
+      - name: Prepare install failure logs
+        if: failure()
+        run: |
+          mkdir -p ci-logs || true
+          echo "node: $(node -v)" > ci-logs/env.txt
+          echo "yarn: $(yarn -v || echo 'no-yarn')" >> ci-logs/env.txt
+          echo "npm: $(npm -v)" >> ci-logs/env.txt
+          git rev-parse --verify HEAD > ci-logs/commit.txt || true
+          ls -la > ci-logs/root-listing.txt || true
+          du -sh node_modules 2>/dev/null || true > ci-logs/node_modules_size.txt || true
+          cp yarn.lock ci-logs/ 2>/dev/null || true
+          if [ -f yarn-error.log ]; then cp yarn-error.log ci-logs/ || true; fi
+          if [ -f /tmp/vite-why.txt ]; then cp /tmp/vite-why.txt ci-logs/vite-why.txt || true; fi
+          tar -czf ci-logs.tar.gz ci-logs || true
+      - name: Upload install logs artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-install-logs
+          path: ci-logs.tar.gz
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+          cache-dependency-path: '**/yarn.lock'
+      - name: Install dependencies (restore)
+        run: yarn install --network-concurrency 1
+      - name: Lint
+        run: yarn lint
+
+  test:
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+          cache-dependency-path: '**/yarn.lock'
+      - name: Install dependencies (restore)
+        run: yarn install --network-concurrency 1
+      - name: Restore Playwright cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/ms-playwright
+            ~/.cache/playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+      - name: Install Playwright Browsers (retrying)
+        run: |
+          for i in 1 2 3; do
+            echo "Attempt $i: yarn playwright install --with-deps"
+            yarn playwright install --with-deps && break
+            echo "playwright install failed, sleeping before retry"
+            sleep $((i * 10))
+            if [ "$i" -eq 3 ]; then exit 1; fi
+          done
+      - name: Test
+        run: yarn test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+          cache-dependency-path: '**/yarn.lock'
+      - name: Install dependencies (restore)
+        run: yarn install --network-concurrency 1
+      - name: Show linked workspace packages
+        run: |
+          echo "node_modules/@open-data contents:"; ls -la node_modules/@open-data || true
+      - name: Build shared UI lib first
+        run: |
+          echo "Building @open-data/shared-ui-lib"
+          yarn workspace @open-data/shared-ui-lib run build
+      - name: Build
+        run: yarn build
+
+  ## TODO: Enable Docker build job once Dockerfiles are ready
+  # docker-build:
+  #   runs-on: ubuntu-latest
+  #   needs: build
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
+  #     - name: Build dashboard-service Docker image
+  #       run: docker build -t dashboard-service ./apps/services/dashboard
+  #     - name: Build national-bank-service Docker image
+  #       run: docker build -t national-bank-service ./apps/services/national-bank
+  #     - name: Build dashboard-client Docker image
+  #       run: docker build -t dashboard-client ./apps/clients/dashboard
+  #     - name: Build national-bank-client Docker image
+  #       run: docker build -t national-bank-client ./apps/clients/national-bank
+  #     - name: Build main-client Docker image
+  #       run: docker build -t main-client ./apps/clients/main
