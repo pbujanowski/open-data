@@ -13,24 +13,70 @@ defaults:
 jobs:
   install:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js 22.x
+      - name: Use Node.js 22.x and enable Yarn cache
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'yarn'
-      - name: Cache node_modules
-        uses: actions/cache@v4
+          cache-dependency-path: '**/yarn.lock'
+      - name: Show environment
+        run: |
+          node -v
+          yarn -v || true
+          npm -v
+      - name: Check lockfile
+        run: |
+          if [ ! -f yarn.lock ]; then
+            echo "yarn.lock not found"; exit 1;
+          fi
+      - name: Install dependencies (safer, retrying)
+        run: |
+          # reduce parallel network requests, helps runners with flaky network
+          # detect yarn major version and enable --frozen-lockfile for Yarn v1
+          YARN_VER=$(yarn -v | cut -d. -f1 || echo 0)
+          if [ "$YARN_VER" -eq 1 ]; then
+            INSTALL_FLAGS="--frozen-lockfile --network-concurrency 1"
+          else
+            INSTALL_FLAGS="--network-concurrency 1"
+          fi
+          for i in 1 2 3; do
+            echo "Attempt $i: yarn install $INSTALL_FLAGS"
+            yarn install $INSTALL_FLAGS && break
+            echo "yarn install failed, sleeping before retry"
+            sleep $((i * 10))
+            if [ "$i" -eq 3 ]; then exit 1; fi
+          done
+      - name: Install Playwright Browsers (retrying)
+        run: |
+          for i in 1 2 3; do
+            echo "Attempt $i: npx playwright install --with-deps"
+            npx playwright install --with-deps && break
+            echo "playwright install failed, sleeping before retry"
+            sleep $((i * 10))
+            if [ "$i" -eq 3 ]; then exit 1; fi
+          done
+      - name: Prepare install failure logs
+        if: failure()
+        run: |
+          mkdir -p ci-logs || true
+          echo "node: $(node -v)" > ci-logs/env.txt
+          echo "yarn: $(yarn -v || echo 'no-yarn')" >> ci-logs/env.txt
+          echo "npm: $(npm -v)" >> ci-logs/env.txt
+          git rev-parse --verify HEAD > ci-logs/commit.txt || true
+          ls -la > ci-logs/root-listing.txt || true
+          du -sh node_modules 2>/dev/null || true > ci-logs/node_modules_size.txt || true
+          cp yarn.lock ci-logs/ 2>/dev/null || true
+          if [ -f yarn-error.log ]; then cp yarn-error.log ci-logs/ || true; fi
+          tar -czf ci-logs.tar.gz ci-logs || true
+      - name: Upload install logs artifact
+        if: failure()
+        uses: actions/upload-artifact@v4
         with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependencies
-        run: yarn install
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+          name: ci-install-logs
+          path: ci-logs.tar.gz
 
   lint:
     runs-on: ubuntu-latest
